@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 
 class Organizm(ABC):
 
-    sila = 0
-    inicjatywa = 0
-    location = [0, 0]
+    sila: int = 0
+    inicjatywa: int = 0
+    location: list[int] = [0, 0]
     # świat - referencja do świata w którym znajduje się organizm
 
     def akcja(self):
