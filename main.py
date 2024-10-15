@@ -14,7 +14,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # fill the screen with a color to wipe away anything from last frame
+    
     screen.fill("green")
 
     # RENDER YOUR GAME HERE
