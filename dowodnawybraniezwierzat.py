@@ -11,14 +11,13 @@
 x = 0
 y = 2
 
-id1 = x%5+3
-id2 = y%5+8
+id1 = x % 5 + 3
+id2 = y % 5 + 8
 
-if id1==id2:
-    id2=((y+1)%5)+8
-    
+if id1 == id2:
+    id2 = ((y + 1) % 5) + 8
+
 print(id1, id2)
-
 
 # ROSLINY
 

@@ -1,5 +1,4 @@
 import pygame
-import pygame_gui
 
 pygame.init()
 screen = pygame.display.set_mode((1280, 640))
@@ -14,7 +13,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    
     screen.fill("green")
 
     # RENDER YOUR GAME HERE
