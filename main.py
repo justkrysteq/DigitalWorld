@@ -1,7 +1,6 @@
 # Import
 import pygame as pg
 import pygame_gui as gui
-import random
 # from Swiat import Swiat
 
 # Klasa Game - kontener gry
@@ -14,6 +13,7 @@ class Game:
         # Ustawienia okna
         self.screen = pg.display.set_mode((525, 630))
         self.manager = gui.UIManager((525, 630))
+        self.manager.get_theme().load_theme('organizmy.json')
 
         # Przypisanie klasy Swiat
         # self.swiat = Swiat() # FIXME!!!!!!
@@ -24,13 +24,13 @@ class Game:
         for i in range(20):
             for j in range(20):
                 button_rect = pg.Rect(i * 26, j * 26, 25, 25)
-                button = gui.elements.UIButton(relative_rect=button_rect, text=" ", manager=self.manager)
+                button = gui.elements.UIButton(relative_rect=button_rect, text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@puste_pole"))
                 self.table[i][j] = button
 
         # Rysowanie guzików
-        self.next_round_button = gui.elements.UIButton(relative_rect=pg.Rect(10, 530, 150, 60), text="Wykonaj Turę", manager=self.manager)
-        self.save_button = gui.elements.UIButton(relative_rect=pg.Rect(185, 530, 150, 60), text="Zapisz Świat", manager=self.manager)
-        self.load_button = gui.elements.UIButton(relative_rect=pg.Rect(355, 530, 150, 60), text="Wczytaj Swiat", manager=self.manager)
+        self.next_round_button = gui.elements.UIButton(relative_rect=pg.Rect(10, 530, 150, 60), text="Wykonaj Turę", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
+        self.save_button = gui.elements.UIButton(relative_rect=pg.Rect(185, 530, 150, 60), text="Zapisz Świat", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
+        self.load_button = gui.elements.UIButton(relative_rect=pg.Rect(355, 530, 150, 60), text="Wczytaj Świat", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
 
     # Wykonania nowej rundy
     def next_round(self):
@@ -70,6 +70,8 @@ class Game:
             self.manager.update(time_delta)
             self.screen.fill((0, 0, 0))
             self.manager.draw_ui(self.screen)
+
+            self.table[2][2] = gui.elements.UIButton(relative_rect=pg.Rect(2 * 26, 2 * 26, 25, 25), text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@lis"))
 
             pg.display.update()
 
