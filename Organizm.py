@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 # Abstrakcyjna klasa Organizm
 class Organizm(ABC):
     def __init__(self, sila, inicjatywa, wiek, pozycja, swiat, znak, rozmnozyc=False):
+        self.img = ""
         # Podstawowe pola
         # sila: int = 0 # statystka siły
         # inicjatywa: int = 0 # statystyka inicjatywy
@@ -66,3 +67,9 @@ class Organizm(ABC):
 
     def set_rozmnozyc(self, new_rozmnozyc):
         self.rozmnozyc = new_rozmnozyc
+
+    def get_img(self):
+        return self.img
+
+    def set_sila(self, new_img):
+        self.sila = new_img

@@ -1,0 +1,96 @@
+{
+    "button": {
+        "misc": {
+            "shape": "rounded_rectangle",
+            "border_width": "0"
+        }
+    },
+    "@menu_control_button": {
+        "colours": {
+            "normal_text": "#ccc",
+            "hovered_text": "#fff"
+        },
+        "font": {
+            "bold": "1"
+        }
+    },
+    "@puste_pole": {
+        "colours": {
+            "normal_bg": "#118033",
+            "hovered_bg": "#115033"
+        }        
+    },
+    "@lis": {
+        "images": {
+            "normal_image": {
+                "package": "img",
+                "resource": "fox.png",
+                "sub_surface_rect": "0,0,20,20"
+            }
+        }
+    },
+    "@mysz": {
+        "images": {
+            "normal_image": {
+                "package": "img",
+                "resource": "mice.png",
+                "sub_surface_rect": "0,0,20,20"
+            }
+        }
+    },
+    "@mlecz": {
+        "images": {
+            "normal_image": {
+                "package": "img",
+                "resource": "mlecz.png",
+                "sub_surface_rect": "0,0,20,20"
+            }
+        }
+    },
+    "@owca": {
+        "images": {
+            "normal_image": {
+                "package": "img",
+                "resource": "owca.png",
+                "sub_surface_rect": "0,0,20,20"
+            }
+        }
+    },
+    "@skunks": {
+        "images": {
+            "normal_image": {
+                "package": "img",
+                "resource": "skunks.png",
+                "sub_surface_rect": "0,0,20,20"
+            }
+        }
+    },
+    "@trawa": {
+        "images": {
+            "normal_image": {
+                "package": "img",
+                "resource": "trawa.png",
+                "sub_surface_rect": "0,0,20,20"
+            }
+        }
+    },
+    "@wilcze_jagody": {
+        "images": {
+            "normal_image": {
+                "package": "img",
+                "resource": "wilcze_jagody.png",
+                "sub_surface_rect": "0,0,20,20"
+            }
+        }
+    },
+    "@wilk": {
+        "images": {
+            "normal_image": {
+                "package": "img",
+                "resource": "wolf.png",
+                "sub_surface_rect": "0,0,20,20"
+            }
+        }
+    }
+
+}
