@@ -1,6 +1,5 @@
 from abc import ABC
 
-
 class Organizm(ABC):
     sila: int = 0
     inicjatywa: int = 0

@@ -1,4 +1,4 @@
-import Roslina
+from Roslina import Roslina
 
 
 class Trawa(Roslina):

@@ -1,5 +1,4 @@
-import Zwierze
-
+from Zwierze import Zwierze
 
 class Wilk(Zwierze):
     sila = 9

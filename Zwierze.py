@@ -1,6 +1,6 @@
 from abc import ABC
 
-import Organizm
+from Organizm import Organizm
 
 
 class Zwierze(ABC, Organizm):
