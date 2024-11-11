@@ -1,7 +1,18 @@
+# Import
+# import pygame as pg
+# import pygame_gui as gui
+# from random import randint
+from Zwierzeta import Wilk, Owca, Lis, Mysz, Skunks
+from Rosliny import Mlecz, Trawa, WilczeJagody
+
+# Klasa Swiat - kontener organizmów
 class Swiat:
     # Stwórz klasę Świat zawierającą dwuwymiarową tablicę wskaźników lub referencji (w zależności od stosowanego
     # języka programowania) na obiekty klasy Organizm.
-    organizmy = []
+
+    def __init__(self):
+        self.organizmy = []
+        
 
     def wykonajTure(self):
         organizmy = self.organizmy  # order by inicjatywa (ewentualnie wiek)

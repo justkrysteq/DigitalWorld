@@ -1,65 +1,81 @@
+# Import
 import pygame as pg
 import pygame_gui as gui
 import random
+# from Swiat import Swiat
 
-pg.init()
-screen = pg.display.set_mode((400, 500))
-manager = gui.UIManager((400, 500))
-clock = pg.time.Clock()
-running = True
-pg.display.set_caption("Digital World")
+# Klasa Game - kontener gry
+class Game:
+    def __init__(self):
+        # Inicjalizacja okna
+        pg.init()
+        pg.display.set_caption("Wirtualny Świat - NA, KS, SW")
 
-# Dodanie presetow kwadratow do planszy
-py: int = 0 # okresla y dla poszczególnych kwadratów
-plansza: list[object] = [] # tablica zawierajaca kwadraty
-for i in range(20):
-    px: int = 0 # okresla x dla poszczególnych kwadratów
-    plansza.append([])
-    for j in range(20):
-        plansza[i].append(pg.Rect(px, py, 20, 20))
-        px += 20
-    py += 20
+        # Ustawienia okna
+        self.screen = pg.display.set_mode((525, 630))
+        self.manager = gui.UIManager((525, 630))
 
-# Nowa tura
-button = gui.elements.UIButton(relative_rect=pg.Rect((150, 425), (100, 50)), text='Nowa tura', manager=manager)
+        # Przypisanie klasy Swiat
+        # self.swiat = Swiat() # FIXME!!!!!!
 
-# Render
-while running:
-    td = clock.tick(60)/1000
-    # Handling eventow
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            running = False
-
-        # Handle button click event 
-        if event.type == gui.UI_BUTTON_PRESSED: 
-            if event.ui_element == button:
-                print("Button clicked!")
+        # Rysowanie siatki 20x20
+        self.table = [[None for _ in range(20)] for _ in range(20)]
         
-        manager.process_events(event)
+        for i in range(20):
+            for j in range(20):
+                button_rect = pg.Rect(i * 26, j * 26, 25, 25)
+                button = gui.elements.UIButton(relative_rect=button_rect, text=" ", manager=self.manager)
+                self.table[i][j] = button
 
-    screen.fill("black") # wypelnienie ekranu czarnym tlem
-    manager.update(td)
-    manager.draw_ui(screen)
-    
-    # wyrysowanie planszy (nie trzeba tego robic)
-    for i in range(len(plansza)):
-        px = 0
-        for j in plansza[i]:
-            pg.draw.rect(screen, "white", j)
-            # print(f"Drawed rect in position: {px}, {py}")
-            px += 20
-        py += 20
+        # Rysowanie guzików
+        self.next_round_button = gui.elements.UIButton(relative_rect=pg.Rect(10, 530, 150, 60), text="Wykonaj Turę", manager=self.manager)
+        self.save_button = gui.elements.UIButton(relative_rect=pg.Rect(185, 530, 150, 60), text="Zapisz Świat", manager=self.manager)
+        self.load_button = gui.elements.UIButton(relative_rect=pg.Rect(355, 530, 150, 60), text="Wczytaj Swiat", manager=self.manager)
 
-    xx = random.randint(0, 19)
-    xy = random.randint(0, 19)
-    pg.draw.rect(screen, "green", plansza[xx][xy])
+    # Wykonania nowej rundy
+    def next_round(self):
+        self.swiat.wykonajTure()
 
-    
+    # Zapis świata
+    def save_world(self):
+        pass
 
-    # flip() the display to put your work on screen
-    pg.display.flip()
+    # Wczytanie świata
+    def load_world(self):
+        pass
 
-    # clock.tick(60)  # limits FPS to 60
+    # Main loop gry
+    def run(self):
+        clock = pg.time.Clock()
+        running = True
+        
+        while running:
+            time_delta = clock.tick(60) / 1000.0
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    running = False
+                elif event.type == pg.USEREVENT:
+                    if event.user_type == gui.UI_BUTTON_PRESSED:
+                        if event.ui_element == self.next_round_button:
+                            self.next_round()
+                            print("next tura")
+                        elif event.ui_element == self.save_button:
+                            self.save_world()
+                            print("zapisaned")
+                        elif event.ui_element == self.load_button:
+                            self.load_world()
+                            print("wczytaned")
+                self.manager.process_events(event)
+                
+            self.manager.update(time_delta)
+            self.screen.fill((0, 0, 0))
+            self.manager.draw_ui(self.screen)
 
-pg.quit()
+            pg.display.update()
+
+# Uruchamianie gry
+if __name__ == "__main__":
+    app = Game()
+    app.run()
+
+# https://stackoverflow.com/questions/64990710/how-can-i-add-an-image-or-icon-to-a-button-rectangle-in-pygame
