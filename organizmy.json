@@ -75,6 +75,9 @@
         }
     },
     "@wilcze_jagody": {
+        "colours": {
+            "normal_bg": "#a0a0a0"
+        },
         "images": {
             "normal_image": {
                 "package": "img",

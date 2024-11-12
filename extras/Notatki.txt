@@ -1,22 +1,17 @@
-NOTATKI
-Niech ten plik służy, by przechowywać krótke info, żeby to ładnie w jednym miejscu wszystko uporządkować :)
+WYMAGANIA:
+Sugerowana wersja Pythona - 3.13.0
+Wymagane pakiety - pygame-ce, pygame-gui
 
 VENV:
-Zanim rozpocznie się pracę z PyGame, czy innymi pakietami Pythona, najlepiej sobie najpierw stworzyć maszynę wirtualną .venv,
-która będzie przechowywać pobrane pakiety, nie wpływając, czy nie naruszając systemu.
-
-Folder .venv jest specyficzny dla każdego urządzenia, więc należy go stworzyć osobno za każdym razem jak będziemy pobierać
-projekt na nowe urządzenie. Jest to szybkie i łatwe, więc nie powinno być z tym problemu. Z tego właśnie powodu folder ten jest w .gitignore.
-
 Tworzenie:
     - python -m venv .venv
 Użycie:
-    - .\.venv\Scripts\Activate.ps1
-
-Nasz terminal powinien wyglądać wtedy tak:
-(.venv) PS E:\Projekty\DigitalWorld>
+    - .\.venv\Scripts\Activate.ps1 (Windows na PowerShell)
+    - source .\.venv\bin\include (MacOS)
+Prompt powinien zawierać z przodu (venv):
+    - (.venv) PS E:\Projekty\DigitalWorld>
+Instalacja pakietów:
+    - pip install pygame-ce pygame-gui
 
 .gitignore - Pliki ignorowane przez Gita
-
-https://docs.python.org/3/library/venv.html#how-venvs-work
-https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+organizmy.json - Grafiki organizmów na płytkach
