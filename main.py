@@ -13,7 +13,10 @@ class Game:
         # Ustawienia okna
         self.screen = pg.display.set_mode((525, 630))
         self.manager = gui.UIManager((525, 630))
-        self.manager.get_theme().load_theme('organizmy.json')
+        try:
+            self.manager.get_theme().load_theme('organizmy.json')
+        except Exception as e:
+            print(f"Error loading theme: {e}")
 
         # Przypisanie klasy Swiat
         # self.swiat = Swiat() # FIXME!!!!!!
@@ -44,6 +47,9 @@ class Game:
     def load_world(self):
         pass
 
+    def add_button(self, x: int, y: int, classname: str, text=""):
+        self.table[x][y] = gui.elements.UIButton(relative_rect=pg.Rect(x * 26, y * 26, 25, 25), text=text, manager=self.manager, object_id=gui.core.ObjectID(class_id=f"@{classname}"))
+
     # Main loop gry
     def run(self):
         clock = pg.time.Clock()
@@ -71,7 +77,13 @@ class Game:
             self.screen.fill((0, 0, 0))
             self.manager.draw_ui(self.screen)
 
-            self.table[2][2] = gui.elements.UIButton(relative_rect=pg.Rect(2 * 26, 2 * 26, 25, 25), text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@lis"))
+            self.add_button(2, 2, "lis")
+            self.add_button(4, 5, "wilk")
+            self.add_button(6, 7, "owca")
+            self.add_button(1, 8, "trawa")
+            self.add_button(4, 9, "mlecz")
+            self.add_button(11, 15, "wilcze_jagody")
+            self.add_button(19, 9, "mysz")
 
             pg.display.update()
 
