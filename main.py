@@ -1,7 +1,7 @@
 # Import
 import pygame as pg
 import pygame_gui as gui
-# from Swiat import Swiat
+from Swiat import Swiat
 
 # Klasa Game - kontener gry
 class Game:
@@ -18,17 +18,18 @@ class Game:
         except Exception as e:
             print(f"Error loading theme: {e}")
 
-        # Przypisanie klasy Swiat
-        # self.swiat = Swiat() # FIXME!!!!!!
-
         # Rysowanie siatki 20x20
-        self.table = [[None for _ in range(20)] for _ in range(20)]
+        self.N = 20
+        self.table = [[None for _ in range(self.N)] for _ in range(self.N)]
         
-        for i in range(20):
-            for j in range(20):
+        for i in range(self.N):
+            for j in range(self.N):
                 button_rect = pg.Rect(i * 26, j * 26, 25, 25)
                 button = gui.elements.UIButton(relative_rect=button_rect, text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@puste_pole"))
                 self.table[i][j] = button
+
+        # Przypisanie klasy Swiat
+        self.swiat = Swiat(self.N) # FIXME!!!!!!
 
         # Rysowanie guzików
         self.next_round_button = gui.elements.UIButton(relative_rect=pg.Rect(10, 530, 150, 60), text="Wykonaj Turę", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
@@ -47,7 +48,7 @@ class Game:
     def load_world(self):
         pass
 
-    def add_button(self, x: int, y: int, classname: str, text=""):
+    def add_button(self, x: int, y: int, classname: str, text: str=" "):
         self.table[x][y] = gui.elements.UIButton(relative_rect=pg.Rect(x * 26, y * 26, 25, 25), text=text, manager=self.manager, object_id=gui.core.ObjectID(class_id=f"@{classname}"))
 
     # Main loop gry
@@ -91,5 +92,3 @@ class Game:
 if __name__ == "__main__":
     app = Game()
     app.run()
-
-# https://stackoverflow.com/questions/64990710/how-can-i-add-an-image-or-icon-to-a-button-rectangle-in-pygame

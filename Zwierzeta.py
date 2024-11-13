@@ -3,19 +3,16 @@ from Zwierze import Zwierze
 class Wilk(Zwierze):
     sila = 9
     inicjatywa = 5
-    img = "img/wolf.png"
 
 
 class Owca(Zwierze):
     sila = 4
     inicjatywa = 4
-    img = "img/owca.png"
 
 
 class Lis(Zwierze):
     sila = 3
     inicjatywa = 7
-    img = "img/fox.png"
 
     def akcja(self):
         pass  # jesli pole na ktore chce sie ruszyc zawiera organizm z wieksza sila to tam nie wejdzie
@@ -24,7 +21,6 @@ class Lis(Zwierze):
 class Mysz(Zwierze):
     sila = 1
     inicjatywa = 6
-    img = "img/mice.png"
 
     def kolizja(self):
         pass  # moze uciec na sąsiednie pole, jeśli jest wolne, chyba że wrogiem jest żmija
@@ -33,4 +29,7 @@ class Mysz(Zwierze):
 class Skunks(Zwierze):
     sila = 5
     inicjatywa = 5
-    img = "img/skunks.png"
+
+#  Przynajmniej 1 klasa bazowa po której dziedziczy bezpośrednio (w tym samym pokoleniu) kilka klas pochodnych (konieczne na >=3pkt)
+#  Wielokrotne wykorzystanie kodu (kod w klasie bazowej używany przez obiekty klas pochodnych) (konieczne na >=3pkt)
+#  Nadpisywanie metody klasy bazowej wraz z wywołaniem jej w implementacji klasy pochodnej (konieczne na >=4pkt)

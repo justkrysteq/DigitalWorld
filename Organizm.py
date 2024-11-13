@@ -3,8 +3,10 @@ from abc import ABC, abstractmethod
 
 # Abstrakcyjna klasa Organizm
 class Organizm(ABC):
-    def __init__(self, sila, inicjatywa, wiek, pozycja, swiat, znak, rozmnozyc=False):
-        self.img = ""
+    def __init__(self, pozycja: tuple, swiat: object, wiek: int=0, rozmnozyc: bool=False):
+        # self.sila = sila # to chyba nie ma sensu tutaj, choć w pliku jest napisane, żeby było
+        # self.inicjatywa = inicjatywa
+
         # Podstawowe pola
         # sila: int = 0 # statystka siły
         # inicjatywa: int = 0 # statystyka inicjatywy
@@ -26,50 +28,44 @@ class Organizm(ABC):
         pass
 
     # FIXME - nazwać to jakoś idk
-    def get_sila(self):
-        return self.sila
+    # def get_sila(self):
+    #     return self.sila
 
-    def set_sila(self, new_sila):
-        self.sila = new_sila
+    # def set_sila(self, new_sila):
+    #     self.sila = new_sila
 
-    def get_inicjatywa(self):
-        return self.inicjatywa
+    # def get_inicjatywa(self):
+    #     return self.inicjatywa
 
-    def set_inicjatywa(self, new_inicjatywa):
-        self.inicjatywa = new_inicjatywa
+    # def set_inicjatywa(self, new_inicjatywa):
+    #     self.inicjatywa = new_inicjatywa
 
-    def get_wiek(self):
-        return self.wiek
+    # def get_wiek(self):
+    #     return self.wiek
   
-    def set_wiek(self, new_wiek):
-        self.wiek = new_wiek
+    # def set_wiek(self, new_wiek):
+    #     self.wiek = new_wiek
 
-    def get_pozycja(self):
-        return self.pozycja
+    # def get_pozycja(self):
+    #     return self.pozycja
 
-    def set_pozycja(self, new_pozycja):
-        self.pozycja = new_pozycja
+    # def set_pozycja(self, new_pozycja):
+    #     self.pozycja = new_pozycja
 
-    def get_swiat(self):
-        return self.swiat
+    # def get_swiat(self):
+    #     return self.swiat
 
-    def set_swiat(self, new_swiat):
-        self.swiat = new_swiat
+    # def set_swiat(self, new_swiat):
+    #     self.swiat = new_swiat
 
-    def get_znak(self):
-        return self.znak
+    # def get_znak(self):
+    #     return self.znak
 
-    def set_znak(self, new_znak):
-        self.znak = new_znak
+    # def set_znak(self, new_znak):
+    #     self.znak = new_znak
 
-    def get_rozmnozyc(self):
-        return self.rozmnozyc
+    # def get_rozmnozyc(self):
+    #     return self.rozmnozyc
 
-    def set_rozmnozyc(self, new_rozmnozyc):
-        self.rozmnozyc = new_rozmnozyc
-
-    def get_img(self):
-        return self.img
-
-    def set_sila(self, new_img):
-        self.sila = new_img
+    # def set_rozmnozyc(self, new_rozmnozyc):
+    #     self.rozmnozyc = new_rozmnozyc
