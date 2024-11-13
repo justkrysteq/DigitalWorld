@@ -3,7 +3,7 @@ from abc import ABC
 from Organizm import Organizm
 
 
-class Zwierze(ABC, Organizm):
+class Zwierze(Organizm, ABC):
     def akcja(self):
         pass  # każde typowe zwierze w swojej turze W interfejsie aplikacji musi być przedstawione: imię,
         # nazwisko oraz numer z dziennika. przesuwa się na wybrane losowo, sąsiednie pole

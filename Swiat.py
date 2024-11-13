@@ -10,8 +10,8 @@ class Swiat:
     # Stwórz klasę Świat zawierającą dwuwymiarową tablicę wskaźników lub referencji (w zależności od stosowanego
     # języka programowania) na obiekty klasy Organizm.
 
-    def __init__(self):
-        self.organizmy = []
+    def __init__(self, N: int):
+        self.organizmy = [[None for _ in range(N)] for _ in range(N)]
         
 
     def wykonajTure(self):
@@ -23,3 +23,6 @@ class Swiat:
 
     def rysujSwiat(self):
         pass
+
+
+# Organizmy mają możliwość wpływania na stan świata. Dlatego istnieje konieczność przekazania metodom akcja() oraz kolizja() parametru określającego obiekt klasy Świat. Postaraj się, aby klasa Świat definiowała jako publiczne składowe tylko takie pola i metody, które są potrzebne pozostałym obiektom aplikacji do działania. Pozostałą funkcjonalność świata staraj się zawrzeć w składowych prywatnych.
