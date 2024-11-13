@@ -1,7 +1,8 @@
-# Import
 import pygame as pg
 import pygame_gui as gui
 from Swiat import Swiat
+from Zwierzeta import Wilk, Owca, Lis, Mysz, Skunks
+from Rosliny import Mlecz, Trawa, WilczeJagody
 
 # Klasa Game - kontener gry
 class Game:
@@ -22,11 +23,11 @@ class Game:
         self.N = 20
         self.table = [[None for _ in range(self.N)] for _ in range(self.N)]
         
-        for i in range(self.N):
-            for j in range(self.N):
-                button_rect = pg.Rect(i * 26, j * 26, 25, 25)
+        for y in range(self.N):
+            for x in range(self.N):
+                button_rect = pg.Rect(x * 26, y * 26, 25, 25)
                 button = gui.elements.UIButton(relative_rect=button_rect, text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@puste_pole"))
-                self.table[i][j] = button
+                self.table[y][x] = button
 
         # Przypisanie klasy Swiat
         self.swiat = Swiat(self.N) # FIXME!!!!!!
@@ -36,9 +37,43 @@ class Game:
         self.save_button = gui.elements.UIButton(relative_rect=pg.Rect(185, 530, 150, 60), text="Zapisz Świat", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
         self.load_button = gui.elements.UIButton(relative_rect=pg.Rect(355, 530, 150, 60), text="Wczytaj Świat", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
 
+    def update_display(self):
+        # Dictionary do przypisania odpowiednich nazw klasy stylów do klas organizmów
+        class_to_name = {
+            Wilk: "wilk",
+            Owca: "owca",
+            Lis: "lis",
+            Mysz: "mysz",
+            Skunks: "skunks",
+            Trawa: "trawa",
+            Mlecz: "mlecz",
+            WilczeJagody: "wilcze_jagody"
+        }
+
+        # Wyświetlanie organizmów na podstawie tabeli organizmów z obiektu klasy Swiat
+        # _OLD
+        # organizmy = self.swiat.get_organizmy()
+        # for row in organizmy:
+        #     for organizm in row:
+        #         class_name = class_to_name.get(type(organizm)) # Przypisanie do zmiennej class_name nazwy klasy stylu z class_to_name jeśli organizm jest instancją zawartej tam klasy
+        #         if class_name:
+        #             self.add_button(organizm.get_position()[0], organizm.get_position()[1], class_name) # Można zamienić to na indeks za pomocą zmiany pętli
+
+        organizmy = self.swiat.get_organizmy()
+        for organizmY in range(len(organizmy)):
+            for organizmX in range(len(organizmy[organizmY])):
+                # print("X:", organizmX, "Y:", organizmY)
+                class_name = class_to_name.get(type(organizmy[organizmY][organizmX])) # Przypisanie do zmiennej class_name nazwy klasy stylu z class_to_name jeśli organizm jest instancją zawartej tam klasy
+                if class_name:
+                    self.add_button(organizmX, organizmY, class_name)
+                    # print(self.table)
+                else:
+                    self.remove_button(organizmX, organizmY) # FIXME
+
     # Wykonania nowej rundy
     def next_round(self):
         self.swiat.wykonajTure()
+        self.update_display()
 
     # Zapis świata
     def save_world(self):
@@ -48,14 +83,29 @@ class Game:
     def load_world(self):
         pass
 
+    # Wyświetlenie na planszy
     def add_button(self, x: int, y: int, classname: str, text: str=" "):
-        self.table[x][y] = gui.elements.UIButton(relative_rect=pg.Rect(x * 26, y * 26, 25, 25), text=text, manager=self.manager, object_id=gui.core.ObjectID(class_id=f"@{classname}"))
+        self.table[y][x] = gui.elements.UIButton(relative_rect=pg.Rect(x * 26, y * 26, 25, 25), text=text, manager=self.manager, object_id=gui.core.ObjectID(class_id=f"@{classname}"))
+    
+    # Usuwanie z planszy
+    def remove_button(self, x: int, y: int):
+        self.table[y][x] = gui.elements.UIButton(relative_rect=pg.Rect(x * 26, y * 26, 25, 25), text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@puste_pole"))
 
     # Main loop gry
     def run(self):
         clock = pg.time.Clock()
         running = True
-        
+
+        # Miejsce na testy
+        self.swiat.dodajOrganizm(Owca, 0, 0)
+        # print(self.swiat.organizmy[0][0])
+        # self.swiat.dodajOrganizm(Trawa, 2, 0)
+        # self.swiat.dodajOrganizm(Wilk, 4, 5)
+
+        # Wyświetlenie początkowego stanu tabeli
+        self.update_display()
+
+        # Pętla gry
         while running:
             time_delta = clock.tick(60) / 1000.0
             for event in pg.event.get():
@@ -66,6 +116,7 @@ class Game:
                         if event.ui_element == self.next_round_button:
                             self.next_round()
                             print("next tura")
+                            # self.swiat.organizmy[0][0].position
                         elif event.ui_element == self.save_button:
                             self.save_world()
                             print("zapisaned")
@@ -77,14 +128,6 @@ class Game:
             self.manager.update(time_delta)
             self.screen.fill((0, 0, 0))
             self.manager.draw_ui(self.screen)
-
-            self.add_button(2, 2, "lis")
-            self.add_button(4, 5, "wilk")
-            self.add_button(6, 7, "owca")
-            self.add_button(1, 8, "trawa")
-            self.add_button(4, 9, "mlecz")
-            self.add_button(11, 15, "wilcze_jagody")
-            self.add_button(19, 9, "mysz")
 
             pg.display.update()
 
