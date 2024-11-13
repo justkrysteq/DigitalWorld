@@ -1,11 +1,13 @@
-# Import
 from abc import ABC, abstractmethod
 
 # Abstrakcyjna klasa Organizm
 class Organizm(ABC):
-    def __init__(self, pozycja: tuple, swiat: object, wiek: int=0, rozmnozyc: bool=False):
+    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, rozmnozyc: bool=False):
         # self.sila = sila # to chyba nie ma sensu tutaj, choć w pliku jest napisane, żeby było
         # self.inicjatywa = inicjatywa
+        
+        self.position = pozycja
+        self.swiat = swiat
 
         # Podstawowe pola
         # sila: int = 0 # statystka siły
@@ -23,9 +25,9 @@ class Organizm(ABC):
     def kolizja(self): # zachowanie organizmu w trakcie kolizji
         pass
 
-    @abstractmethod
-    def rysowanie(self): # rysowanie organizmu na siatce
-        pass
+    # @abstractmethod
+    # def rysowanie(self): # rysowanie organizmu na siatce
+    #     pass
 
     # FIXME - nazwać to jakoś idk
     # def get_sila(self):
@@ -46,8 +48,8 @@ class Organizm(ABC):
     # def set_wiek(self, new_wiek):
     #     self.wiek = new_wiek
 
-    # def get_pozycja(self):
-    #     return self.pozycja
+    def get_position(self):
+        return self.position
 
     # def set_pozycja(self, new_pozycja):
     #     self.pozycja = new_pozycja
