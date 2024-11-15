@@ -2,8 +2,14 @@ try:
     import pygame as pg
     import pygame_gui as gui
     from Swiat.Swiat import Swiat
-    from Swiat.Organizmy.Zwierzeta.Zwierzeta import Wilk, Owca, Lis, Mysz, Skunks
-    from Swiat.Organizmy.Rosliny.Rosliny import Mlecz, Trawa, WilczeJagody
+    from Swiat.Organizmy.Zwierzeta.Wilk import Wilk
+    from Swiat.Organizmy.Zwierzeta.Owca import Owca
+    from Swiat.Organizmy.Zwierzeta.Lis import Lis
+    from Swiat.Organizmy.Zwierzeta.Skunks import Skunks
+    from Swiat.Organizmy.Zwierzeta.Mysz import Mysz
+    from Swiat.Organizmy.Rosliny.Mlecz import Mlecz
+    from Swiat.Organizmy.Rosliny.Trawa import Trawa
+    from Swiat.Organizmy.Rosliny.WilczeJagody import WilczeJagody
 
     # Klasa Game - kontener gry
     class Game:
@@ -95,8 +101,8 @@ try:
             # Miejsce na testy
             self.swiat.dodajOrganizm(Owca, 0, 0)
             # print(self.swiat.organizmy[0][0])
-            # self.swiat.dodajOrganizm(Trawa, 2, 0)
-            # self.swiat.dodajOrganizm(Wilk, 4, 5)
+            self.swiat.dodajOrganizm(Trawa, 2, 0)
+            self.swiat.dodajOrganizm(Wilk, 4, 5)
 
             # Wyświetlenie początkowego stanu tabeli
             self.update_display()
@@ -107,18 +113,17 @@ try:
                 for event in pg.event.get():
                     if event.type == pg.QUIT:
                         running = False
-                    elif event.type == pg.USEREVENT:
-                        if event.user_type == gui.UI_BUTTON_PRESSED:
-                            if event.ui_element == self.next_round_button:
-                                self.next_round()
-                                print("next tura")
-                                # self.swiat.organizmy[0][0].position
-                            elif event.ui_element == self.save_button:
-                                self.save_world()
-                                print("zapisaned")
-                            elif event.ui_element == self.load_button:
-                                self.load_world()
-                                print("wczytaned")
+                    elif event.type == gui.UI_BUTTON_PRESSED:
+                        if event.ui_element == self.next_round_button:
+                            self.next_round()
+                            print("next tura")
+                            # self.swiat.organizmy[0][0].position
+                        elif event.ui_element == self.save_button:
+                            self.save_world()
+                            print("zapisaned")
+                        elif event.ui_element == self.load_button:
+                            self.load_world()
+                            print("wczytaned")
                     self.manager.process_events(event)
                     
                 self.manager.update(time_delta)
