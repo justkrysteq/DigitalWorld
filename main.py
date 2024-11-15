@@ -59,15 +59,15 @@ try:
 
             # Wyświetlanie organizmów na podstawie tabeli organizmów z obiektu klasy Swiat
             organizmy = self.swiat.get_organizmy()
-            for organizmY in range(len(organizmy)):
-                for organizmX in range(len(organizmy[organizmY])):
+            for y in range(len(organizmy)):
+                for x in range(len(organizmy[y])):
                     # print("X:", organizmX, "Y:", organizmY)
-                    class_name = class_to_name.get(type(organizmy[organizmY][organizmX])) # Przypisanie do zmiennej class_name nazwy klasy stylu z class_to_name jeśli organizm jest instancją zawartej tam klasy
+                    class_name = class_to_name.get(type(organizmy[y][x])) # Przypisanie do zmiennej class_name nazwy klasy stylu z class_to_name jeśli organizm jest instancją zawartej tam klasy
                     if class_name:
-                        self.add_button(organizmX, organizmY, class_name)
+                        self.add_button(x, y, class_name)
                         # print(self.table)
                     else:
-                        self.remove_button(organizmX, organizmY) # FIXME
+                        self.remove_button(x, y) # FIXME
 
         # Wykonania nowej rundy
         def next_round(self):
