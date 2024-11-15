@@ -24,11 +24,11 @@ try:
             self.N = 20
             self.table = [[None for _ in range(self.N)] for _ in range(self.N)]
             
-            for y in range(self.N):
-                for x in range(self.N):
-                    button_rect = pg.Rect(x * 26, y * 26, 25, 25)
-                    button = gui.elements.UIButton(relative_rect=button_rect, text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@puste_pole"))
-                    self.table[y][x] = button
+            # for y in range(self.N):
+            #     for x in range(self.N):
+            #         button_rect = pg.Rect(x * 26, y * 26, 25, 25)
+            #         button = gui.elements.UIButton(relative_rect=button_rect, text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@puste_pole"))
+            #         self.table[y][x] = button
 
             # Przypisanie klasy Swiat
             self.swiat = Swiat(self.N) # FIXME!!!!!!
