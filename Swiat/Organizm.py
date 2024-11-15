@@ -38,8 +38,8 @@ class Organizm(ABC):
     # def set_sila(self, new_sila):
     #     self.sila = new_sila
 
-    # def get_inicjatywa(self):
-    #     return self.inicjatywa
+    def get_inicjatywa(self) -> int:
+        return self.inicjatywa
 
     # def set_inicjatywa(self, new_inicjatywa):
     #     self.inicjatywa = new_inicjatywa
@@ -60,8 +60,8 @@ class Organizm(ABC):
         """
         return self.position
 
-    # def set_pozycja(self, new_pozycja):
-    #     self.pozycja = new_pozycja
+    def set_position(self, new_pozycja: list[int]):
+        self.pozycja = new_pozycja
 
     # def get_swiat(self):
     #     return self.swiat

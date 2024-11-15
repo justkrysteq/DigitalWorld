@@ -4,6 +4,7 @@ from Swiat.Organizm import Organizm
 from random import randint
 
 class Roslina(Organizm, ABC):
+    inicjatywa: int = 0
     def akcja(self):
         # Określa akcję rośliny - możliwość rozmnażania się z pewnym prawdopodobieństwem
         prawdopodobienstwo = randint(0, 100)
