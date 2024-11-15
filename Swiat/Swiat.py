@@ -1,7 +1,9 @@
 try:
     from Exceptions import LanuchedModuleException
     from Swiat.Organizmy.Zwierzeta.Zwierzeta import Wilk, Owca, Lis, Mysz, Skunks
-    from Swiat.Organizmy.Rosliny.Rosliny import Mlecz, Trawa, WilczeJagody
+    from Swiat.Organizmy.Rosliny.Mlecz import Mlecz
+    from Swiat.Organizmy.Rosliny.Trawa import Trawa
+    from Swiat.Organizmy.Rosliny.WilczeJagody import WilczeJagody
 except ModuleNotFoundError as module:
     if __name__ == "__main__":
         try:
