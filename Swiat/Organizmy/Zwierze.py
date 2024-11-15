@@ -1,5 +1,16 @@
-from abc import ABC
-from Organizm import Organizm
+try:
+    from abc import ABC
+    from Exceptions import LanuchedModuleException
+    from Swiat.Organizm import Organizm
+except ModuleNotFoundError as module:
+    if module.name != "Exceptions":
+        if __name__ == "__main__":
+            try:
+                raise LanuchedModuleException(f"Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę")
+            except LanuchedModuleException as e:
+                print(e)
+    else:
+        print("Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę")
 
 class Zwierze(Organizm, ABC):
     def akcja(self):
