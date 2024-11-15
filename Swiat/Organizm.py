@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from Swiat.Exceptions import LanuchedModuleException
+
 # Abstrakcyjna klasa Organizm
 class Organizm(ABC):
     def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, rozmnozyc: bool=False):
@@ -48,7 +50,14 @@ class Organizm(ABC):
     # def set_wiek(self, new_wiek):
     #     self.wiek = new_wiek
 
-    def get_position(self):
+    def get_position(self) -> list[int]:
+        """
+        Metoda zwracająca pozycję organizmu
+
+        :Przykład użycia:
+        >>> wilk.get_position()
+        [1, 2]
+        """
         return self.position
 
     # def set_pozycja(self, new_pozycja):
@@ -71,3 +80,9 @@ class Organizm(ABC):
 
     # def set_rozmnozyc(self, new_rozmnozyc):
     #     self.rozmnozyc = new_rozmnozyc
+
+if __name__ == "__main__":
+    try:
+        raise LanuchedModuleException("Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę")
+    except LanuchedModuleException as e:
+        print(e)

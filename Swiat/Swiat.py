@@ -1,5 +1,13 @@
-from Zwierzeta import Wilk, Owca, Lis, Mysz, Skunks
-from Rosliny import Mlecz, Trawa, WilczeJagody
+try:
+    from Exceptions import LanuchedModuleException
+    from Swiat.Organizmy.Zwierzeta.Zwierzeta import Wilk, Owca, Lis, Mysz, Skunks
+    from Swiat.Organizmy.Rosliny.Rosliny import Mlecz, Trawa, WilczeJagody
+except ModuleNotFoundError as module:
+    if __name__ == "__main__":
+        try:
+            raise LanuchedModuleException(f"Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę")
+        except LanuchedModuleException as e:
+            print(e)
 
 # Klasa Swiat - kontener organizmów
 class Swiat:
@@ -13,7 +21,7 @@ class Swiat:
         self.organizmy[x][y] = organizm([x, y], self)
         print(organizm, self.organizmy[x][y].position)
 
-    def wykonajTure(self):
+    def wykonajTure(self) -> None:
         organizmy = self.organizmy.copy()  # To add: order by inicjatywa (ewentualnie wiek)
         # W tym miejscu dodać sortowanie (Trzeba będzie wypisać do tablicy jednowymiarowej wszystkie organizmy i potem tą tablicę posortować po inicjatywie)
         # organizmy[0][0].position[1] += 1
@@ -30,7 +38,7 @@ class Swiat:
     def rysujSwiat(self):
         pass
 
-    def get_organizmy(self):
+    def get_organizmy(self) -> list[list]:
         return self.organizmy
 
 

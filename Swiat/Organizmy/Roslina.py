@@ -1,5 +1,6 @@
 from abc import ABC
-from Organizm import Organizm
+from Swiat.Exceptions import LanuchedModuleException
+from Swiat.Organizm import Organizm
 from random import randint
 
 class Roslina(Organizm, ABC):
@@ -18,3 +19,9 @@ class Roslina(Organizm, ABC):
         else:
             self.swiat.usun_organizm(self)
             self.swiat.ruch_organizmu(organizm, self.get_pozycja())
+
+if __name__ == "__main__":
+    try:
+        raise LanuchedModuleException("Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę")
+    except LanuchedModuleException as e:
+        print(e)
