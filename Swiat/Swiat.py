@@ -20,16 +20,16 @@ class Swiat:
         self.organizmy = [[None for _ in range(N)] for _ in range(N)]
 
     def dodajOrganizm(self, organizm: object, x: int, y: int):
-        self.organizmy[x][y] = organizm([x, y], self)
-        print(organizm, self.organizmy[x][y].position)
+        self.organizmy[y][x] = organizm([x, y], self)
+        print(organizm, self.organizmy[y][x].position)
 
     def wykonajTure(self) -> None:
         # Przypisanie każdej wartości z self.organizmy do organizmy (zrobienie kopii)
-        organizmy = [] # To add: order by inicjatywa (ewentualnie wiek)     nwm czy ta kopia self.organizmy mi jest aktualnie potrzebna wsm
-        for y in range(len(self.organizmy)):
-            organizmy.append([])
-            for x in range(len(self.organizmy[y])):
-                organizmy[y].append(self.organizmy[y][x])
+        # organizmy = [] # To add: order by inicjatywa (ewentualnie wiek)     nwm czy ta kopia self.organizmy mi jest aktualnie potrzebna wsm
+        # for y in range(len(self.organizmy)):
+        #     organizmy.append([])
+        #     for x in range(len(self.organizmy[y])):
+        #         organizmy[y].append(self.organizmy[y][x])
 
         organizmy_by_inicjatywa = []
 
@@ -49,25 +49,37 @@ class Swiat:
 
 
         print(organizmy_by_inicjatywa)
-        # Trzeba też będzie zapisywać pozycję każdego organizmu (Done above) i potem zmieniać ją poszczególnie dla każdego obiektu organizmu w metodzie akcja, a po wykonaniu wszystkiego przypisać do self.organizmy wszystko na pusto i wczytać pozycje z każdego organizmu w tej posortowanej tabeli i dodać organizmy do poszczególnych miejsc w tabeli na podstawie tej pozycji
+        # Trzeba też będzie zapisywać pozycję każdego organizmu (Done above) i potem zmieniać ją poszczególnie dla każdego obiektu organizmu w metodzie akcja (TODO), a po wykonaniu wszystkiego przypisać do self.organizmy wszystko na pusto i wczytać pozycje z każdego organizmu w tej posortowanej tabeli i dodać organizmy do poszczególnych miejsc w tabeli na podstawie tej pozycji (Done below)
         # W tym miejscu dodać sortowanie (Trzeba będzie wypisać do tablicy jednowymiarowej wszystkie organizmy i potem tą tablicę posortować po inicjatywie) (TAK ZROBIŁEM TO, NO WAY)
         # organizmy[0][0].position[1] += 1
-        organizmy[0][1] = organizmy[0][0]
-        organizmy[0][0] = None
+        # organizmy[0][1] = organizmy[0][0]
+        # organizmy[0][0] = None
         
-        for row in organizmy:
+        for row in self.organizmy:
             for organizm in row:
-                if organizm != None:
-                    print(organizm.position)
-                    organizm.akcja()  # Zaimplementuj przebieg tury, wywołując metody akcja() dla wszystkich organizmów oraz
-                # kolizja() dla organizmów na tym samym polu. Pamiętaj, że kolejność wywoływania metody akcja() zależy od
-                # inicjatywy (lub wieku, w przypadku równych wartości inicjatyw) organizmu.
+                organizm = None
+
+        for organizm in organizmy_by_inicjatywa:
+            organizm.akcja()
+            [x, y] = organizm.get_position()
+            print(organizm, [x, y])
+            self.organizmy[y][x] = organizm
+
+        
+        
+        # for row in organizmy:
+        #     for organizm in row:
+        #         if organizm != None:
+        #             print(organizm.position)
+        #             organizm.akcja()  # Zaimplementuj przebieg tury, wywołując metody akcja() dla wszystkich organizmów oraz
+        #         # kolizja() dla organizmów na tym samym polu. Pamiętaj, że kolejność wywoływania metody akcja() zależy od
+        #         # inicjatywy (lub wieku, w przypadku równych wartości inicjatyw) organizmu.
         
 
         # Nadpisanie self.organizmy tablicą organizmy (dalej nwm czy mi to potrzebne)
-        for y in range(len(organizmy)):
-            for x in range(len(organizmy[y])):
-                self.organizmy[y][x] = organizmy[y][x]
+        # for y in range(len(organizmy)):
+        #     for x in range(len(organizmy[y])):
+        #         self.organizmy[y][x] = organizmy[y][x]
 
         # print(self.organizmy)
 
@@ -81,4 +93,4 @@ class Swiat:
 # Organizmy mają możliwość wpływania na stan świata. Dlatego istnieje konieczność przekazania metodom akcja() oraz kolizja() parametru określającego obiekt klasy Świat. Postaraj się, aby klasa Świat definiowała jako publiczne składowe tylko takie pola i metody, które są potrzebne pozostałym obiektom aplikacji do działania. Pozostałą funkcjonalność świata staraj się zawrzeć w składowych prywatnych.
 
 
-# Można dodać customowy error, gdy launchuje się ten plik jako __main__
+# Można dodać customowy error, gdy ten plik launchuje się jako __main__
