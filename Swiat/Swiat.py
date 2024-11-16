@@ -23,27 +23,19 @@ class Swiat:
     def dodajOrganizm(self, organizm: object, position: list[int]):
         [x, y] = position
         self.organizmy[y][x] = organizm([x, y], self)
-        print(organizm, self.organizmy[y][x].position)
+        # print(organizm, self.organizmy[y][x].position)
 
     def wykonajTure(self) -> None:
-        # Przypisanie każdej wartości z self.organizmy do organizmy (zrobienie kopii)
-        # organizmy = [] # To add: order by inicjatywa (ewentualnie wiek)     nwm czy ta kopia self.organizmy mi jest aktualnie potrzebna wsm
-        # for y in range(len(self.organizmy)):
-        #     organizmy.append([])
-        #     for x in range(len(self.organizmy[y])):
-        #         organizmy[y].append(self.organizmy[y][x])
-
+        """Metoda wykonująca turę"""
+        # Dodanie wszytskich organizmów do listy organizmy_by_inicjatywa i zapisanie ich pozycji
         organizmy_by_inicjatywa = []
-
-        # Dodanie wsyztskich organizmów do listy organizmy_by_inicjatywa i zapisanie ich pozycji
         for y in range(len(self.organizmy)):
-            # print(self.organizmy[y])
             for x in range(len(self.organizmy[y])):
                 if self.organizmy[y][x] is not None:
                     self.organizmy[y][x].set_position([x, y])
                     organizmy_by_inicjatywa.append(self.organizmy[y][x])
 
-        # Sortowanie po inicjatywie (bąbelkowe)
+        # Sortowanie po inicjatywie, a nastepnie po wieku jeśli inicjatywa jest równa (bąbelkowe)
         for i in range(len(organizmy_by_inicjatywa)):
             for j in range(len(organizmy_by_inicjatywa) - i - 1):
                 if (
@@ -54,28 +46,40 @@ class Swiat:
                         organizmy_by_inicjatywa[j + 1],
                         organizmy_by_inicjatywa[j],
                     )
+                elif (
+                    organizmy_by_inicjatywa[j].get_inicjatywa()
+                    == organizmy_by_inicjatywa[j + 1].get_inicjatywa()
+                ):
+                    if (
+                        organizmy_by_inicjatywa[j].get_wiek()
+                        < organizmy_by_inicjatywa[j + 1].get_wiek()
+                    ):
+                        organizmy_by_inicjatywa[j], organizmy_by_inicjatywa[j + 1] = (
+                            organizmy_by_inicjatywa[j + 1],
+                            organizmy_by_inicjatywa[j],
+                        )
 
-        print(organizmy_by_inicjatywa)
-        # Trzeba też będzie zapisywać pozycję każdego organizmu (Done above) i potem zmieniać ją poszczególnie dla każdego obiektu organizmu w metodzie akcja (TODO), a po wykonaniu wszystkiego przypisać do self.organizmy wszystko na pusto i wczytać pozycje z każdego organizmu w tej posortowanej tabeli i dodać organizmy do poszczególnych miejsc w tabeli na podstawie tej pozycji (Done below)
-        # W tym miejscu dodać sortowanie (Trzeba będzie wypisać do tablicy jednowymiarowej wszystkie organizmy i potem tą tablicę posortować po inicjatywie) (TAK ZROBIŁEM TO, NO WAY)
-        # organizmy[0][0].position[1] += 1
-        # organizmy[0][1] = organizmy[0][0]
-        # organizmy[0][0] = None
-        
+        # Zclearowanie planszy
         self.organizmy = [[None for _ in range(self.N)] for _ in range(self.N)]
 
-        # for row in self.organizmy: # HALO CZEMU TO NIE DZIAŁA?
-        #     for organizm in row:
-        #         organizm = None
-        #         print(organizm)
-
+        # Wykonanie akcji i przypisanie organizmom nowych pól na planszy
         for organizm in organizmy_by_inicjatywa:
+            previous_position = organizm.get_position()
+            organizm.wiek += 1
             organizm.akcja()
+
+            # Kolizja
+            for organizm2 in organizmy_by_inicjatywa:
+                if (
+                    organizm.get_position() == organizm2.get_position()
+                    and organizm != organizm2
+                ):
+                    organizm.kolizja(organizm2, previous_position)
+
+            # Wyświeltanie wsm, w sensie dodanie do tabeli, z której to się wyświetla czy tam aktualzacja pozycji na planszy jakoś tak
             [x, y] = organizm.get_position()
-            print(organizm, [x, y])
             self.organizmy[y][x] = organizm
-        
-        
+
         # for row in organizmy:
         #     for organizm in row:
         #         if organizm != None:
@@ -96,7 +100,7 @@ class Swiat:
 
     def get_organizmy(self) -> list[list]:
         return self.organizmy
-    
+
     def get_N(self) -> int:
         return self.N
 

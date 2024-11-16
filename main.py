@@ -8,8 +8,8 @@ try:
     from Swiat.Organizmy.Zwierzeta.Lis import Lis
     from Swiat.Organizmy.Zwierzeta.Skunks import Skunks
     from Swiat.Organizmy.Zwierzeta.Mysz import Mysz
-    from Swiat.Organizmy.Rosliny.Mlecz import Mlecz
     from Swiat.Organizmy.Rosliny.Trawa import Trawa
+    from Swiat.Organizmy.Rosliny.Mlecz import Mlecz
     from Swiat.Organizmy.Rosliny.WilczeJagody import WilczeJagody
 
     # Klasa Game - kontener gry
@@ -38,7 +38,7 @@ try:
             #         self.table[y][x] = button
 
             # Przypisanie klasy Swiat
-            self.swiat = Swiat(self.N)  # FIXME!!!!!!
+            self.swiat = Swiat(self.N)
 
             # Rysowanie guzików
             self.next_round_button = gui.elements.UIButton(
@@ -122,11 +122,91 @@ try:
             each_spawned_times = 2
             all_organisms = [Owca, Wilk, Lis, Mysz, Skunks, Trawa, Mlecz, WilczeJagody]
             used_positions = []
-            for i in range(each_spawned_times):
+            for _ in range(each_spawned_times):
                 for organizm in all_organisms:
-                    position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    position = [randint(0, self.N - 1), randint(0, self.N - 1)]
                     used_positions.append(position)
                     self.swiat.dodajOrganizm(organizm, position)
+
+        # rysowanie textu
+        def draw_text(text, font, color, surface, x, y):
+            textobj = font.render(text, True, color)
+            textrect = textobj.get_rect(center=(x, y))
+            surface.blit(textobj, textrect)
+
+        # Menu gry loop
+        def menu(self) -> None:
+            """
+            Metoda uruchamiająca menu
+            """
+            running = True
+            game_state = "menu"
+            clock = pg.time.Clock()
+            manager_menu = gui.UIManager((525, 630))
+
+            while running:
+                time_delta = clock.tick(60) / 1000.0
+                for event in pg.event.get():
+                    if event.type == pg.QUIT:
+                        return "quit"
+
+                    if game_state == "menu":
+                        if event.type == gui.UI_BUTTON_PRESSED:
+                            if event.ui_element == self.play_button:
+                                running = False
+                            elif event.ui_element == self.settings_button:
+                                game_state = "settings"
+                            elif event.ui_element == self.exit_button:
+                                running = False
+
+                    if game_state == "settings":
+                        if event.ui_element == self.return_to_menu_button:
+                            game_state = "menu"
+                    manager_menu.process_events(event)
+
+                if game_state == "menu":
+                    self.screen.fill((100, 100, 100))
+
+                    # self.screen.blit(background_img,(0,0))
+                    # font = pg.font.Font(None, 36)
+                    # self.draw_text('Digital World', font, (255,255,255), self.screen, self.screen.get_width() / 2, self.screen.get_height() / 2 - 50)
+                    self.play_button = gui.elements.UIButton(
+                        relative_rect=pg.Rect(20, 350, 200, 80),
+                        text="Graj",
+                        manager=manager_menu,
+                        object_id=gui.core.ObjectID(class_id="@menu_control_button"),
+                    )
+                    self.settings_button = gui.elements.UIButton(
+                        relative_rect=pg.Rect(20, 350, 200, 80),
+                        text="Ustawienia",
+                        manager=manager_menu,
+                        object_id=gui.core.ObjectID(class_id="@menu_control_button"),
+                    )
+                    self.exit_button = gui.elements.UIButton(
+                        relative_rect=pg.Rect(20, 350, 200, 80),
+                        text="Wyjście",
+                        manager=manager_menu,
+                        object_id=gui.core.ObjectID(class_id="@menu_control_button"),
+                    )
+                    manager_menu.update(time_delta)
+                    manager_menu.draw_ui(self.screen)
+                    pg.display.flip()
+
+                if game_state == "settings":
+                    self.screen.fill((100, 100, 100))
+                    # self.screen.blit(background_img,(0,0))
+                    # font = pg.font.Font(None, 36)
+                    # self.draw_text('Ustawienia', font, (255,255,255), self.screen, self.screen.get_width() / 2, self.screen.get_height() / 2 - 50)
+                    # tu trzeba zaimplementowac wybieranie rozmiaru tablicy - zdefiniować N
+                    self.return_to_menu_button = gui.elements.UIButton(
+                        relative_rect=pg.Rect(80, 350, 200, 80),
+                        text="Menu",
+                        manager=manager_menu,
+                        object_id=gui.core.ObjectID(class_id="@menu_control_button"),
+                    )
+                    manager_menu.update(time_delta)
+                    manager_menu.draw_ui(self.screen)
+                    pg.display.flip()
 
         # Main loop gry
         def run(self) -> None:
@@ -178,12 +258,10 @@ try:
                 pg.display.update()
 
     # Uruchamianie gry
-    try:
-        if __name__ == "__main__":
-            app = Game()
-            app.run()
-    except NameError as name:
-        print(name)
+    if __name__ == "__main__":
+        app = Game()
+        # if app.menu() != "quit":
+        app.run()
 
 except ModuleNotFoundError as module:
     print(f"Upewnij się, że masz wszystkie zależności oraz pliki, dlatego że: {module}")

@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+from random import randint
+
 from Swiat.Exceptions import LanuchedModuleException
 
 
@@ -12,6 +14,7 @@ class Organizm(ABC):
 
         self.position = pozycja
         self.swiat = swiat
+        self.wiek = wiek
 
         # Podstawowe pola
         # sila: int = 0 # statystka siły
@@ -20,25 +23,25 @@ class Organizm(ABC):
         # świat - referencja do świata w którym znajduje się organizm
 
     def get_available_positions(self) -> list[list[int]]:
-        """Metoda zwracająca wszystkie ruchy, które są możliwe dla organizmu na plaszny"""
+        """Metoda zwracająca wszystkie ruchy, które są możliwe dla organizmu na planszy"""
         N = self.swiat.get_N()
         available_positions = []
         if self.position[0] + 1 < N:
-            available_positions.append([self.position[0]+1, self.position[1]])
-        if self.position[0] - 1 > 0:
-            available_positions.append([self.position[0]-1, self.position[1]])
+            available_positions.append([self.position[0] + 1, self.position[1]])
+        if self.position[0] - 1 >= 0:
+            available_positions.append([self.position[0] - 1, self.position[1]])
         if self.position[1] + 1 < N:
-            available_positions.append([self.position[0], self.position[1]+1])
-        if self.position[1] - 1 > 0:
-            available_positions.append([self.position[0], self.position[1]-1])
-        if self.position[0]+1 < N and self.position[1]+1 < N:
-            available_positions.append([self.position[0]+1, self.position[1]+1])
-        if self.position[0]+1 < N and self.position[1]-1 > 0:
-            available_positions.append([self.position[0]+1, self.position[1]-1])
-        if self.position[0]-1 > 0 and self.position[1]+1 < N:
-            available_positions.append([self.position[0]-1, self.position[1]+1])
-        if self.position[0]-1 > 0 and self.position[1]-1 > 0:
-            available_positions.append([self.position[0]-1, self.position[1]-1])
+            available_positions.append([self.position[0], self.position[1] + 1])
+        if self.position[1] - 1 >= 0:
+            available_positions.append([self.position[0], self.position[1] - 1])
+        if self.position[0] + 1 < N and self.position[1] + 1 < N:
+            available_positions.append([self.position[0] + 1, self.position[1] + 1])
+        if self.position[0] + 1 < N and self.position[1] - 1 >= 0:
+            available_positions.append([self.position[0] + 1, self.position[1] - 1])
+        if self.position[0] - 1 >= 0 and self.position[1] + 1 < N:
+            available_positions.append([self.position[0] - 1, self.position[1] + 1])
+        if self.position[0] - 1 >= 0 and self.position[1] - 1 >= 0:
+            available_positions.append([self.position[0] - 1, self.position[1] - 1])
 
         # 1. x+1 👍
         # 2. x-1 👍
@@ -49,6 +52,11 @@ class Organizm(ABC):
         # 7. x-1 y+1 👍
         # 8. x-1 y-1 👍
         return available_positions
+
+    def get_new_position(self) -> list[int]:
+        available_positions = self.get_available_positions()
+        choose_position = randint(0, len(available_positions) - 1)
+        return available_positions[choose_position]
 
     # Podstawowe metody
     @abstractmethod

@@ -11,10 +11,10 @@ class Roslina(Organizm, ABC):
         # Określa akcję rośliny - możliwość rozmnażania się z pewnym prawdopodobieństwem
         prawdopodobienstwo = randint(0, 100)
         if prawdopodobienstwo > 97:
-            # wolna_pozycja = self.swiat.losuj_wolne_pole(self.pozycja) # wolna pole
-            ...
+            self.swiat.dodajOrganizm(self.__class__, self.get_new_position())
 
-    def kolizja(self, organizm):
+    def kolizja(self, organizm, previous_position):
+        pass
         # Rozstrzyga kolizję z innym organizmem
 
         if organizm.get_sila() < self.sila:
