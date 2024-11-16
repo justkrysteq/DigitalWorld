@@ -1,5 +1,6 @@
 from Swiat.Organizmy.Roslina import Roslina
 
+
 class Mlecz(Roslina):
     sila = 0
 

@@ -1,5 +1,6 @@
 # try:
 from abc import ABC
+
 # from Exceptions import LanuchedModuleException
 from Swiat.Organizm import Organizm
 # except ModuleNotFoundError as module:
@@ -12,10 +13,11 @@ from Swiat.Organizm import Organizm
 #     else:
 #         print("Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę")
 
+
 class Zwierze(Organizm, ABC):
     def akcja(self):
         organizmy = self.swiat.get_organizmy().copy()
-        # print(organizmy)
+        print(organizmy)
         # organizm = organizmy[self.position[0]][self.position[1]]
         # organizmy[self.position[0]][self.position[1]+1] = organizm
         # organizmy[self.position[0]][self.position[1]] = None
@@ -26,6 +28,7 @@ class Zwierze(Organizm, ABC):
 
     def kolizja(self):
         pass
+
 
 # rozmnażanie w ramach metody kolizja() (kolizja jest metoda w klasie Organizm) → przy kolizji z organizmem tego
 # samego gatunku nie dochodzi do walki, oba zwierzęta pozostają na swoich miejscach, koło nich pojawia się trzecie

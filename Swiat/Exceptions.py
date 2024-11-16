@@ -10,4 +10,5 @@ class LanuchedModuleException(Exception):
         except LanuchedModuleException as e:
             print(e)
     """
+
     pass

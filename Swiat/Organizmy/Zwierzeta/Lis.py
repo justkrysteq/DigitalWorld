@@ -1,5 +1,6 @@
 from Swiat.Organizmy.Zwierze import Zwierze
 
+
 class Lis(Zwierze):
     sila = 3
     inicjatywa = 7

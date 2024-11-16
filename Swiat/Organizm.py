@@ -1,13 +1,15 @@
 from abc import ABC, abstractmethod
-
 from Swiat.Exceptions import LanuchedModuleException
+
 
 # Abstrakcyjna klasa Organizm
 class Organizm(ABC):
-    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, rozmnozyc: bool=False):
+    def __init__(
+        self, pozycja: list[int], swiat: object, wiek: int = 0, rozmnozyc: bool = False
+    ):
         # self.sila = sila # to chyba nie ma sensu tutaj, choć w pliku jest napisane, żeby było
         # self.inicjatywa = inicjatywa
-        
+
         self.position = pozycja
         self.swiat = swiat
 
@@ -20,11 +22,11 @@ class Organizm(ABC):
 
     # Podstawowe metody
     @abstractmethod
-    def akcja(self): # zachowanie organizmu w trakcie tury
+    def akcja(self):  # zachowanie organizmu w trakcie tury
         pass
 
     @abstractmethod
-    def kolizja(self): # zachowanie organizmu w trakcie kolizji
+    def kolizja(self):  # zachowanie organizmu w trakcie kolizji
         pass
 
     # @abstractmethod
@@ -46,7 +48,7 @@ class Organizm(ABC):
 
     # def get_wiek(self):
     #     return self.wiek
-  
+
     # def set_wiek(self, new_wiek):
     #     self.wiek = new_wiek
 
@@ -81,8 +83,11 @@ class Organizm(ABC):
     # def set_rozmnozyc(self, new_rozmnozyc):
     #     self.rozmnozyc = new_rozmnozyc
 
+
 if __name__ == "__main__":
     try:
-        raise LanuchedModuleException("Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę")
+        raise LanuchedModuleException(
+            "Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę"
+        )
     except LanuchedModuleException as e:
         print(e)

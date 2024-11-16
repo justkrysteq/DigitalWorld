@@ -37,16 +37,21 @@ class Swiat:
         for y in range(len(self.organizmy)):
             # print(self.organizmy[y])
             for x in range(len(self.organizmy[y])):
-                if self.organizmy[y][x] != None:
+                if self.organizmy[y][x] is not None:
                     self.organizmy[y][x].set_position([x, y])
                     organizmy_by_inicjatywa.append(self.organizmy[y][x])
 
         # Sortowanie po inicjatywie
         for i in range(len(organizmy_by_inicjatywa)):
             for j in range(len(organizmy_by_inicjatywa) - i - 1):
-                if organizmy_by_inicjatywa[j].get_inicjatywa() < organizmy_by_inicjatywa[j+1].get_inicjatywa():
-                    organizmy_by_inicjatywa[j], organizmy_by_inicjatywa[j+1] = organizmy_by_inicjatywa[j+1], organizmy_by_inicjatywa[j]
-
+                if (
+                    organizmy_by_inicjatywa[j].get_inicjatywa()
+                    < organizmy_by_inicjatywa[j + 1].get_inicjatywa()
+                ):
+                    organizmy_by_inicjatywa[j], organizmy_by_inicjatywa[j + 1] = (
+                        organizmy_by_inicjatywa[j + 1],
+                        organizmy_by_inicjatywa[j],
+                    )
 
         print(organizmy_by_inicjatywa)
         # Trzeba też będzie zapisywać pozycję każdego organizmu (Done above) i potem zmieniać ją poszczególnie dla każdego obiektu organizmu w metodzie akcja (TODO), a po wykonaniu wszystkiego przypisać do self.organizmy wszystko na pusto i wczytać pozycje z każdego organizmu w tej posortowanej tabeli i dodać organizmy do poszczególnych miejsc w tabeli na podstawie tej pozycji (Done below)
@@ -54,7 +59,7 @@ class Swiat:
         # organizmy[0][0].position[1] += 1
         # organizmy[0][1] = organizmy[0][0]
         # organizmy[0][0] = None
-        
+
         for row in self.organizmy:
             for organizm in row:
                 organizm = None
@@ -65,8 +70,6 @@ class Swiat:
             print(organizm, [x, y])
             self.organizmy[y][x] = organizm
 
-        
-        
         # for row in organizmy:
         #     for organizm in row:
         #         if organizm != None:
@@ -74,7 +77,6 @@ class Swiat:
         #             organizm.akcja()  # Zaimplementuj przebieg tury, wywołując metody akcja() dla wszystkich organizmów oraz
         #         # kolizja() dla organizmów na tym samym polu. Pamiętaj, że kolejność wywoływania metody akcja() zależy od
         #         # inicjatywy (lub wieku, w przypadku równych wartości inicjatyw) organizmu.
-        
 
         # Nadpisanie self.organizmy tablicą organizmy (dalej nwm czy mi to potrzebne)
         # for y in range(len(organizmy)):
@@ -91,6 +93,4 @@ class Swiat:
 
 
 # Organizmy mają możliwość wpływania na stan świata. Dlatego istnieje konieczność przekazania metodom akcja() oraz kolizja() parametru określającego obiekt klasy Świat. Postaraj się, aby klasa Świat definiowała jako publiczne składowe tylko takie pola i metody, które są potrzebne pozostałym obiektom aplikacji do działania. Pozostałą funkcjonalność świata staraj się zawrzeć w składowych prywatnych.
-
-
 # Można dodać customowy error, gdy ten plik launchuje się jako __main__
