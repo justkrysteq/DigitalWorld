@@ -18,39 +18,85 @@ class Organizm(ABC):
         # inicjatywa: int = 0 # statystyka inicjatywy
         # polozenie: list[int] = [0, 0] # położenie (x, y) na siatce
         # świat - referencja do świata w którym znajduje się organizm
-        ...
 
     # Podstawowe metody
     @abstractmethod
-    def akcja(self):  # zachowanie organizmu w trakcie tury
+    def akcja(self):
+        """
+        Metoda ustalająca zachowanie organizmu w trakcie tury
+        """
         pass
 
     @abstractmethod
-    def kolizja(self):  # zachowanie organizmu w trakcie kolizji
+    def kolizja(self):
+        """
+        Metoda ustalająca zachowanie organizmu w trakcie kolizji
+        """
         pass
 
-    # @abstractmethod
-    # def rysowanie(self): # rysowanie organizmu na siatce
-    #     pass
+    @abstractmethod
+    def rysowanie(self):
+        """
+        Metoda powodująca narysowanie organizmu na siatce
+        """
+        pass
 
-    # FIXME - nazwać to jakoś idk
-    # def get_sila(self):
-    #     return self.sila
+    def get_sila(self):
+        """
+        Metoda zwracająca siłę organizmu
 
-    # def set_sila(self, new_sila):
-    #     self.sila = new_sila
+        :Przykład użycia:
+        >>> wilk.get_sila()
+        9
+        """
+        return self.sila
+
+    def set_sila(self, new_sila):
+        """
+        Metoda ustawiająca inicjatywę organizmu
+
+        :Przykład użycia:
+        >>> wilk.set_inicjatywa(9)
+        """
+        self.sila = new_sila
 
     def get_inicjatywa(self) -> int:
+        """
+        Metoda zwracająca inicjatywę organizmu
+
+        :Przykład użycia:
+        >>> wilk.get_inicjatywa()
+        5
+        """
         return self.inicjatywa
 
-    # def set_inicjatywa(self, new_inicjatywa):
-    #     self.inicjatywa = new_inicjatywa
+    def set_inicjatywa(self, new_inicjatywa):
+        """
+        Metoda ustawiająca inicjatywę organizmu
 
-    # def get_wiek(self):
-    #     return self.wiek
+        :Przykład użycia:
+        >>> wilk.set_inicjatywa(5)
+        """
+        self.inicjatywa = new_inicjatywa
 
-    # def set_wiek(self, new_wiek):
-    #     self.wiek = new_wiek
+    def get_wiek(self):
+        """
+        Metoda zwracająca wiek organizmu
+
+        :Przykład użycia:
+        >>> wilk.get_wiek()
+        3
+        """
+        return self.wiek
+
+    def set_wiek(self, new_wiek):
+        """
+        Metoda ustawiająca wiek organizmu
+
+        :Przykład użycia:
+        >>> wilk.set_wiek(5)
+        """
+        self.wiek = new_wiek
 
     def get_position(self) -> list[int]:
         """
@@ -63,6 +109,12 @@ class Organizm(ABC):
         return self.position
 
     def set_position(self, new_pozycja: list[int]):
+        """
+        Metoda ustawiająca pozycję organizmu
+
+        :Przykład użycia:
+        >>> wilk.set_position(1, 2)
+        """
         self.pozycja = new_pozycja
 
     # def get_swiat(self):
