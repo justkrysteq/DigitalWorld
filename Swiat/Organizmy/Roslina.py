@@ -11,8 +11,27 @@ class Roslina(Organizm, ABC):
         # Określa akcję rośliny - możliwość rozmnażania się z pewnym prawdopodobieństwem (daliśmy 3%)
         prawdopodobienstwo = randint(0, 100)
         if prawdopodobienstwo > 97:
-            # available_positions = self.get_available_positions()
-            self.swiat.dodajOrganizm(self.__class__, self.get_new_position())
+            available_positions = []
+            possible_positions = self.get_available_positions()
+            all_positions = self.swiat.get_all_positions()
+            for position in possible_positions:
+                if position not in all_positions:
+                    available_positions.append(position)
+
+            # 🚨 🚨 🚨 🚨 🚨 PLIS FIX🚨 🚨 🚨 🚨 🚨
+            # Gdy rozprzestrzenia się roślina i  trafi na miejsce na którym istnieje już organizm, to ta roślina zastępuje go (organizm)
+            # TAK NIE POWINNO BYĆ
+
+            # Powinno być git
+            # Roślina rozmnaża się tylko, gdy jest na to miejsce 😎
+            if len(available_positions) > 0:
+                choose_position = randint(0, len(available_positions) - 1)
+                self.swiat.dodajOrganizm(
+                    self.__class__, available_positions[choose_position]
+                )
+                print(
+                    f"{self.__class__.__name__} na polu {self.position} rozprzestrzenił się, tworząc {self.__class__.__name__} na polu {available_positions[choose_position]}"
+                )
 
     def kolizja(self, organizm, previous_position):
         pass

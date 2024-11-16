@@ -125,6 +125,8 @@ try:
             for _ in range(each_spawned_times):
                 for organizm in all_organisms:
                     position = [randint(0, self.N - 1), randint(0, self.N - 1)]
+                    while position in used_positions:
+                        position = [randint(0, self.N - 1), randint(0, self.N - 1)]
                     used_positions.append(position)
                     self.swiat.dodajOrganizm(organizm, position)
 
