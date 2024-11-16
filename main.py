@@ -98,8 +98,17 @@ try:
             for _ in range(each_spawned_times):
                 for organizm in all_organisms:
                     position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    while position in used_positions:
+                        position = [randint(0, self.N-1), randint(0, self.N-1)]
                     used_positions.append(position)
                     self.swiat.dodajOrganizm(organizm, position)
+                    # if organizm == Owca:
+                    #     for _ in range(10):
+                    #         position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    #         while position in used_positions:
+                    #             position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    #         used_positions.append(position)
+                    #         self.swiat.dodajOrganizm(organizm, position)
 
         #rysowanie textu
         def draw_text(text, font, color, surface, x, y):

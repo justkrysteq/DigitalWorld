@@ -25,6 +25,15 @@ class Swiat:
         self.organizmy[y][x] = organizm([x, y], self)
         # print(organizm, self.organizmy[y][x].position)
 
+    def get_all_positions(self) -> list[list[int]]:
+        """Metoda zwracająca pozycje wszystkich organizmów na świecie"""
+        all_positions = []
+        for row in self.organizmy:
+            for organizm in row:
+                if organizm != None:
+                    all_positions.append(organizm.get_position())
+        return all_positions
+
     def wykonajTure(self) -> None:
         """Metoda wykonująca turę"""
         # Dodanie wszytskich organizmów do listy organizmy_by_inicjatywa i zapisanie ich pozycji
@@ -52,16 +61,29 @@ class Swiat:
             previous_position = organizm.get_position()
             organizm.wiek += 1
             organizm.akcja()
+            new_organizmy = []
 
             # Kolizja
             for organizm2 in organizmy_by_inicjatywa:
                 if organizm.get_position() == organizm2.get_position() and organizm != organizm2:
-                    organizm.kolizja(organizm2, previous_position)
+                    if organizm.__class__ == organizm2.__class__:
+                        new_organizmy.append(organizm.kolizja(organizm2, previous_position))
+                    else:
+                        organizm.kolizja(organizm2, previous_position)
+
+            for new_organizm in new_organizmy:
+                if new_organizm != None and new_organizm.alive:
+                    [x, y] = new_organizm.get_position()
+                    self.organizmy[y][x] = new_organizm
 
             # Wyświeltanie wsm, w sensie dodanie do tabeli, z której to się wyświetla czy tam aktualzacja pozycji na planszy jakoś tak
             if organizm.alive:
                 [x, y] = organizm.get_position()
                 self.organizmy[y][x] = organizm
+
+            for organizm in organizmy_by_inicjatywa:
+                if organizm.omit_akcja:
+                    organizm.omit_akcja = False
         
     def rysujSwiat(self):
         pass

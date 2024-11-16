@@ -5,14 +5,15 @@ from Swiat.Exceptions import LanuchedModuleException
 
 # Abstrakcyjna klasa Organizm
 class Organizm(ABC):
-    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, alive: bool=True, rozmnozyc: bool=False): # OD CZEGO JEST TE ROZMNOŻYĆ?! XDD
+    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, alive: bool=True, omit_akcja: bool=False):
         # self.sila = sila # to chyba nie ma sensu tutaj, choć w pliku jest napisane, żeby było
         # self.inicjatywa = inicjatywa
         
-        self.position = pozycja
-        self.swiat = swiat
-        self.wiek = wiek
-        self.alive = alive
+        self.position: list[int] = pozycja
+        self.swiat: object = swiat
+        self.wiek: int = wiek
+        self.alive: bool = alive
+        self.omit_akcja: bool = omit_akcja
         # Podstawowe pola
         # sila: int = 0 # statystka siły
         # inicjatywa: int = 0 # statystyka inicjatywy
