@@ -19,6 +19,37 @@ class Organizm(ABC):
         # polozenie: list[int] = [0, 0] # położenie (x, y) na siatce
         # świat - referencja do świata w którym znajduje się organizm
 
+    def get_available_positions(self) -> list[list[int]]:
+        """Metoda zwracająca wszystkie ruchy, które są możliwe dla organizmu na plaszny"""
+        N = self.swiat.get_N()
+        available_positions = []
+        if self.position[0] + 1 < N:
+            available_positions.append([self.position[0]+1, self.position[1]])
+        if self.position[0] - 1 > 0:
+            available_positions.append([self.position[0]-1, self.position[1]])
+        if self.position[1] + 1 < N:
+            available_positions.append([self.position[0], self.position[1]+1])
+        if self.position[1] - 1 > 0:
+            available_positions.append([self.position[0], self.position[1]-1])
+        if self.position[0]+1 < N and self.position[1]+1 < N:
+            available_positions.append([self.position[0]+1, self.position[1]+1])
+        if self.position[0]+1 < N and self.position[1]-1 > 0:
+            available_positions.append([self.position[0]+1, self.position[1]-1])
+        if self.position[0]-1 > 0 and self.position[1]+1 < N:
+            available_positions.append([self.position[0]-1, self.position[1]+1])
+        if self.position[0]-1 > 0 and self.position[1]-1 > 0:
+            available_positions.append([self.position[0]-1, self.position[1]-1])
+
+        # 1. x+1 👍
+        # 2. x-1 👍
+        # 3. y+1 👍
+        # 4. y-1 👍
+        # 5. x+1 y+1 👍
+        # 6. x+1 y-1 👍
+        # 7. x-1 y+1 👍
+        # 8. x-1 y-1 👍
+        return available_positions
+
     # Podstawowe metody
     @abstractmethod
     def akcja(self):
@@ -34,12 +65,12 @@ class Organizm(ABC):
         """
         pass
 
-    @abstractmethod
-    def rysowanie(self):
-        """
-        Metoda powodująca narysowanie organizmu na siatce
-        """
-        pass
+    # @abstractmethod
+    # def rysowanie(self):
+    #     """
+    #     Metoda powodująca narysowanie organizmu na siatce
+    #     """
+    #     pass
 
     def get_sila(self):
         """

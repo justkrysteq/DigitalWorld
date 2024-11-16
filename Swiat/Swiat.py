@@ -17,9 +17,11 @@ class Swiat:
     # języka programowania) na obiekty klasy Organizm.
 
     def __init__(self, N: int):
+        self.N = N
         self.organizmy = [[None for _ in range(N)] for _ in range(N)]
 
-    def dodajOrganizm(self, organizm: object, x: int, y: int):
+    def dodajOrganizm(self, organizm: object, position: list[int]):
+        [x, y] = position
         self.organizmy[y][x] = organizm([x, y], self)
         print(organizm, self.organizmy[y][x].position)
 
@@ -41,7 +43,7 @@ class Swiat:
                     self.organizmy[y][x].set_position([x, y])
                     organizmy_by_inicjatywa.append(self.organizmy[y][x])
 
-        # Sortowanie po inicjatywie
+        # Sortowanie po inicjatywie (bąbelkowe)
         for i in range(len(organizmy_by_inicjatywa)):
             for j in range(len(organizmy_by_inicjatywa) - i - 1):
                 if (
@@ -59,17 +61,21 @@ class Swiat:
         # organizmy[0][0].position[1] += 1
         # organizmy[0][1] = organizmy[0][0]
         # organizmy[0][0] = None
+        
+        self.organizmy = [[None for _ in range(self.N)] for _ in range(self.N)]
 
-        for row in self.organizmy:
-            for organizm in row:
-                organizm = None
+        # for row in self.organizmy: # HALO CZEMU TO NIE DZIAŁA?
+        #     for organizm in row:
+        #         organizm = None
+        #         print(organizm)
 
         for organizm in organizmy_by_inicjatywa:
             organizm.akcja()
             [x, y] = organizm.get_position()
             print(organizm, [x, y])
             self.organizmy[y][x] = organizm
-
+        
+        
         # for row in organizmy:
         #     for organizm in row:
         #         if organizm != None:
@@ -90,6 +96,9 @@ class Swiat:
 
     def get_organizmy(self) -> list[list]:
         return self.organizmy
+    
+    def get_N(self) -> int:
+        return self.N
 
 
 # Organizmy mają możliwość wpływania na stan świata. Dlatego istnieje konieczność przekazania metodom akcja() oraz kolizja() parametru określającego obiekt klasy Świat. Postaraj się, aby klasa Świat definiowała jako publiczne składowe tylko takie pola i metody, które są potrzebne pozostałym obiektom aplikacji do działania. Pozostałą funkcjonalność świata staraj się zawrzeć w składowych prywatnych.

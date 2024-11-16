@@ -1,6 +1,6 @@
 # try:
 from abc import ABC
-
+from random import randint
 # from Exceptions import LanuchedModuleException
 from Swiat.Organizm import Organizm
 # except ModuleNotFoundError as module:
@@ -16,15 +16,9 @@ from Swiat.Organizm import Organizm
 
 class Zwierze(Organizm, ABC):
     def akcja(self):
-        organizmy = self.swiat.get_organizmy().copy()
-        print(organizmy)
-        # organizm = organizmy[self.position[0]][self.position[1]]
-        # organizmy[self.position[0]][self.position[1]+1] = organizm
-        # organizmy[self.position[0]][self.position[1]] = None
-        # self.position[1]+=1
-
-        # każde typowe zwierze w swojej turze W interfejsie aplikacji musi być przedstawione: imię,
-        # nazwisko oraz numer z dziennika. przesuwa się na wybrane losowo, sąsiednie pole
+        available_positions = self.get_available_positions()
+        choose_position = randint(0, len(available_positions)-1)
+        self.position = available_positions[choose_position]
 
     def kolizja(self):
         pass
