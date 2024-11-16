@@ -1,15 +1,17 @@
 from abc import ABC, abstractmethod
+from random import randint
 
 from Swiat.Exceptions import LanuchedModuleException
 
 # Abstrakcyjna klasa Organizm
 class Organizm(ABC):
-    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, rozmnozyc: bool=False):
+    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, rozmnozyc: bool=False): # OD CZEGO JEST TE ROZMNOŻYĆ?! XDD
         # self.sila = sila # to chyba nie ma sensu tutaj, choć w pliku jest napisane, żeby było
         # self.inicjatywa = inicjatywa
         
         self.position = pozycja
         self.swiat = swiat
+        self.wiek = wiek
 
         # Podstawowe pola
         # sila: int = 0 # statystka siły
@@ -19,24 +21,24 @@ class Organizm(ABC):
         ...
 
     def get_available_positions(self) -> list[list[int]]:
-        """Metoda zwracająca wszystkie ruchy, które są możliwe dla organizmu na plaszny"""
+        """Metoda zwracająca wszystkie ruchy, które są możliwe dla organizmu na planszy"""
         N = self.swiat.get_N()
         available_positions = []
         if self.position[0] + 1 < N:
             available_positions.append([self.position[0]+1, self.position[1]])
-        if self.position[0] - 1 > 0:
+        if self.position[0] - 1 >= 0:
             available_positions.append([self.position[0]-1, self.position[1]])
         if self.position[1] + 1 < N:
             available_positions.append([self.position[0], self.position[1]+1])
-        if self.position[1] - 1 > 0:
+        if self.position[1] - 1 >= 0:
             available_positions.append([self.position[0], self.position[1]-1])
         if self.position[0]+1 < N and self.position[1]+1 < N:
             available_positions.append([self.position[0]+1, self.position[1]+1])
-        if self.position[0]+1 < N and self.position[1]-1 > 0:
+        if self.position[0]+1 < N and self.position[1]-1 >= 0:
             available_positions.append([self.position[0]+1, self.position[1]-1])
-        if self.position[0]-1 > 0 and self.position[1]+1 < N:
+        if self.position[0]-1 >= 0 and self.position[1]+1 < N:
             available_positions.append([self.position[0]-1, self.position[1]+1])
-        if self.position[0]-1 > 0 and self.position[1]-1 > 0:
+        if self.position[0]-1 >= 0 and self.position[1]-1 >= 0:
             available_positions.append([self.position[0]-1, self.position[1]-1])
 
         # 1. x+1 👍
@@ -48,6 +50,11 @@ class Organizm(ABC):
         # 7. x-1 y+1 👍
         # 8. x-1 y-1 👍
         return available_positions
+    
+    def get_new_position(self) -> list[int]:
+        available_positions = self.get_available_positions()
+        choose_position = randint(0, len(available_positions)-1)
+        return available_positions[choose_position]
 
     # Podstawowe metody
     @abstractmethod
@@ -63,8 +70,8 @@ class Organizm(ABC):
     #     pass
 
     # FIXME - nazwać to jakoś idk
-    # def get_sila(self):
-    #     return self.sila
+    def get_sila(self):
+        return self.sila
 
     # def set_sila(self, new_sila):
     #     self.sila = new_sila
@@ -75,8 +82,8 @@ class Organizm(ABC):
     # def set_inicjatywa(self, new_inicjatywa):
     #     self.inicjatywa = new_inicjatywa
 
-    # def get_wiek(self):
-    #     return self.wiek
+    def get_wiek(self):
+        return self.wiek
   
     # def set_wiek(self, new_wiek):
     #     self.wiek = new_wiek
