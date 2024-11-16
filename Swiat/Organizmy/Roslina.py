@@ -6,9 +6,11 @@ from random import randint
 class Roslina(Organizm, ABC):
     inicjatywa: int = 0
     def akcja(self):
-        # Określa akcję rośliny - możliwość rozmnażania się z pewnym prawdopodobieństwem
+        # Określa akcję rośliny - możliwość rozmnażania się z pewnym prawdopodobieństwem (daliśmy 3%)
         prawdopodobienstwo = randint(0, 100)
         if prawdopodobienstwo > 97:
+            available_positions = self.get_available_positions()
+            
             self.swiat.dodajOrganizm(self.__class__, self.get_new_position())
 
     def kolizja(self, organizm, previous_position):

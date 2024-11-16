@@ -1,4 +1,3 @@
-from random import randint
 from Swiat.Organizmy.Roslina import Roslina
 
 class Mlecz(Roslina):

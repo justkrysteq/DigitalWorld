@@ -58,9 +58,10 @@ class Swiat:
                 if organizm.get_position() == organizm2.get_position() and organizm != organizm2:
                     organizm.kolizja(organizm2, previous_position)
 
-            # Wyświeltanie wsm, w sensie dodanie do tabeli, z której to się wyświetla czy tam aktualzacja pozycji na planszy jakoś tak 
-            [x, y] = organizm.get_position()
-            self.organizmy[y][x] = organizm
+            # Wyświeltanie wsm, w sensie dodanie do tabeli, z której to się wyświetla czy tam aktualzacja pozycji na planszy jakoś tak
+            if organizm.alive:
+                [x, y] = organizm.get_position()
+                self.organizmy[y][x] = organizm
         
     def rysujSwiat(self):
         pass

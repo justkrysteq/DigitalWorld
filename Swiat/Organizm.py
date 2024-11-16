@@ -5,20 +5,19 @@ from Swiat.Exceptions import LanuchedModuleException
 
 # Abstrakcyjna klasa Organizm
 class Organizm(ABC):
-    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, rozmnozyc: bool=False): # OD CZEGO JEST TE ROZMNOŻYĆ?! XDD
+    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, alive: bool=True, rozmnozyc: bool=False): # OD CZEGO JEST TE ROZMNOŻYĆ?! XDD
         # self.sila = sila # to chyba nie ma sensu tutaj, choć w pliku jest napisane, żeby było
         # self.inicjatywa = inicjatywa
         
         self.position = pozycja
         self.swiat = swiat
         self.wiek = wiek
-
+        self.alive = alive
         # Podstawowe pola
         # sila: int = 0 # statystka siły
         # inicjatywa: int = 0 # statystyka inicjatywy
         # polozenie: list[int] = [0, 0] # położenie (x, y) na siatce
         # świat - referencja do świata w którym znajduje się organizm
-        ...
 
     def get_available_positions(self) -> list[list[int]]:
         """Metoda zwracająca wszystkie ruchy, które są możliwe dla organizmu na planszy"""
