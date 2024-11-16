@@ -5,4 +5,5 @@ class Lis(Zwierze):
     inicjatywa = 7
 
     def akcja(self):
-        pass  # jesli pole na ktore chce sie ruszyc zawiera organizm z wieksza sila to tam nie wejdzie
+        super().akcja()
+        # jesli pole na ktore chce sie ruszyc zawiera organizm z wieksza sila to tam nie wejdzie

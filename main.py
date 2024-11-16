@@ -1,6 +1,7 @@
 try:
     import pygame as pg
     import pygame_gui as gui
+    from random import randint
     from Swiat.Swiat import Swiat
     from Swiat.Organizmy.Zwierzeta.Wilk import Wilk
     from Swiat.Organizmy.Zwierzeta.Owca import Owca
@@ -90,6 +91,16 @@ try:
         def remove_button(self, x: int, y: int):
             self.table[y][x] = gui.elements.UIButton(relative_rect=pg.Rect(x * 26, y * 26, 25, 25), text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@puste_pole"))
 
+        def spawn_all(self) -> None:
+            each_spawned_times = 2
+            all_organisms = [Owca, Wilk, Lis, Mysz, Skunks, Trawa, Mlecz, WilczeJagody]
+            used_positions = []
+            for i in range(each_spawned_times):
+                for organizm in all_organisms:
+                    position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    used_positions.append(position)
+                    self.swiat.dodajOrganizm(organizm, position)
+
         # Main loop gry
         def run(self) -> None:
             """
@@ -98,11 +109,18 @@ try:
             clock = pg.time.Clock()
             running = True
 
+            self.spawn_all()
             # Miejsce na testy
-            self.swiat.dodajOrganizm(Owca, 0, 0)
-            # print(self.swiat.organizmy[0][0])
-            self.swiat.dodajOrganizm(Trawa, 2, 0)
-            self.swiat.dodajOrganizm(Wilk, 4, 5)
+            # self.swiat.dodajOrganizm(Owca, 0, 0)
+            # self.swiat.dodajOrganizm(Owca, 6, 0)
+            # self.swiat.dodajOrganizm(Owca, 0, 7)
+            # self.swiat.dodajOrganizm(Owca, 8, 9)
+            # self.swiat.dodajOrganizm(Owca, 0, 4)
+            # self.swiat.dodajOrganizm(Owca, 14, 2)
+            # self.swiat.dodajOrganizm(Owca, 0, 17)
+            # self.swiat.dodajOrganizm(Owca, 6, 6)
+            # self.swiat.dodajOrganizm(Trawa, 2, 0)
+            # self.swiat.dodajOrganizm(Wilk, 4, 5)
 
             # Wyświetlenie początkowego stanu tabeli
             self.update_display()
