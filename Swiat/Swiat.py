@@ -77,23 +77,9 @@ class Swiat:
                     organizm.kolizja(organizm2, previous_position)
 
             # Wyświeltanie wsm, w sensie dodanie do tabeli, z której to się wyświetla czy tam aktualzacja pozycji na planszy jakoś tak
-            [x, y] = organizm.get_position()
-            self.organizmy[y][x] = organizm
-
-        # for row in organizmy:
-        #     for organizm in row:
-        #         if organizm != None:
-        #             print(organizm.position)
-        #             organizm.akcja()  # Zaimplementuj przebieg tury, wywołując metody akcja() dla wszystkich organizmów oraz
-        #         # kolizja() dla organizmów na tym samym polu. Pamiętaj, że kolejność wywoływania metody akcja() zależy od
-        #         # inicjatywy (lub wieku, w przypadku równych wartości inicjatyw) organizmu.
-
-        # Nadpisanie self.organizmy tablicą organizmy (dalej nwm czy mi to potrzebne)
-        # for y in range(len(organizmy)):
-        #     for x in range(len(organizmy[y])):
-        #         self.organizmy[y][x] = organizmy[y][x]
-
-        # print(self.organizmy)
+            if organizm.alive:
+                [x, y] = organizm.get_position()
+                self.organizmy[y][x] = organizm
 
     def rysujSwiat(self):
         pass
