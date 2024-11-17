@@ -2,7 +2,6 @@
 from abc import ABC
 from random import randint
 from Swiat.Organizm import Organizm
-from Swiat.Organizmy.Rosliny.WilczeJagody import WilczeJagody
 # from Exceptions import LanuchedModuleException
 # except ModuleNotFoundError as module:
 #     if module.name != "Exceptions":
@@ -18,7 +17,9 @@ from Swiat.Organizmy.Rosliny.WilczeJagody import WilczeJagody
 class Zwierze(Organizm, ABC):
     def akcja(self):
         if not self.omit_akcja:
-            self.position = self.get_new_position()
+            new_position = self.get_new_position()
+            print(f"{self.__class__.__name__} z pola {self.position} przeszedł na pole {new_position}")
+            self.position = new_position
 
     def kolizja(self, organizm: object, previous_position: list[int]) -> None:
         """
@@ -34,6 +35,7 @@ class Zwierze(Organizm, ABC):
         # Rozmnażanie
         if self.__class__ == organizm.__class__:
             organizm.omit_akcja = True
+            self.position = previous_position
             all_available_positions = []
             all_available_positions.append(self.get_available_positions())
             all_available_positions.append(organizm.get_available_positions())
@@ -45,29 +47,53 @@ class Zwierze(Organizm, ABC):
             available_for_child = []
             all_positions = self.swiat.get_all_positions()
             for position in possible_for_child:
-                if position not in all_positions:
+                if position not in all_positions and position != previous_position and position != organizm.position:
                     available_for_child.append(position)
 
             # Małe zwierze pojawia się tylko, gdy jest na nie miejsce na świecie
             if len(available_for_child) > 0:
                 choose_position = randint(0, len(available_for_child)-1)
                 # self.swiat.dodajOrganizm(self.__class__, available_for_child[choose_position])
-                child = self.__class__(available_for_child[choose_position], self.swiat)
+                child = self.__class__(available_for_child[choose_position], self.swiat, omit_akcja=True)
 
                 print(f"{self.__class__.__name__} na polu {previous_position} i {organizm.__class__.__name__} na polu {organizm.position} rozmnożyli się, tworząc {child.__class__.__name__} na polu {available_for_child[choose_position]}")
                 return child
         # Kolizja
         else:
-            if self.sila >= organizm.get_sila():
-                # print(f"{organizm.__class__.__name__} nie powinien istnieć")
-                print(f"{self.__class__.__name__} na polu {previous_position} zjadł {organizm.__class__.__name__} na polu {organizm.position} i przeszedł na jego pole")
-                organizm.alive = False
-                if organizm.__class__ == WilczeJagody:
+            from Swiat.Organizmy.Rosliny.WilczeJagody import WilczeJagody
+            from Swiat.Organizmy.Zwierzeta.Mysz import Mysz
+
+            if organizm.__class__ == Mysz:
+                # nie ma zdefiniowanej żmiji, więc nie mam jak zrobić aktualnie tej drugiej części jej kolizji
+                available_positions = []
+                possible_positions = organizm.get_available_positions()
+                all_positions = organizm.swiat.get_all_positions()
+                print(all_positions)
+                for position in possible_positions:
+                    if position not in all_positions:
+                        available_positions.append(position)
+                
+                print(available_positions)
+
+                if len(available_positions) > 0:
+                    choose_position = randint(0, len(available_positions)-1)
+                    print(f"{organizm.__class__.__name__} na polu {organizm.position} uciekła na pole {available_positions[choose_position]} od napastnika {self.__class__.__name__} nadchodzącego z pola {previous_position}")
+                    organizm.position = available_positions[choose_position]
+                    print(organizm, organizm.position)
+                    print(self, self.position)
+                else:
+                    print(f"{organizm.__class__.__name__} na polu {organizm.position} nie miała gdzie uciec od {self.__class__.__name__} na polu {previous_position}")
+            else:
+                if self.sila >= organizm.get_sila():
+                    # print(f"{organizm.__class__.__name__} nie powinien istnieć")
+                    print(f"{self.__class__.__name__} na polu {previous_position} zjadł {organizm.__class__.__name__} na polu {organizm.position} i przeszedł na jego pole")
+                    organizm.alive = False
+                    if organizm.__class__ == WilczeJagody:
+                        self.alive = False
+                        print(f"Trucizna z {organizm.__class__.__name__} zabiła {self.__class__.__name__} na polu {self.position}")
+                elif self.sila < organizm.get_sila():
+                    print(f"{self.__class__.__name__} na polu {previous_position} wszedł na pole {organizm.position}, na którym znajdował się {organizm.__class__.__name__} i zginął")
                     self.alive = False
-                    print(f"Trucizna z {organizm.__class__.__name__} zabiła {self.__class__.__name__} na polu {self.position}")
-            elif self.sila < organizm.get_sila():
-                print(f"{self.__class__.__name__} na polu {previous_position} wszedł na pole {organizm.position}, na którym znajdował się {organizm.__class__.__name__} i zginął")
-                self.alive = False
 
 
 # rozmnażanie w ramach metody kolizja() (kolizja jest metoda w klasie Organizm) → przy kolizji z organizmem tego

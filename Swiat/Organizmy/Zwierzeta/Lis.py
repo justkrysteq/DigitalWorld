@@ -1,4 +1,5 @@
 from Swiat.Organizmy.Zwierze import Zwierze
+from random import randint
 
 
 class Lis(Zwierze):
@@ -13,5 +14,23 @@ class Lis(Zwierze):
     #     self.inicjatywa = 7
 
     def akcja(self):
-        super().akcja()
+        if not self.omit_akcja:
+            available_positions = [] # tu będą pozycje na których nie ma organizmu z większą siłą od lisa (czyli puste lub z mniejszą siłą)
+            possible_positions = self.get_available_positions() # tu są wszystkie ruchy jakie mógłby wykonać
+            all_positions = self.swiat.get_all_positions() # tu są pozycje wszystkich organizmów na świecie
+            for position in possible_positions:
+                if position in all_positions:
+                    [x, y] = position
+                    organizm = self.swiat.organizmy[y][x]
+                    # Sprawdzanie czy organizm na tej pozycji na większą siłę niż lis, jeśli tak to się tam nie ruszy
+                    if self.sila >= organizm.sila:
+                        available_positions.append(position)
+                else:
+                    available_positions.append(position)
+
+            if len(available_positions) > 0:
+                choose_position = randint(0, len(available_positions)-1)
+                print(f"{self.__class__.__name__} na polu {self.position} przeszedł na pole {available_positions[choose_position]}, unikając ewentualnego zagrożenia")
+                self.position = available_positions[choose_position]
+        
         # jesli pole na ktore chce sie ruszyc zawiera organizm z wieksza sila to tam nie wejdzie

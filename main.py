@@ -22,6 +22,8 @@ try:
             # Ustawienia okna
             self.screen = pg.display.set_mode((525, 630))
             self.manager = gui.UIManager((525, 630))
+
+            # Wczytanie styli
             try:
                 self.manager.get_theme().load_theme("organizmy.json")
             except Exception as e:
@@ -30,12 +32,6 @@ try:
             # Rysowanie siatki 20x20
             self.N = 20
             self.table = [[None for _ in range(self.N)] for _ in range(self.N)]
-
-            # for y in range(self.N):
-            #     for x in range(self.N):
-            #         button_rect = pg.Rect(x * 26, y * 26, 25, 25)
-            #         button = gui.elements.UIButton(relative_rect=button_rect, text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@puste_pole"))
-            #         self.table[y][x] = button
 
             # Przypisanie klasy Swiat
             self.swiat = Swiat(self.N)
@@ -68,9 +64,8 @@ try:
                     )  # Przypisanie do zmiennej class_name nazwy klasy stylu z class_to_name jeśli organizm jest instancją zawartej tam klasy
                     if class_name:
                         self.add_button(x, y, class_name)
-                        # print(self.table)
                     else:
-                        self.remove_button(x, y)  # FIXME
+                        self.remove_button(x, y) # FIXME
 
         # Wykonania nowej rundy
         def next_round(self):
@@ -87,12 +82,7 @@ try:
 
         # Wyświetlenie na planszy
         def add_button(self, x: int, y: int, classname: str, text: str = " "):
-            self.table[y][x] = gui.elements.UIButton(
-                relative_rect=pg.Rect(x * 26, y * 26, 25, 25),
-                text=text,
-                manager=self.manager,
-                object_id=gui.core.ObjectID(class_id=f"@{classname}"),
-            )
+            self.table[y][x] = gui.elements.UIButton(relative_rect=pg.Rect(x * 26, y * 26, 25, 25), text=text, manager=self.manager, object_id=gui.core.ObjectID(class_id=f"@{classname}"))
 
         # Usuwanie z planszy
         def remove_button(self, x: int, y: int):
@@ -104,24 +94,19 @@ try:
             used_positions = []
             for _ in range(each_spawned_times):
                 for organizm in all_organisms:
-                    position = [randint(0, self.N-1), randint(0, self.N-1)]
-                    while position in used_positions:
-                        position = [randint(0, self.N-1), randint(0, self.N-1)]
-                    used_positions.append(position)
-                    self.swiat.dodajOrganizm(organizm, position)
-                    # if organizm == Owca:
-                    #     for _ in range(10):
-                    #         position = [randint(0, self.N-1), randint(0, self.N-1)]
-                    #         while position in used_positions:
-                    #             position = [randint(0, self.N-1), randint(0, self.N-1)]
-                    #         used_positions.append(position)
-                    #         self.swiat.dodajOrganizm(organizm, position)
+                    # position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    # while position in used_positions:
+                    #     position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    # used_positions.append(position)
+                    # self.swiat.dodajOrganizm(organizm, position)
+                    if organizm == Mysz or organizm == Lis:
+                        for _ in range(10):
+                            position = [randint(0, self.N-1), randint(0, self.N-1)]
+                            while position in used_positions:
+                                position = [randint(0, self.N-1), randint(0, self.N-1)]
+                            used_positions.append(position)
+                            self.swiat.dodajOrganizm(organizm, position)
 
-        #rysowanie textu
-        def draw_text(text, font, color, surface, x, y):
-            textobj = font.render(text, True, color)
-            textrect = textobj.get_rect(center=(x, y))
-            surface.blit(textobj, textrect)
 
         # Menu gry loop
         def menu(self) -> None:
@@ -131,54 +116,98 @@ try:
             running = True
             game_state = "menu"
             clock = pg.time.Clock()
+
+   
             manager_menu = gui.UIManager((525, 630))
+            play_button = gui.elements.UIButton(relative_rect=pg.Rect(160, 350, 180, 50),text="Graj",manager=manager_menu,object_id=gui.core.ObjectID(class_id="@menu_control_button"))
+            settings_button = gui.elements.UIButton(relative_rect=pg.Rect(160, 420, 180, 50),text="Ustawienia",manager=manager_menu,object_id=gui.core.ObjectID(class_id="@menu_control_button"))
+            exit_button = gui.elements.UIButton(relative_rect=pg.Rect(160, 490, 180, 50),text="Wyjście",manager=manager_menu,object_id=gui.core.ObjectID(class_id="@menu_control_button"))   
+            back_to_menu_button = gui.elements.UIButton(relative_rect=pg.Rect(160, 550, 180, 50),text="Powrót",manager=manager_menu,object_id=gui.core.ObjectID(class_id="@menu_control_button"),visible=False)
+            number_input = gui.elements.UITextEntryLine(relative_rect=pg.Rect(300, 130, 150, 50),manager=manager_menu,object_id=gui.core.ObjectID(class_id="@menu_control_button"),visible=False,initial_text="20") 
+
 
             while running:
                 time_delta = clock.tick(60) / 1000.0
                 for event in pg.event.get():
                     if event.type == pg.QUIT:
+                        running = False
                         return "quit"
-                    
-                    if game_state == "menu":
-                        if event.type == gui.UI_BUTTON_PRESSED:
-                            if event.ui_element == self.play_button:
-                                running = False
-                            elif event.ui_element == self.settings_button:
+
+                    if event.type == gui.UI_BUTTON_PRESSED:
+                        if game_state == "menu":
+                            if event.ui_element == play_button:
+                                print("graned")
+                                running = False 
+                            elif event.ui_element == settings_button:
+                                print("setting settings")
                                 game_state = "settings"
-                            elif event.ui_element == self.exit_button:
-                                running = False
-                        
-                    
-                    if game_state == "settings":
-                        if event.ui_element == self.return_to_menu_button:
-                            game_state = "menu"
+                                play_button.hide()
+                                settings_button.hide()
+                                exit_button.hide()
+                                back_to_menu_button.show()
+                                number_input.show()
+                            elif event.ui_element == exit_button:
+                                return "quit" 
+                        elif game_state == "settings":
+                            if event.ui_element == back_to_menu_button:
+                                game_state = "menu"
+                                play_button.show()
+                                settings_button.show()
+                                exit_button.show()
+                                back_to_menu_button.hide()
+                                number_input.hide()
+                    if event.type == gui.UI_TEXT_ENTRY_FINISHED and event.ui_element == number_input:
+                        user_n_input = number_input.get_text()
+                        print(user_n_input, "test")
+                        if user_n_input.isdigit():
+                            N_value = int(user_n_input)
+                            if N_value > 5 and N_value < 30:
+                                self.N = N_value
+                                self.table = [[None for _ in range(self.N)] for _ in range(self.N)]
+                                self.swiat = Swiat(self.N)
+                            
+                                print(f"Wprowadzona liczba: {user_n_input}")
+                            else:
+                                print("Niepoprawna liczba")
+                        else:
+                            number_input.set_text("")           
+                            print("Niepoprawna liczba")
+                           
                     manager_menu.process_events(event)
-                    
-                
 
+        # Wyświetlanie menu
+                self.screen.fill((100, 100, 100))
                 if game_state == "menu":
-                    self.screen.fill((100,100,100))
-                    
-                    # self.screen.blit(background_img,(0,0))
-                    font = pg.font.Font(None, 36)
-                    # self.draw_text('Digital World', font, (255,255,255), self.screen, self.screen.get_width() / 2, self.screen.get_height() / 2 - 50)
-                    self.play_button = gui.elements.UIButton(relative_rect=pg.Rect(20, 350, 200, 80), text="Graj", manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
-                    self.settings_button = gui.elements.UIButton(relative_rect=pg.Rect(20, 350, 200, 80), text="Ustawienia", manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
-                    self.exit_button = gui.elements.UIButton(relative_rect=pg.Rect(20, 350, 200, 80), text="Wyjście", manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
-                    manager_menu.update(time_delta)
-                    manager_menu.draw_ui(self.screen)
-                    pg.display.flip()
 
-                if game_state == "settings":
-                    self.screen.fill((100,100,100))
-                    # self.screen.blit(background_img,(0,0))
-                    font = pg.font.Font(None,36)
-                    # self.draw_text('Ustawienia', font, (255,255,255), self.screen, self.screen.get_width() / 2, self.screen.get_height() / 2 - 50)
-                    #tu trzeba zaimplementowac wybieranie rozmiaru tablicy - zdefiniować N
-                    self.return_to_menu_button = gui.elements.UIButton(relative_rect=pg.Rect(80, 350, 200, 80), text="Menu", manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
-                    manager_menu.update(time_delta)
-                    manager_menu.draw_ui(self.screen)
-                    pg.display.flip()
+                    font = pg.font.Font(None,54)
+                    font_version = pg.font.Font(None,36)
+                    font_credits = pg.font.Font(None, 16)
+                    title_text = font.render("Wirtualny Świat", True, (255, 255, 255))
+                    version_text = font_version.render("Version: 0.5", True, (255, 255, 255))
+                    credits_title = font_credits.render("Wykonali:", True, (255, 255, 255))
+                    credits_1 = font_credits.render("Norbert Andrzejczuk nr 2", True, (255, 255, 255))
+                    credits_2 = font_credits.render("Krystian Słupski nr 23 ", True, (255, 255, 255))
+                    credits_3 = font_credits.render("Szymon Wirkus nr 27", True, (255, 255, 255))
+                    self.screen.blit(title_text, (145, 50))
+                    self.screen.blit(version_text, (200, 100))
+                    self.screen.blit(credits_title, (380, 540))
+                    self.screen.blit(credits_1, (380, 560))
+                    self.screen.blit(credits_2, (380, 580))
+                    self.screen.blit(credits_3, (380, 600))
+                elif game_state == "settings":
+                    font = pg.font.Font(None,54)
+                    settings_title = font.render("Opcje",True, (255,255,255))
+                    self.screen.blit(settings_title,(200,50))
+                    font_option_n = pg.font.Font(None, 24)
+                    setting_n = font_option_n.render("Podaj wielkość planszy NxN (6-29):", True, (255, 255, 255))
+                    self.screen.blit(setting_n,(20,150))
+        
+                manager_menu.update(time_delta)
+                manager_menu.draw_ui(self.screen)
+                pg.display.flip()
+
+            return "play"
+                
 
         # Main loop gry
         def run(self) -> None:
@@ -232,8 +261,9 @@ try:
     # Uruchamianie gry
     if __name__ == "__main__":
         app = Game()
-        # if app.menu() != "quit":
-        app.run()
+        if app.menu() == "play":
+            app.run()
+        pg.quit()
 
 except ModuleNotFoundError as module:
     print(f"Upewnij się, że masz wszystkie zależności oraz pliki, dlatego że: {module}")

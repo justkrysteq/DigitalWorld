@@ -18,11 +18,6 @@ class Roslina(Organizm, ABC):
                 if position not in all_positions:
                     available_positions.append(position)
 
-            # 🚨 🚨 🚨 🚨 🚨 PLIS FIX🚨 🚨 🚨 🚨 🚨
-            # Gdy rozprzestrzenia się roślina i  trafi na miejsce na którym istnieje już organizm, to ta roślina zastępuje go (organizm)
-            # TAK NIE POWINNO BYĆ
-
-            # Powinno być git
             # Roślina rozmnaża się tylko, gdy jest na to miejsce 😎
             if len(available_positions) > 0:
                 choose_position = randint(0, len(available_positions)-1)

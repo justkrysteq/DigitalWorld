@@ -37,6 +37,7 @@ class Swiat:
     def wykonajTure(self) -> None:
         """Metoda wykonująca turę"""
         # Dodanie wszytskich organizmów do listy organizmy_by_inicjatywa i zapisanie ich pozycji
+        from Swiat.Organizmy.Zwierzeta.Mysz import Mysz
         organizmy_by_inicjatywa = []
         for y in range(len(self.organizmy)):
             for x in range(len(self.organizmy[y])):
@@ -60,7 +61,8 @@ class Swiat:
         for organizm in organizmy_by_inicjatywa:
             previous_position = organizm.get_position()
             organizm.wiek += 1
-            organizm.akcja()
+            if not organizm.omit_akcja:
+                organizm.akcja()
             new_organizmy = []
 
             # Kolizja
@@ -68,11 +70,13 @@ class Swiat:
                 if organizm.get_position() == organizm2.get_position() and organizm != organizm2:
                     if organizm.__class__ == organizm2.__class__:
                         new_organizmy.append(organizm.kolizja(organizm2, previous_position))
+                    elif organizm2.__class__ == Mysz:
+                        new_organizmy.append(organizm.kolizja(organizm2, previous_position))
                     else:
                         organizm.kolizja(organizm2, previous_position)
 
             for new_organizm in new_organizmy:
-                if new_organizm != None and new_organizm.alive:
+                if new_organizm is not None and new_organizm.alive:
                     [x, y] = new_organizm.get_position()
                     self.organizmy[y][x] = new_organizm
 
@@ -81,9 +85,9 @@ class Swiat:
                 [x, y] = organizm.get_position()
                 self.organizmy[y][x] = organizm
 
-            for organizm in organizmy_by_inicjatywa:
-                if organizm.omit_akcja:
-                    organizm.omit_akcja = False
+        for organizm in organizmy_by_inicjatywa:
+            if organizm.omit_akcja:
+                organizm.omit_akcja = False
 
     def rysujSwiat(self):
         pass
