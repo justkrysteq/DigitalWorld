@@ -37,11 +37,11 @@ class Roslina(Organizm, ABC):
         pass
         # Rozstrzyga kolizję z innym organizmem
 
-        if organizm.get_sila() < self.sila:
-            self.swiat.usun_organizm(organizm)  # Do defa to
-        else:
-            self.swiat.usun_organizm(self)
-            self.swiat.ruch_organizmu(organizm, self.get_pozycja())
+        # if organizm.get_sila() < self.sila:
+        #     self.swiat.usun_organizm(organizm)  # Do defa to
+        # else:
+        #     self.swiat.usun_organizm(self)
+        #     self.swiat.ruch_organizmu(organizm, self.get_pozycja())
 
 
 if __name__ == "__main__":
