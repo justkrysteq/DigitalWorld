@@ -6,17 +6,10 @@ from Swiat.Exceptions import LanuchedModuleException
 
 # Abstrakcyjna klasa Organizm
 class Organizm(ABC):
-    def __init__(
-        self,
-        pozycja: list[int],
-        swiat: object,
-        wiek: int = 0,
-        alive: bool = True,
-        omit_akcja: bool = False,
-    ):
+    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, alive: bool=True, omit_akcja: bool=False):
         # self.sila = sila # to chyba nie ma sensu tutaj, choć w pliku jest napisane, żeby było
         # self.inicjatywa = inicjatywa
-
+        
         self.position: list[int] = pozycja
         self.swiat: object = swiat
         self.wiek: int = wiek
@@ -96,14 +89,14 @@ class Organizm(ABC):
         """
         return self.sila
 
-    def set_sila(self, new_sila):
-        """
-        Metoda ustawiająca inicjatywę organizmu
+    # def set_sila(self, new_sila):
+    #     """
+    #     Metoda ustawiająca inicjatywę organizmu
 
-        :Przykład użycia:
-        >>> wilk.set_inicjatywa(9)
-        """
-        self.sila = new_sila
+    #     :Przykład użycia:
+    #     >>> wilk.set_inicjatywa(9)
+    #     """
+    #     self.sila = new_sila
 
     def get_inicjatywa(self) -> int:
         """
@@ -115,14 +108,14 @@ class Organizm(ABC):
         """
         return self.inicjatywa
 
-    def set_inicjatywa(self, new_inicjatywa):
-        """
-        Metoda ustawiająca inicjatywę organizmu
+    # def set_inicjatywa(self, new_inicjatywa):
+    #     """
+    #     Metoda ustawiająca inicjatywę organizmu
 
-        :Przykład użycia:
-        >>> wilk.set_inicjatywa(5)
-        """
-        self.inicjatywa = new_inicjatywa
+    #     :Przykład użycia:
+    #     >>> wilk.set_inicjatywa(5)
+    #     """
+    #     self.inicjatywa = new_inicjatywa
 
     def get_wiek(self):
         """
@@ -134,14 +127,14 @@ class Organizm(ABC):
         """
         return self.wiek
 
-    def set_wiek(self, new_wiek):
-        """
-        Metoda ustawiająca wiek organizmu
+    # def set_wiek(self, new_wiek):
+    #     """
+    #     Metoda ustawiająca wiek organizmu
 
-        :Przykład użycia:
-        >>> wilk.set_wiek(5)
-        """
-        self.wiek = new_wiek
+    #     :Przykład użycia:
+    #     >>> wilk.set_wiek(5)
+    #     """
+    #     self.wiek = new_wiek
 
     def get_position(self) -> list[int]:
         """
@@ -183,8 +176,6 @@ class Organizm(ABC):
 
 if __name__ == "__main__":
     try:
-        raise LanuchedModuleException(
-            "Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę"
-        )
+        raise LanuchedModuleException("Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę")
     except LanuchedModuleException as e:
         print(e)

@@ -47,26 +47,11 @@ class Swiat:
         # Sortowanie po inicjatywie, a nastepnie po wieku jeśli inicjatywa jest równa (bąbelkowe)
         for i in range(len(organizmy_by_inicjatywa)):
             for j in range(len(organizmy_by_inicjatywa) - i - 1):
-                if (
-                    organizmy_by_inicjatywa[j].get_inicjatywa()
-                    < organizmy_by_inicjatywa[j + 1].get_inicjatywa()
-                ):
-                    organizmy_by_inicjatywa[j], organizmy_by_inicjatywa[j + 1] = (
-                        organizmy_by_inicjatywa[j + 1],
-                        organizmy_by_inicjatywa[j],
-                    )
-                elif (
-                    organizmy_by_inicjatywa[j].get_inicjatywa()
-                    == organizmy_by_inicjatywa[j + 1].get_inicjatywa()
-                ):
-                    if (
-                        organizmy_by_inicjatywa[j].get_wiek()
-                        < organizmy_by_inicjatywa[j + 1].get_wiek()
-                    ):
-                        organizmy_by_inicjatywa[j], organizmy_by_inicjatywa[j + 1] = (
-                            organizmy_by_inicjatywa[j + 1],
-                            organizmy_by_inicjatywa[j],
-                        )
+                if organizmy_by_inicjatywa[j].get_inicjatywa() < organizmy_by_inicjatywa[j+1].get_inicjatywa():
+                    organizmy_by_inicjatywa[j], organizmy_by_inicjatywa[j+1] = organizmy_by_inicjatywa[j+1], organizmy_by_inicjatywa[j]
+                elif organizmy_by_inicjatywa[j].get_inicjatywa() == organizmy_by_inicjatywa[j+1].get_inicjatywa():
+                    if organizmy_by_inicjatywa[j].get_wiek() < organizmy_by_inicjatywa[j+1].get_wiek():
+                        organizmy_by_inicjatywa[j], organizmy_by_inicjatywa[j+1] = organizmy_by_inicjatywa[j+1], organizmy_by_inicjatywa[j]
 
         # Zclearowanie planszy
         self.organizmy = [[None for _ in range(self.N)] for _ in range(self.N)]
@@ -80,19 +65,14 @@ class Swiat:
 
             # Kolizja
             for organizm2 in organizmy_by_inicjatywa:
-                if (
-                    organizm.get_position() == organizm2.get_position()
-                    and organizm != organizm2
-                ):
+                if organizm.get_position() == organizm2.get_position() and organizm != organizm2:
                     if organizm.__class__ == organizm2.__class__:
-                        new_organizmy.append(
-                            organizm.kolizja(organizm2, previous_position)
-                        )
+                        new_organizmy.append(organizm.kolizja(organizm2, previous_position))
                     else:
                         organizm.kolizja(organizm2, previous_position)
 
             for new_organizm in new_organizmy:
-                if new_organizm is not None and new_organizm.alive:
+                if new_organizm != None and new_organizm.alive:
                     [x, y] = new_organizm.get_position()
                     self.organizmy[y][x] = new_organizm
 

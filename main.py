@@ -41,24 +41,9 @@ try:
             self.swiat = Swiat(self.N)
 
             # Rysowanie guzików
-            self.next_round_button = gui.elements.UIButton(
-                relative_rect=pg.Rect(10, 530, 150, 60),
-                text="Wykonaj Turę",
-                manager=self.manager,
-                object_id=gui.core.ObjectID(class_id="@menu_control_button"),
-            )
-            self.save_button = gui.elements.UIButton(
-                relative_rect=pg.Rect(185, 530, 150, 60),
-                text="Zapisz Świat",
-                manager=self.manager,
-                object_id=gui.core.ObjectID(class_id="@menu_control_button"),
-            )
-            self.load_button = gui.elements.UIButton(
-                relative_rect=pg.Rect(355, 530, 150, 60),
-                text="Wczytaj Świat",
-                manager=self.manager,
-                object_id=gui.core.ObjectID(class_id="@menu_control_button"),
-            )
+            self.next_round_button = gui.elements.UIButton(relative_rect=pg.Rect(10, 530, 150, 60), text="Wykonaj Turę", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
+            self.save_button = gui.elements.UIButton(relative_rect=pg.Rect(185, 530, 150, 60), text="Zapisz Świat", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
+            self.load_button = gui.elements.UIButton(relative_rect=pg.Rect(355, 530, 150, 60), text="Wczytaj Świat", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
 
         def update_display(self):
             # Dictionary do przypisania odpowiednich nazw klasy stylów do klas organizmów
@@ -111,12 +96,7 @@ try:
 
         # Usuwanie z planszy
         def remove_button(self, x: int, y: int):
-            self.table[y][x] = gui.elements.UIButton(
-                relative_rect=pg.Rect(x * 26, y * 26, 25, 25),
-                text=" ",
-                manager=self.manager,
-                object_id=gui.core.ObjectID(class_id="@puste_pole"),
-            )
+            self.table[y][x] = gui.elements.UIButton(relative_rect=pg.Rect(x * 26, y * 26, 25, 25), text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@puste_pole"))
 
         def spawn_all(self) -> None:
             each_spawned_times = 2
@@ -124,13 +104,20 @@ try:
             used_positions = []
             for _ in range(each_spawned_times):
                 for organizm in all_organisms:
-                    position = [randint(0, self.N - 1), randint(0, self.N - 1)]
+                    position = [randint(0, self.N-1), randint(0, self.N-1)]
                     while position in used_positions:
-                        position = [randint(0, self.N - 1), randint(0, self.N - 1)]
+                        position = [randint(0, self.N-1), randint(0, self.N-1)]
                     used_positions.append(position)
                     self.swiat.dodajOrganizm(organizm, position)
+                    # if organizm == Owca:
+                    #     for _ in range(10):
+                    #         position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    #         while position in used_positions:
+                    #             position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    #         used_positions.append(position)
+                    #         self.swiat.dodajOrganizm(organizm, position)
 
-        # rysowanie textu
+        #rysowanie textu
         def draw_text(text, font, color, surface, x, y):
             textobj = font.render(text, True, color)
             textrect = textobj.get_rect(center=(x, y))
@@ -151,7 +138,7 @@ try:
                 for event in pg.event.get():
                     if event.type == pg.QUIT:
                         return "quit"
-
+                    
                     if game_state == "menu":
                         if event.type == gui.UI_BUTTON_PRESSED:
                             if event.ui_element == self.play_button:
@@ -160,52 +147,35 @@ try:
                                 game_state = "settings"
                             elif event.ui_element == self.exit_button:
                                 running = False
-
+                        
+                    
                     if game_state == "settings":
                         if event.ui_element == self.return_to_menu_button:
                             game_state = "menu"
                     manager_menu.process_events(event)
+                    
+                
 
                 if game_state == "menu":
-                    self.screen.fill((100, 100, 100))
-
+                    self.screen.fill((100,100,100))
+                    
                     # self.screen.blit(background_img,(0,0))
-                    # font = pg.font.Font(None, 36)
+                    font = pg.font.Font(None, 36)
                     # self.draw_text('Digital World', font, (255,255,255), self.screen, self.screen.get_width() / 2, self.screen.get_height() / 2 - 50)
-                    self.play_button = gui.elements.UIButton(
-                        relative_rect=pg.Rect(20, 350, 200, 80),
-                        text="Graj",
-                        manager=manager_menu,
-                        object_id=gui.core.ObjectID(class_id="@menu_control_button"),
-                    )
-                    self.settings_button = gui.elements.UIButton(
-                        relative_rect=pg.Rect(20, 350, 200, 80),
-                        text="Ustawienia",
-                        manager=manager_menu,
-                        object_id=gui.core.ObjectID(class_id="@menu_control_button"),
-                    )
-                    self.exit_button = gui.elements.UIButton(
-                        relative_rect=pg.Rect(20, 350, 200, 80),
-                        text="Wyjście",
-                        manager=manager_menu,
-                        object_id=gui.core.ObjectID(class_id="@menu_control_button"),
-                    )
+                    self.play_button = gui.elements.UIButton(relative_rect=pg.Rect(20, 350, 200, 80), text="Graj", manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
+                    self.settings_button = gui.elements.UIButton(relative_rect=pg.Rect(20, 350, 200, 80), text="Ustawienia", manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
+                    self.exit_button = gui.elements.UIButton(relative_rect=pg.Rect(20, 350, 200, 80), text="Wyjście", manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
                     manager_menu.update(time_delta)
                     manager_menu.draw_ui(self.screen)
                     pg.display.flip()
 
                 if game_state == "settings":
-                    self.screen.fill((100, 100, 100))
+                    self.screen.fill((100,100,100))
                     # self.screen.blit(background_img,(0,0))
-                    # font = pg.font.Font(None, 36)
+                    font = pg.font.Font(None,36)
                     # self.draw_text('Ustawienia', font, (255,255,255), self.screen, self.screen.get_width() / 2, self.screen.get_height() / 2 - 50)
-                    # tu trzeba zaimplementowac wybieranie rozmiaru tablicy - zdefiniować N
-                    self.return_to_menu_button = gui.elements.UIButton(
-                        relative_rect=pg.Rect(80, 350, 200, 80),
-                        text="Menu",
-                        manager=manager_menu,
-                        object_id=gui.core.ObjectID(class_id="@menu_control_button"),
-                    )
+                    #tu trzeba zaimplementowac wybieranie rozmiaru tablicy - zdefiniować N
+                    self.return_to_menu_button = gui.elements.UIButton(relative_rect=pg.Rect(80, 350, 200, 80), text="Menu", manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
                     manager_menu.update(time_delta)
                     manager_menu.draw_ui(self.screen)
                     pg.display.flip()
@@ -252,7 +222,7 @@ try:
                             self.load_world()
                             print("wczytaned")
                     self.manager.process_events(event)
-
+                    
                 self.manager.update(time_delta)
                 self.screen.fill((0, 0, 0))
                 self.manager.draw_ui(self.screen)

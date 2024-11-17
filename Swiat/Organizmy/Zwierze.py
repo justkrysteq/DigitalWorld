@@ -50,34 +50,31 @@ class Zwierze(Organizm, ABC):
 
             # Małe zwierze pojawia się tylko, gdy jest na nie miejsce na świecie
             if len(available_for_child) > 0:
-                choose_position = randint(0, len(available_for_child) - 1)
+                choose_position = randint(0, len(available_for_child)-1)
                 # self.swiat.dodajOrganizm(self.__class__, available_for_child[choose_position])
                 child = self.__class__(available_for_child[choose_position], self.swiat)
 
-                print(
-                    f"{self.__class__.__name__} na polu {previous_position} i {organizm.__class__.__name__} na polu {organizm.position} rozmnożyli się, tworząc {child.__class__.__name__} na polu {available_for_child[choose_position]}"
-                )
+                print(f"{self.__class__.__name__} na polu {previous_position} i {organizm.__class__.__name__} na polu {organizm.position} rozmnożyli się, tworząc {child.__class__.__name__} na polu {available_for_child[choose_position]}")
                 return child
         # Kolizja
         else:
             if self.sila >= organizm.get_sila():
                 # print(f"{organizm.__class__.__name__} nie powinien istnieć")
-                print(
-                    f"{self.__class__.__name__} na polu {previous_position} zjadł {organizm.__class__.__name__} na polu {organizm.position} i przeszedł na jego pole"
-                )
+                print(f"{self.__class__.__name__} na polu {previous_position} zjadł {organizm.__class__.__name__} na polu {organizm.position} i przeszedł na jego pole")
                 organizm.alive = False
                 if organizm.__class__ == WilczeJagody:
                     self.alive = False
-                    print(
-                        f"Trucizna z {organizm.__class__.__name__} zabiła {self.__class__.__name__} na polu {self.position}"
-                    )
+                    print(f"Trucizna z {organizm.__class__.__name__} zabiła {self.__class__.__name__} na polu {self.position}")
             elif self.sila < organizm.get_sila():
-                print(
-                    f"{self.__class__.__name__} na polu {previous_position} wszedł na pole {organizm.position}, na którym znajdował się {organizm.__class__.__name__} i zginął"
-                )
+                print(f"{self.__class__.__name__} na polu {previous_position} wszedł na pole {organizm.position}, na którym znajdował się {organizm.__class__.__name__} i zginął")
                 self.alive = False
 
 
 # rozmnażanie w ramach metody kolizja() (kolizja jest metoda w klasie Organizm) → przy kolizji z organizmem tego
 # samego gatunku nie dochodzi do walki, oba zwierzęta pozostają na swoich miejscach, koło nich pojawia się trzecie
 # zwierze, tego samego gatunku
+
+
+# Przynajmniej 1 klasa bazowa po której dziedziczy bezpośrednio (w tym samym pokoleniu) kilka klas pochodnych (konieczne na >=3pkt)
+# Wielokrotne wykorzystanie kodu (kod w klasie bazowej używany przez obiekty klas pochodnych) (konieczne na >=3pkt)
+# Nadpisywanie metody klasy bazowej wraz z wywołaniem jej w implementacji klasy pochodnej (konieczne na >=4pkt)

@@ -25,13 +25,9 @@ class Roslina(Organizm, ABC):
             # Powinno być git
             # Roślina rozmnaża się tylko, gdy jest na to miejsce 😎
             if len(available_positions) > 0:
-                choose_position = randint(0, len(available_positions) - 1)
-                self.swiat.dodajOrganizm(
-                    self.__class__, available_positions[choose_position]
-                )
-                print(
-                    f"{self.__class__.__name__} na polu {self.position} rozprzestrzenił się, tworząc {self.__class__.__name__} na polu {available_positions[choose_position]}"
-                )
+                choose_position = randint(0, len(available_positions)-1)
+                self.swiat.dodajOrganizm(self.__class__, available_positions[choose_position])
+                print(f"{self.__class__.__name__} na polu {self.position} rozprzestrzenił się, tworząc {self.__class__.__name__} na polu {available_positions[choose_position]}")
 
     def kolizja(self, organizm, previous_position):
         pass
@@ -46,8 +42,6 @@ class Roslina(Organizm, ABC):
 
 if __name__ == "__main__":
     try:
-        raise LanuchedModuleException(
-            "Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę"
-        )
+        raise LanuchedModuleException("Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę")
     except LanuchedModuleException as e:
         print(e)
