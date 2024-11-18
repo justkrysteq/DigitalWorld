@@ -135,7 +135,7 @@ class Swiat:
         for organizm in organizmy_by_inicjatywa:
             [x, y] = organizm.get_position()
             self.organizmy[y][x] = organizm
-            
+
         # Jeśli osiągnięto koniec listy, zakończ turę i zresetuj indeks
         if self.current_organism_index >= len(organizmy_by_inicjatywa):
             self.current_organism_index = 0
@@ -179,8 +179,21 @@ class Swiat:
 
     # Pobieranie organizmów
     def get_organizmy(self) -> list[list]:
-        """Metoda zwracająca organizmu"""
+        """Metoda zwracająca logiczną reprezentację planszy"""
         return self.organizmy
+    
+    # Pobieranie organizmów
+    def set_organizmy(self, position: list[int], value: any) -> None:
+        """
+        Metoda zmieniająca logiczną reprezentację planszy na konkretnej pozycji na podaną wartość
+
+        :param position: Pozycja na planszy
+        :type position: list[int]
+        :param value: Wartość na, którą zamieniamy wartość planszy
+        :type value: any
+        """
+        [x, y] = position
+        self.organizmy[y][x] = value
 
     # Pobieranie rozmiaru pola
     def get_N(self) -> int:
