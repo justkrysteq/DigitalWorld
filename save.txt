@@ -1,0 +1,17 @@
+20
+Mlecz;[11, 1];0;True;True
+Mlecz;[18, 1];0;True;True
+Trawa;[16, 2];0;True;True
+Skunks;[12, 3];0;True;True
+Trawa;[15, 4];0;True;True
+Lis;[5, 6];0;True;True
+Mysz;[7, 10];0;True;True
+Wilk;[10, 11];0;True;True
+WilczeJagody;[13, 11];0;True;True
+Lis;[4, 13];0;True;True
+Wilk;[0, 14];0;True;True
+Mysz;[17, 14];0;True;True
+WilczeJagody;[1, 16];0;True;True
+Owca;[6, 16];0;True;True
+Skunks;[4, 17];0;True;True
+Owca;[1, 18];0;True;True

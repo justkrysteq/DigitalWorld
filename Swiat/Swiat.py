@@ -182,8 +182,16 @@ class Swiat:
         """Metoda zwracająca logiczną reprezentację planszy"""
         return self.organizmy
     
+    def set_organizmy(self, new_organizmy: list[list]) -> None:
+        """
+        Metoda zmieniająca logiczną reprezentację planszy
+        :param new_organizmy: Nowa tabela organizmy
+        :type new_organizmy: list[list]
+        """
+        self.organizmy = new_organizmy
+
     # Pobieranie organizmów
-    def set_organizmy(self, position: list[int], value: any) -> None:
+    def set_organizmy_xy(self, position: list[int], value: any) -> None:
         """
         Metoda zmieniająca logiczną reprezentację planszy na konkretnej pozycji na podaną wartość
 

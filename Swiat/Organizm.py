@@ -7,7 +7,7 @@ from Swiat.Exceptions import LanuchedModuleException
 # Klasa Organizm - kontener instniejących organizmów
 class Organizm(ABC):
     """Główny kontener instniejących organizmów"""
-    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, alive: bool=True, omit_akcja: bool=False, current: bool=False, last_tura: int=0):
+    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, alive: bool=True, omit_akcja: bool=False):
         # self.sila = sila # to chyba nie ma sensu tutaj, choć w pliku jest napisane, żeby było
         # self.inicjatywa = inicjatywa
         
@@ -17,8 +17,6 @@ class Organizm(ABC):
         self.wiek: int = wiek
         self.alive: bool = alive
         self.omit_akcja: bool = omit_akcja
-        self.current: bool = current
-        self.last_tura: int = last_tura
         # Podstawowe pola
         # sila: int = 0 # statystka siły
         # inicjatywa: int = 0 # statystyka inicjatywy
@@ -148,6 +146,26 @@ class Organizm(ABC):
         [1, 2]
         """
         return self.position
+    
+    def get_alive(self) -> bool:
+        """
+        Metoda, która zwraca czy organizm jest żywy
+
+        :Przykład użycia:
+        >>> wilk.get_alive()
+        True
+        """
+        return self.alive
+    
+    def get_omit_akcja(self) -> bool:
+        """
+        Metoda, która zwraca czy organizm jest w stanie pomijania akcji (potrzebne do rozmnażania)
+
+        :Przykład użycia:
+        >>> wilk.get_omit_akcja()
+        True
+        """
+        return self.alive
 
     def set_position(self, new_pozycja: list[int]):
         """
@@ -158,23 +176,6 @@ class Organizm(ABC):
         """
         self.pozycja = new_pozycja
 
-    # def get_swiat(self):
-    #     return self.swiat
-
-    # def set_swiat(self, new_swiat):
-    #     self.swiat = new_swiat
-
-    # def get_znak(self):
-    #     return self.znak
-
-    # def set_znak(self, new_znak):
-    #     self.znak = new_znak
-
-    # def get_rozmnozyc(self):
-    #     return self.rozmnozyc
-
-    # def set_rozmnozyc(self, new_rozmnozyc):
-    #     self.rozmnozyc = new_rozmnozyc
 
 # Wyjątek w sytuacji, gdzie został uruchomiony moduł, zamiast głównego pliku
 if __name__ == "__main__":

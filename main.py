@@ -25,9 +25,9 @@ try:
             # Tablica narratora
             self.messages = [] 
             # Ustawienia okna
-            self.screen = pg.display.set_mode((825, 680))
+            self.screen = pg.display.set_mode((825, 680), pg.RESIZABLE)
             self.manager = gui.UIManager((825, 680))
-            self.narrator_box = gui.elements.UITextBox(relative_rect=pg.Rect(540,20,260,500),html_text="" ,manager=self.manager,object_id=gui.core.ObjectID(class_id="@narrator_box"))
+            self.narrator_box = gui.elements.UITextBox(relative_rect=pg.Rect(540, 20, 260, 500), html_text="", manager=self.manager, object_id=gui.core.ObjectID(class_id="@narrator_box"))
             self.clicked_button_position: list[int] = [0, 0]
 
             # Wczytanie styli
@@ -106,15 +106,49 @@ try:
             self.swiat.wykonajTure()
             self.update_display()
 
-        # Zapisanie świata (TODO!!!)
+        # Zapisanie świata
         def save_world(self):
             """Metoda wykonująca zapis świata"""
-            pass
+            f = open("save.txt", "w")
+            f.write(f"{str(self.swiat.N)}\n")
+            for y in range(len(self.swiat.organizmy)):
+                for x in range(len(self.swiat.organizmy[y])):
+                    if self.swiat.organizmy[y][x] is not None:
+                        f.write(f"{self.swiat.organizmy[y][x].__class__.__name__};{self.swiat.organizmy[y][x].get_position()};{self.swiat.organizmy[y][x].get_wiek()};{self.swiat.organizmy[y][x].get_alive()};{self.swiat.organizmy[y][x].get_omit_akcja()}\n")
+            f.close()
 
-        # Wczytanie świata (TODO!!!)
+        # Wczytanie świata
         def load_world(self):
             """Metoda wykonująca wczytanie świata"""
-            pass
+            str_to_classname = {
+                'Wilk': Wilk,
+                'Owca': Owca,
+                'Lis': Lis,
+                'Mysz': Mysz,
+                'Skunks': Skunks,
+                'Trawa': Trawa,
+                'Mlecz': Mlecz,
+                'WilczeJagody': WilczeJagody,
+            }
+            with open("save.txt", "r") as f:
+                lines = f.readlines()
+                N = int(lines[0])
+                new_organizmy = [[None for _ in range(N)] for _ in range(N)]
+                for line in lines[1:]:  # Pomijamy pierwszą linię (N)
+                    line = line.rstrip()
+                    line = line.split(";")
+                    print(line)
+                    print()
+                    class_name = str_to_classname.get(line[0])
+                    [x, y] = eval(line[1])
+                    print(y)
+                    print()
+                    new_organizmy[y][x] = class_name([x, y], self.swiat, int(line[2]), bool(line[3]), bool(line[4]))
+                print(new_organizmy)
+            
+                self.swiat.set_organizmy(new_organizmy)
+            f.close()
+            self.update_display()
 
         # Wyświetlenie organizmu na planszy
         def add_button(self, x: int, y: int, classname: str, text: str = " "):
@@ -170,19 +204,19 @@ try:
             manager_menu = gui.UIManager((525, 630))
             
             # Guzik Graj
-            play_button = gui.elements.UIButton(relative_rect=pg.Rect(160, 350, 180, 50),text="Graj",manager=manager_menu,object_id=gui.core.ObjectID(class_id="@menu_control_button"))
+            play_button = gui.elements.UIButton(relative_rect=pg.Rect(160, 350, 180, 50), text="Graj", manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
             
             # Guzik Ustawienia
-            settings_button = gui.elements.UIButton(relative_rect=pg.Rect(160, 420, 180, 50),text="Ustawienia",manager=manager_menu,object_id=gui.core.ObjectID(class_id="@menu_control_button"))
+            settings_button = gui.elements.UIButton(relative_rect=pg.Rect(160, 420, 180, 50), text="Ustawienia", manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
             
             # Guzik Wyjście
-            exit_button = gui.elements.UIButton(relative_rect=pg.Rect(160, 490, 180, 50),text="Wyjście",manager=manager_menu,object_id=gui.core.ObjectID(class_id="@menu_control_button"))   
+            exit_button = gui.elements.UIButton(relative_rect=pg.Rect(160, 490, 180, 50),text="Wyjście", manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"))   
            
             # Guzik Powrót
-            back_to_menu_button = gui.elements.UIButton(relative_rect=pg.Rect(160, 550, 180, 50),text="Powrót",manager=manager_menu,object_id=gui.core.ObjectID(class_id="@menu_control_button"),visible=False)
+            back_to_menu_button = gui.elements.UIButton(relative_rect=pg.Rect(160, 550, 180, 50),text="Powrót", manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"),visible=False)
             
             # Pole wpisania wielkości planszy
-            number_input = gui.elements.UITextEntryLine(relative_rect=pg.Rect(300, 130, 150, 50),manager=manager_menu,object_id=gui.core.ObjectID(class_id="@menu_control_button"),visible=False,initial_text="20") 
+            number_input = gui.elements.UITextEntryLine(relative_rect=pg.Rect(300, 130, 150, 50),manager=manager_menu, object_id=gui.core.ObjectID(class_id="@menu_control_button"),visible=False,initial_text="20") 
 
             # Menu loop
             while running:
@@ -346,6 +380,7 @@ try:
                         elif event.ui_element == self.load_button:
                             self.load_world()
                             print("wczytaned")
+                            self.messages = []
                             self.narratorLog("Wczytano świat")
                         elif event.ui_element == self.next_organizm_button:
                             if self.swiat.current_organism_index == 0:
@@ -359,39 +394,39 @@ try:
                             print("Następny organizm")
                         elif event.ui_element in self.panel_elements:
                             if event.ui_element == self.button_lis:
-                                self.swiat.set_organizmy(self.clicked_button_position, Lis(self.clicked_button_position, self.swiat))
+                                self.swiat.set_organizmy_xy(self.clicked_button_position, Lis(self.clicked_button_position, self.swiat))
                                 self.update_display()
                                 self.displayHideMenu()
                             elif event.ui_element == self.button_mysz:
-                                self.swiat.set_organizmy(self.clicked_button_position, Mysz(self.clicked_button_position, self.swiat))
+                                self.swiat.set_organizmy_xy(self.clicked_button_position, Mysz(self.clicked_button_position, self.swiat))
                                 self.update_display()
                                 self.displayHideMenu()
                             elif event.ui_element == self.button_wilk:
-                                self.swiat.set_organizmy(self.clicked_button_position, Wilk(self.clicked_button_position, self.swiat))
+                                self.swiat.set_organizmy_xy(self.clicked_button_position, Wilk(self.clicked_button_position, self.swiat))
                                 self.update_display()
                                 self.displayHideMenu()
                             elif event.ui_element == self.button_owca:
-                                self.swiat.set_organizmy(self.clicked_button_position, Owca(self.clicked_button_position, self.swiat))
+                                self.swiat.set_organizmy_xy(self.clicked_button_position, Owca(self.clicked_button_position, self.swiat))
                                 self.update_display()
                                 self.displayHideMenu()
                             elif event.ui_element == self.button_skunks:
-                                self.swiat.set_organizmy(self.clicked_button_position, Skunks(self.clicked_button_position, self.swiat))
+                                self.swiat.set_organizmy_xy(self.clicked_button_position, Skunks(self.clicked_button_position, self.swiat))
                                 self.update_display()
                                 self.displayHideMenu()
                             elif event.ui_element == self.button_trawa:
-                                self.swiat.set_organizmy(self.clicked_button_position, Trawa(self.clicked_button_position, self.swiat))
+                                self.swiat.set_organizmy_xy(self.clicked_button_position, Trawa(self.clicked_button_position, self.swiat))
                                 self.update_display()
                                 self.displayHideMenu()
                             elif event.ui_element == self.button_mlecz:
-                                self.swiat.set_organizmy(self.clicked_button_position, Mlecz(self.clicked_button_position, self.swiat))
+                                self.swiat.set_organizmy_xy(self.clicked_button_position, Mlecz(self.clicked_button_position, self.swiat))
                                 self.update_display()
                                 self.displayHideMenu()
                             elif event.ui_element == self.button_wilczejagody:
-                                self.swiat.set_organizmy(self.clicked_button_position, WilczeJagody(self.clicked_button_position, self.swiat))
+                                self.swiat.set_organizmy_xy(self.clicked_button_position, WilczeJagody(self.clicked_button_position, self.swiat))
                                 self.update_display()
                                 self.displayHideMenu()
                             elif event.ui_element == self.button_empty:
-                                self.swiat.set_organizmy(self.clicked_button_position, None)
+                                self.swiat.set_organizmy_xy(self.clicked_button_position, None)
                                 self.update_display()
                                 self.displayHideMenu()
                         else:
