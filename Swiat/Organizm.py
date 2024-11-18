@@ -108,14 +108,14 @@ class Organizm(ABC):
         """
         return self.inicjatywa
 
-    # def set_inicjatywa(self, new_inicjatywa):
-    #     """
-    #     Metoda ustawiająca inicjatywę organizmu
+    def set_inicjatywa(self, new_inicjatywa):
+        """
+        Metoda ustawiająca inicjatywę organizmu
 
-    #     :Przykład użycia:
-    #     >>> wilk.set_inicjatywa(5)
-    #     """
-    #     self.inicjatywa = new_inicjatywa
+        :Przykład użycia:
+        >>> wilk.set_inicjatywa(5)
+        """
+        self.inicjatywa = new_inicjatywa
 
     def get_wiek(self):
         """

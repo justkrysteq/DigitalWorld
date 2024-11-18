@@ -7,7 +7,7 @@ from random import randint
 class Roslina(Organizm, ABC):
     inicjatywa: int = 0
 
-    def akcja(self, all_positions: list[list[int]]):
+    def akcja(self, all_positions: list[list[int]], *args):
         # Określa akcję rośliny - możliwość rozmnażania się z pewnym prawdopodobieństwem (daliśmy 3%)
         prawdopodobienstwo = randint(0, 100)
         if prawdopodobienstwo > 97:

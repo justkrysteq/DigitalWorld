@@ -50,42 +50,43 @@ class Swiat:
 
         # Wykonanie akcji i przypisanie organizmom nowych pól na planszy
         for organizm in organizmy_by_inicjatywa:
-            
-            all_positions = []
-            for organizm3 in organizmy_by_inicjatywa:
-                if organizm3 is not None:
-                    all_positions.append(organizm3.get_position())
-            # print(all_positions)
-            
-            previous_position = organizm.get_position()
-            organizm.wiek += 1
-            if not organizm.omit_akcja:
-                organizm.akcja(all_positions)
-            new_organizmy = []
-
-            # Kolizja
-            for organizm2 in organizmy_by_inicjatywa:
-                if organizm.get_position() == organizm2.get_position() and organizm != organizm2:
-                    if organizm.__class__ == organizm2.__class__:
-                        new_organizmy.append(organizm.kolizja(organizm2, previous_position, all_positions))
-                    elif organizm2.__class__ == Mysz:
-                        new_organizmy.append(organizm.kolizja(organizm2, previous_position, all_positions))
-                    else:
-                        organizm.kolizja(organizm2, previous_position, all_positions)
-
-            for new_organizm in new_organizmy:
-                if new_organizm is not None and new_organizm.alive:
-                    [x, y] = new_organizm.get_position()
-                    self.organizmy[y][x] = new_organizm
-
-            # Wyświeltanie wsm, w sensie dodanie do tabeli, z której to się wyświetla czy tam aktualzacja pozycji na planszy jakoś tak
             if organizm.alive:
+                all_positions = []
+                all_organizmy = []
+                for organizm3 in organizmy_by_inicjatywa:
+                    if organizm3 is not None:
+                        all_positions.append(organizm3.get_position())
+                        all_organizmy.append(organizm3)
+                # print(all_positions)
+                
+                previous_position = organizm.get_position()
+                organizm.wiek += 1
+                if not organizm.omit_akcja:
+                    organizm.akcja(all_positions, all_organizmy)
+                new_organizmy = []
+
+                # Kolizja
+                for organizm2 in organizmy_by_inicjatywa:
+                    if organizm.get_position() == organizm2.get_position() and organizm != organizm2:
+                        if organizm.__class__ == organizm2.__class__:
+                            new_organizmy.append(organizm.kolizja(organizm2, previous_position, all_positions))
+                        elif organizm2.__class__ == Mysz:
+                            new_organizmy.append(organizm.kolizja(organizm2, previous_position, all_positions))
+                        else:
+                            organizm.kolizja(organizm2, previous_position, all_positions)
+
+                for new_organizm in new_organizmy:
+                    if new_organizm is not None and new_organizm.alive:
+                        [x, y] = new_organizm.get_position()
+                        self.organizmy[y][x] = new_organizm
+
+                # Wyświeltanie wsm, w sensie dodanie do tabeli, z której to się wyświetla czy tam aktualzacja pozycji na planszy jakoś tak
                 [x, y] = organizm.get_position()
                 self.organizmy[y][x] = organizm
 
-        for organizm in organizmy_by_inicjatywa:
-            if organizm.omit_akcja:
-                organizm.omit_akcja = False
+            for organizm in organizmy_by_inicjatywa:
+                if organizm.omit_akcja:
+                    organizm.omit_akcja = False
 
     def rysujSwiat(self):
         pass

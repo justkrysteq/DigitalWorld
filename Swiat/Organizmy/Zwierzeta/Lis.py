@@ -13,7 +13,7 @@ class Lis(Zwierze):
     #     self.sila = 3
     #     self.inicjatywa = 7
 
-    def akcja(self, all_positions: list[list[int]]):
+    def akcja(self, all_positions: list[list[int]], *args):
         if not self.omit_akcja:
             available_positions = [] # tu będą pozycje na których nie ma organizmu z większą siłą od lisa (czyli puste lub z mniejszą siłą)
             possible_positions = self.get_available_positions() # tu są wszystkie ruchy jakie mógłby wykonać

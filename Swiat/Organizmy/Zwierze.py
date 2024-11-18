@@ -15,7 +15,7 @@ from Swiat.Organizm import Organizm
 
 
 class Zwierze(Organizm, ABC):
-    def akcja(self, all_positions: list[list[int]]):
+    def akcja(self, *args):
         if not self.omit_akcja:
             new_position = self.get_new_position()
             print(f"{self.__class__.__name__} z pola {self.position} przeszedł na pole {new_position}")

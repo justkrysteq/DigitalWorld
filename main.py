@@ -26,8 +26,8 @@ try:
             pg.display.set_caption("Wirtualny Świat - NA, KS, SW")
 
             # Ustawienia okna
-            self.screen = pg.display.set_mode((525, 630))
-            self.manager = gui.UIManager((525, 630))
+            self.screen = pg.display.set_mode((825, 680))
+            self.manager = gui.UIManager((825, 680))
 
             # Wczytanie styli
             try:
@@ -44,6 +44,7 @@ try:
 
             # Tworzenie guzików
             self.next_round_button = gui.elements.UIButton(relative_rect=pg.Rect(10, 530, 150, 60), text="Wykonaj Turę", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
+            self.next_organizm = gui.elements.UIButton(relative_rect=pg.Rect(10, 600, 150, 60), text="Następny Organizm", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
             self.save_button = gui.elements.UIButton(relative_rect=pg.Rect(185, 530, 150, 60), text="Zapisz Świat", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
             self.load_button = gui.elements.UIButton(relative_rect=pg.Rect(355, 530, 150, 60), text="Wczytaj Świat", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
 
@@ -142,7 +143,8 @@ try:
                             
                     #         used_positions.append(position)
                     #         self.swiat.dodajOrganizm(organizm, position)
-
+        def nastepnyOrganizm(self):
+            pass
 
         # Menu gry loop
         def menu(self) -> None:
@@ -181,10 +183,13 @@ try:
                     
                     # Logika guzików w menu
                     if event.type == gui.UI_BUTTON_PRESSED:
+                        # Menu
                         if game_state == "menu":
+                            # Okno gry
                             if event.ui_element == play_button:
                                 print("graned")
                                 running = False 
+                            # Okno ustawień
                             elif event.ui_element == settings_button:
                                 print("setting settings")
                                 game_state = "settings"
@@ -195,7 +200,8 @@ try:
                                 number_input.show()
                             elif event.ui_element == exit_button:
                                 return "quit"
-                            
+                        
+                        # Powrót z ustawień
                         elif game_state == "settings":
                             if event.ui_element == back_to_menu_button:
                                 game_state = "menu"
@@ -228,6 +234,7 @@ try:
                 # Wyświetlenie menu
                 self.screen.fill((100, 100, 100))
 
+                # Okno menu
                 if game_state == "menu":
                     # Konfiguracja interfejsu menu
                     font = pg.font.Font(None,54)
@@ -246,6 +253,7 @@ try:
                     self.screen.blit(credits_2, (380, 580))
                     self.screen.blit(credits_3, (380, 600))
 
+                # Okno ustawień
                 elif game_state == "settings":
                     # Konfiguracja interfejsu ustawień
                     font = pg.font.Font(None,54)
@@ -304,6 +312,9 @@ try:
                         elif event.ui_element == self.load_button:
                             self.load_world()
                             print("wczytaned")
+                        elif event.ui_element == self.next_organizm:
+                            self.nastepnyOrganizm()
+                            print("Następny organizm")
                     self.manager.process_events(event)
                     
                 self.manager.update(time_delta)
