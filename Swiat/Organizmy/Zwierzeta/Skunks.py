@@ -1,7 +1,10 @@
+# Importowanie potrzebnych modułów
 from Swiat.Organizmy.Zwierze import Zwierze
 
-
+# Klasa dla Skunka
 class Skunks(Zwierze):
+    """Klasa odpowiedzialna za stworzenie Skunksa"""
+    # Podstawowe statystyki
     sila = 5
     inicjatywa = 5
 
@@ -17,6 +20,6 @@ class Skunks(Zwierze):
                         if position == org_position:
                             if organizm.get_inicjatywa() > 0:
                                 organizm.set_inicjatywa(organizm.get_inicjatywa()-1)
-                                print(f"{self.__class__.__name__} na polu {self.get_position()} obniżył inicjatywę {organizm.__class__.__name__} na polu {organizm.get_position()} o 1, teraz jego inicjatywa wynosi {organizm.get_inicjatywa()}")
+                                self.swiat.game.narratorLog(f"{self.__class__.__name__} na polu {self.get_position()} obniżył inicjatywę {organizm.__class__.__name__} na polu {organizm.get_position()} o 1, teraz jego inicjatywa wynosi {organizm.get_inicjatywa()}")
                             else:
-                                print(f"{self.__class__.__name__} na polu {self.position} nie mógł obniżyć inicjatywy {organizm.__class__.__name__}, ponieważ ta wynosi {organizm.get_inicjatywa()}")
+                                self.swiat.game.narratorLog(f"{self.__class__.__name__} na polu {self.position} nie mógł obniżyć inicjatywy {organizm.__class__.__name__}, ponieważ ta wynosi {organizm.get_inicjatywa()}")

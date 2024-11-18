@@ -1,4 +1,5 @@
 # try:
+# Importowanie potrzebnych modułów
 from abc import ABC
 from random import randint
 from Swiat.Organizm import Organizm
@@ -14,13 +15,17 @@ from Swiat.Organizm import Organizm
 #         print("Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę")
 
 
+# Klasa Zwierze - kontener wszystkich Zwierząt
 class Zwierze(Organizm, ABC):
+    """Klasa odpowiedzialna za przechowywanie wszystkich Zwierząt"""
+    # Wykonanie akcji zwierzęcia
     def akcja(self, *args):
         if not self.omit_akcja:
             new_position = self.get_new_position()
-            print(f"{self.__class__.__name__} z pola {self.position} przeszedł na pole {new_position}")
+            self.swiat.game.narratorLog(f"{self.__class__.__name__} z pola {self.position} przeszedł na pole {new_position}")
             self.position = new_position
 
+    # Kolizja zwierzęcia
     def kolizja(self, organizm: object, previous_position: list[int], all_positions: list[list[int]]) -> None:
         """
         Metoda rozstrzygająca kolizję organizmów
@@ -32,18 +37,21 @@ class Zwierze(Organizm, ABC):
         """
         # print(f"Zaszła kolizja {self.__class__.__name__} z {organizm.__class__.__name__}")
 
-        # Rozmnażanie
+        # Rozmnażanie zwierzęcia
         if self.__class__ == organizm.__class__:
             organizm.omit_akcja = True
             self.position = previous_position
             all_available_positions = []
             all_available_positions.append(self.get_available_positions())
             all_available_positions.append(organizm.get_available_positions())
+            
+            # Możliwe dla dziecka
             possible_for_child = []
             for list in all_available_positions:
                 for position in list:
                     possible_for_child.append(position)
 
+            # Dostępne dla dziecka
             available_for_child = []
             for position in possible_for_child:
                 if position not in all_positions and position != previous_position and position != organizm.position:
@@ -55,42 +63,45 @@ class Zwierze(Organizm, ABC):
                 # self.swiat.dodajOrganizm(self.__class__, available_for_child[choose_position])
                 child = self.__class__(available_for_child[choose_position], self.swiat, omit_akcja=True)
 
-                print(f"{self.__class__.__name__} na polu {previous_position} i {organizm.__class__.__name__} na polu {organizm.position} rozmnożyli się, tworząc {child.__class__.__name__} na polu {available_for_child[choose_position]}")
+                self.swiat.game.narratorLog(f"{self.__class__.__name__} na polu {previous_position} i {organizm.__class__.__name__} na polu {organizm.position} rozmnożyli się, tworząc {child.__class__.__name__} na polu {available_for_child[choose_position]}")
                 return child
-        # Kolizja
+        
+        # Logika kolizji z innym organizmem
         else:
+            # Import potrzebnych modułów
             from Swiat.Organizmy.Rosliny.WilczeJagody import WilczeJagody
             from Swiat.Organizmy.Zwierzeta.Mysz import Mysz
 
+            # Kolizja dla Myszy
             if organizm.__class__ == Mysz:
                 # nie ma zdefiniowanej żmiji, więc nie mam jak zrobić aktualnie tej drugiej części jej kolizji
                 available_positions = []
                 possible_positions = organizm.get_available_positions()
-                print(all_positions)
                 for position in possible_positions:
                     if position not in all_positions:
                         available_positions.append(position)
-                
-                print(available_positions)
 
+                # Ucieczka zwierzęcia od napastnika, jeśli jest dostępne miejsce
                 if len(available_positions) > 0:
                     choose_position = randint(0, len(available_positions)-1)
-                    print(f"{organizm.__class__.__name__} na polu {organizm.position} uciekła na pole {available_positions[choose_position]} od napastnika {self.__class__.__name__} nadchodzącego z pola {previous_position}")
+                    self.swiat.game.narratorLog(f"{organizm.__class__.__name__} na polu {organizm.position} uciekła na pole {available_positions[choose_position]} od napastnika {self.__class__.__name__} nadchodzącego z pola {previous_position}")
                     organizm.position = available_positions[choose_position]
-                    print(organizm, organizm.position)
-                    print(self, self.position)
                 else:
-                    print(f"{organizm.__class__.__name__} na polu {organizm.position} nie miała gdzie uciec od {self.__class__.__name__} na polu {previous_position}")
+                    # Brak możliwej ucieczki od napastnika
+                    self.swiat.game.narratorLog(f"{organizm.__class__.__name__} na polu {organizm.position} nie miała gdzie uciec od {self.__class__.__name__} na polu {previous_position}")
             else:
+                # Zaatakowanie słabszego organizmu
                 if self.sila >= organizm.get_sila():
                     # print(f"{organizm.__class__.__name__} nie powinien istnieć")
-                    print(f"{self.__class__.__name__} na polu {previous_position} zjadł {organizm.__class__.__name__} na polu {organizm.position} i przeszedł na jego pole")
+                    self.swiat.game.narratorLog(f"{self.__class__.__name__} na polu {previous_position} zjadł {organizm.__class__.__name__} na polu {organizm.position} i przeszedł na jego pole")
                     organizm.alive = False
+                    # Kolizja dla Wilczych Jagód
                     if organizm.__class__ == WilczeJagody:
                         self.alive = False
-                        print(f"Trucizna z {organizm.__class__.__name__} zabiła {self.__class__.__name__} na polu {self.position}")
+                        self.swiat.game.narratorLog(f"Trucizna z {organizm.__class__.__name__} zabiła {self.__class__.__name__} na polu {self.position}")
+                # Pokonanie przez mocniejszego napastnika
                 elif self.sila < organizm.get_sila():
-                    print(f"{self.__class__.__name__} na polu {previous_position} wszedł na pole {organizm.position}, na którym znajdował się {organizm.__class__.__name__} i zginął")
+                    self.swiat.game.narratorLog(f"{self.__class__.__name__} na polu {previous_position} wszedł na pole {organizm.position}, na którym znajdował się {organizm.__class__.__name__} i zginął")
                     self.alive = False
 
 

@@ -1,3 +1,4 @@
+# Klasa odpowiedzialna za tworzenie wyjątków
 class LanuchedModuleException(Exception):
     """
     Exception, który służy do informowaniu użytkownika o tym, że uruchomił moduł

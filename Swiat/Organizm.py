@@ -1,26 +1,31 @@
+# Importowanie modułów
 from abc import ABC, abstractmethod
 from random import randint
-
 from Swiat.Exceptions import LanuchedModuleException
 
 
-# Abstrakcyjna klasa Organizm
+# Klasa Organizm - kontener instniejących organizmów
 class Organizm(ABC):
-    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, alive: bool=True, omit_akcja: bool=False):
+    """Główny kontener instniejących organizmów"""
+    def __init__(self, pozycja: list[int], swiat: object, wiek: int=0, alive: bool=True, omit_akcja: bool=False, current: bool=False, last_tura: int=0):
         # self.sila = sila # to chyba nie ma sensu tutaj, choć w pliku jest napisane, żeby było
         # self.inicjatywa = inicjatywa
         
+        # Tworzenie podstawowych pól
         self.position: list[int] = pozycja
         self.swiat: object = swiat
         self.wiek: int = wiek
         self.alive: bool = alive
         self.omit_akcja: bool = omit_akcja
+        self.current: bool = current
+        self.last_tura: int = last_tura
         # Podstawowe pola
         # sila: int = 0 # statystka siły
         # inicjatywa: int = 0 # statystyka inicjatywy
         # polozenie: list[int] = [0, 0] # położenie (x, y) na siatce
         # świat - referencja do świata w którym znajduje się organizm
 
+    # Pobieranie wszystkich możliwych ruchów
     def get_available_positions(self) -> list[list[int]]:
         """Metoda zwracająca wszystkie ruchy, które są możliwe dla organizmu na planszy"""
         N = self.swiat.get_N()
@@ -52,24 +57,22 @@ class Organizm(ABC):
         # 8. x-1 y-1 👍
         return available_positions
 
+    # Pobieranie nowych pozycji organizmów
     def get_new_position(self) -> list[int]:
+        """Metoda odpowiedzialna za pobieranie nowych pozycji organizmów"""
         available_positions = self.get_available_positions()
         choose_position = randint(0, len(available_positions) - 1)
         return available_positions[choose_position]
 
-    # Podstawowe metody
+    # Podstawowe abstrakcyjne metody do dziedziczenia
     @abstractmethod
     def akcja(self):
-        """
-        Metoda ustalająca zachowanie organizmu w trakcie tury
-        """
+        """Metoda ustalająca zachowanie organizmu w trakcie tury"""
         pass
 
     @abstractmethod
     def kolizja(self):
-        """
-        Metoda ustalająca zachowanie organizmu w trakcie kolizji
-        """
+        """Metoda ustalająca zachowanie organizmu w trakcie kolizji"""
         pass
 
     # @abstractmethod
@@ -173,7 +176,7 @@ class Organizm(ABC):
     # def set_rozmnozyc(self, new_rozmnozyc):
     #     self.rozmnozyc = new_rozmnozyc
 
-
+# Wyjątek w sytuacji, gdzie został uruchomiony moduł, zamiast głównego pliku
 if __name__ == "__main__":
     try:
         raise LanuchedModuleException("Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę")
