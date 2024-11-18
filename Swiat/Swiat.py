@@ -28,7 +28,7 @@ class Swiat:
     def wykonajTure(self) -> None:
         """Metoda wykonująca turę"""
         # Dodanie wszytskich organizmów do listy organizmy_by_inicjatywa i zapisanie ich pozycji
-        from Swiat.Organizmy.Zwierzeta.Mysz import Mysz
+        from Swiat.Organizmy.Zwierzeta.Mysz import Mysz # Tu można dać ten customowy error
         organizmy_by_inicjatywa = []
         for y in range(len(self.organizmy)):
             for x in range(len(self.organizmy[y])):
