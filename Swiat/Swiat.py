@@ -18,10 +18,11 @@ class Swiat:
     # języka programowania) na obiekty klasy Organizm.
 
     def __init__(self, N: int, game: object):
-        self.N: int = N
-        self.game: object = game
-        self.organizmy: list[list] = [[None for _ in range(N)] for _ in range(N)]
-        self.numer_tury: int = 0
+        self.N: int = N # Rozmiar planszy
+        self.game: object = game # Objekt gry
+        self.organizmy: list[list] = [[None for _ in range(N)] for _ in range(N)] # Lista wszystkich organizmów na planszy
+        self.numer_tury: int = 0 # Numer aktualnej tury
+        self.current_organism_index: int = 0 # Index dla aktualnie używanego organizmu
 
     # Tworzenie organizmów
     def dodajOrganizm(self, organizm: object, position: list[int]):
@@ -81,37 +82,35 @@ class Swiat:
                     organizm.omit_akcja = False
 
         # Koniec tury
-        self.zakonczTure(organizmy_by_inicjatywa)
+        self.zakonczTure()
 
-    def nastepnyOrganizm(self) -> None:
-        """Metoda wykonująca turę"""
-        # Dodanie wszytskich organizmów do listy organizmy_by_inicjatywa i zapisanie ich pozycji
-        from Swiat.Organizmy.Zwierzeta.Mysz import Mysz # Tu można dać ten customowy error
+    def następnyOrganizm(self) -> None:
+        """Metoda wykonująca ruch pojedynczego organizmu"""
+        # Pobierz listę organizmów posortowaną wg inicjatywy
+        from Swiat.Organizmy.Zwierzeta.Mysz import Mysz
         organizmy_by_inicjatywa = self.get_organizmy_by_inicjatywa(self.organizmy)
 
         # Clearowanie planszy
         self.organizmy = [[None for _ in range(self.N)] for _ in range(self.N)]
 
-        # Wykonanie akcji i przypisanie organizmom nowych pól na planszy
-        for organizm in organizmy_by_inicjatywa:
-            if organizm.alive and organizm.current:
-                all_positions = []
-                all_organizmy = []
-                for organizm3 in organizmy_by_inicjatywa:
-                    if organizm3 is not None:
-                        all_positions.append(organizm3.get_position())
-                        all_organizmy.append(organizm3)
-                # print(all_positions)
-                
-                # Dodawanie wieku organizmom
-                previous_position = organizm.get_position()
-                organizm.wiek += 1
-                if not organizm.omit_akcja:
-                    organizm.akcja(all_positions, all_organizmy)
-                new_organizmy = []
+        if not organizmy_by_inicjatywa:
+            print("Brak organizmów do wykonania ruchu.")
+            return
 
-                # Kolizja dla organizmów
-                for organizm2 in organizmy_by_inicjatywa:
+        # Aktualny organizm wykonuje ruch
+        organizm = organizmy_by_inicjatywa[self.current_organism_index]
+        if organizm.alive:
+            all_positions = [o.get_position() for o in organizmy_by_inicjatywa if o is not None]
+            all_organizmy = [o for o in organizmy_by_inicjatywa if o is not None]
+
+            previous_position = organizm.get_position()
+            organizm.wiek += 1
+            if not organizm.omit_akcja:
+                organizm.akcja(all_positions, all_organizmy)
+
+            # Obsługa kolizji (jeśli występują)
+            new_organizmy = []
+            for organizm2 in organizmy_by_inicjatywa:
                     if organizm.get_position() == organizm2.get_position() and organizm != organizm2:
                         if organizm.__class__ == organizm2.__class__:
                             new_organizmy.append(organizm.kolizja(organizm2, previous_position, all_positions))
@@ -120,22 +119,27 @@ class Swiat:
                         else:
                             organizm.kolizja(organizm2, previous_position, all_positions)
 
-                # Wczytywanie pozycji dla nowych organizmów
-                for new_organizm in new_organizmy:
-                    if new_organizm is not None and new_organizm.alive:
-                        [x, y] = new_organizm.get_position()
-                        self.organizmy[y][x] = new_organizm
+            # Dodanie nowych organizmów na planszę
+            for new_organizm in new_organizmy:
+                if new_organizm and new_organizm.alive:
+                    [x, y] = new_organizm.get_position()
+                    self.organizmy[y][x] = new_organizm
 
-                # Wyświeltanie wsm, w sensie dodanie do tabeli, z której to się wyświetla czy tam aktualzacja pozycji na planszy jakoś tak
-                [x, y] = organizm.get_position()
-                self.organizmy[y][x] = organizm
+            # Aktualizacja pozycji organizmu na planszy
+            [x, y] = organizm.get_position()
+            self.organizmy[y][x] = organizm
 
-                organizm.current = False
+        # Przejdź do następnego organizmu
+        self.current_organism_index += 1
 
-            # To się może wykonywać tylko, gdy tura się kończy
-            for organizm in organizmy_by_inicjatywa:
-                if organizm.omit_akcja:
-                    organizm.omit_akcja = False
+        for organizm in organizmy_by_inicjatywa:
+            [x, y] = organizm.get_position()
+            self.organizmy[y][x] = organizm
+            
+        # Jeśli osiągnięto koniec listy, zakończ turę i zresetuj indeks
+        if self.current_organism_index >= len(organizmy_by_inicjatywa):
+            self.current_organism_index = 0
+            self.zakonczTure()
 
     # Sortowanie organizmów przez inicjatywę
     def get_organizmy_by_inicjatywa(self, organizmy) -> list[object]:
@@ -159,7 +163,7 @@ class Swiat:
         return organizmy_by_inicjatywa
 
     # Koniec tury
-    def zakonczTure(self, organizmy_by_inicjatywa: list[object]):
+    def zakonczTure(self):
         """Metoda wykonująca zakończenie tury"""
         
             # if organizmy_by_inicjatywa[-1].current:

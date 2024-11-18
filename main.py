@@ -45,7 +45,7 @@ try:
 
             # Tworzenie guzików
             self.next_round_button = gui.elements.UIButton(relative_rect=pg.Rect(10, 530, 150, 60), text="Wykonaj Turę", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
-            self.next_organizm = gui.elements.UIButton(relative_rect=pg.Rect(10, 600, 150, 60), text="Następny Organizm", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
+            self.next_organizm_button = gui.elements.UIButton(relative_rect=pg.Rect(10, 600, 150, 60), text="Następny Organizm", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
             self.save_button = gui.elements.UIButton(relative_rect=pg.Rect(185, 530, 150, 60), text="Zapisz Świat", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
             self.load_button = gui.elements.UIButton(relative_rect=pg.Rect(355, 530, 150, 60), text="Wczytaj Świat", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
 
@@ -156,7 +156,8 @@ try:
         # Nowa runda dla danego organizmu (TODO)
         def next_organizm(self):
             """Metoda wykonująca nową rundę dla danego organizmu"""
-            pass
+            self.swiat.następnyOrganizm()
+            self.update_display()
 
         # Menu gry loop
         def menu(self) -> None:
@@ -293,9 +294,7 @@ try:
 
         # Main loop gry
         def run(self) -> None:
-            """
-            Metoda uruchamiająca grę
-            """
+            """Metoda odpowiedzialna za uruchamienie gry"""
             clock = pg.time.Clock()
             running = True
 
@@ -324,8 +323,7 @@ try:
                         running = False
                     elif event.type == gui.UI_BUTTON_PRESSED:
                         if event.ui_element == self.next_round_button:
-                            self.messages = []  
-                            self.narrator_box.set_text("")  
+                            self.messages = []
                             self.narratorLog(f"Tura {self.swiat.numer_tury}")
                             self.next_round()
                             print("next tura")
@@ -337,8 +335,15 @@ try:
                             self.load_world()
                             print("wczytaned")
                             self.narratorLog("Wczytano świat")
-                        elif event.ui_element == self.next_organizm:
+                        elif event.ui_element == self.next_organizm_button:
+                            if self.swiat.current_organism_index == 0:
+                                self.messages = []
+                                self.narratorLog(f"Tura {self.swiat.numer_tury}")
+                            tura_przed = self.swiat.numer_tury
                             self.next_organizm()
+                            if self.swiat.numer_tury > tura_przed:
+                                self.messages = []
+                                self.narratorLog(f"Tura {self.swiat.numer_tury}")
                             print("Następny organizm")
                         else:
                             for y in range(len(self.table)):
