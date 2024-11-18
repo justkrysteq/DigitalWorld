@@ -15,13 +15,13 @@ from Swiat.Organizm import Organizm
 
 
 class Zwierze(Organizm, ABC):
-    def akcja(self):
+    def akcja(self, all_positions: list[list[int]]):
         if not self.omit_akcja:
             new_position = self.get_new_position()
             print(f"{self.__class__.__name__} z pola {self.position} przeszedł na pole {new_position}")
             self.position = new_position
 
-    def kolizja(self, organizm: object, previous_position: list[int]) -> None:
+    def kolizja(self, organizm: object, previous_position: list[int], all_positions: list[list[int]]) -> None:
         """
         Metoda rozstrzygająca kolizję organizmów
 
@@ -45,7 +45,6 @@ class Zwierze(Organizm, ABC):
                     possible_for_child.append(position)
 
             available_for_child = []
-            all_positions = self.swiat.get_all_positions()
             for position in possible_for_child:
                 if position not in all_positions and position != previous_position and position != organizm.position:
                     available_for_child.append(position)
@@ -67,7 +66,6 @@ class Zwierze(Organizm, ABC):
                 # nie ma zdefiniowanej żmiji, więc nie mam jak zrobić aktualnie tej drugiej części jej kolizji
                 available_positions = []
                 possible_positions = organizm.get_available_positions()
-                all_positions = organizm.swiat.get_all_positions()
                 print(all_positions)
                 for position in possible_positions:
                     if position not in all_positions:

@@ -13,17 +13,16 @@ class Lis(Zwierze):
     #     self.sila = 3
     #     self.inicjatywa = 7
 
-    def akcja(self):
+    def akcja(self, all_positions: list[list[int]]):
         if not self.omit_akcja:
             available_positions = [] # tu będą pozycje na których nie ma organizmu z większą siłą od lisa (czyli puste lub z mniejszą siłą)
             possible_positions = self.get_available_positions() # tu są wszystkie ruchy jakie mógłby wykonać
-            all_positions = self.swiat.get_all_positions() # tu są pozycje wszystkich organizmów na świecie
             for position in possible_positions:
-                if position in all_positions:
+                if position in all_positions and position is not None:
                     [x, y] = position
                     organizm = self.swiat.organizmy[y][x]
                     # Sprawdzanie czy organizm na tej pozycji na większą siłę niż lis, jeśli tak to się tam nie ruszy
-                    if self.sila >= organizm.sila:
+                    if organizm is not None and self.sila >= organizm.sila:
                         available_positions.append(position)
                 else:
                     available_positions.append(position)

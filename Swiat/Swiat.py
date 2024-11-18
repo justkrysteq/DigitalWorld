@@ -25,15 +25,6 @@ class Swiat:
         self.organizmy[y][x] = organizm([x, y], self)
         # print(organizm, self.organizmy[y][x].position)
 
-    def get_all_positions(self) -> list[list[int]]:
-        """Metoda zwracająca pozycje wszystkich organizmów na świecie"""
-        all_positions = []
-        for row in self.organizmy:
-            for organizm in row:
-                if organizm is not None:
-                    all_positions.append(organizm.get_position())
-        return all_positions
-
     def wykonajTure(self) -> None:
         """Metoda wykonująca turę"""
         # Dodanie wszytskich organizmów do listy organizmy_by_inicjatywa i zapisanie ich pozycji
@@ -59,21 +50,28 @@ class Swiat:
 
         # Wykonanie akcji i przypisanie organizmom nowych pól na planszy
         for organizm in organizmy_by_inicjatywa:
+            
+            all_positions = []
+            for organizm3 in organizmy_by_inicjatywa:
+                if organizm3 is not None:
+                    all_positions.append(organizm3.get_position())
+            # print(all_positions)
+            
             previous_position = organizm.get_position()
             organizm.wiek += 1
             if not organizm.omit_akcja:
-                organizm.akcja()
+                organizm.akcja(all_positions)
             new_organizmy = []
 
             # Kolizja
             for organizm2 in organizmy_by_inicjatywa:
                 if organizm.get_position() == organizm2.get_position() and organizm != organizm2:
                     if organizm.__class__ == organizm2.__class__:
-                        new_organizmy.append(organizm.kolizja(organizm2, previous_position))
+                        new_organizmy.append(organizm.kolizja(organizm2, previous_position, all_positions))
                     elif organizm2.__class__ == Mysz:
-                        new_organizmy.append(organizm.kolizja(organizm2, previous_position))
+                        new_organizmy.append(organizm.kolizja(organizm2, previous_position, all_positions))
                     else:
-                        organizm.kolizja(organizm2, previous_position)
+                        organizm.kolizja(organizm2, previous_position, all_positions)
 
             for new_organizm in new_organizmy:
                 if new_organizm is not None and new_organizm.alive:

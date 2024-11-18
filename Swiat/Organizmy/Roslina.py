@@ -7,13 +7,12 @@ from random import randint
 class Roslina(Organizm, ABC):
     inicjatywa: int = 0
 
-    def akcja(self):
+    def akcja(self, all_positions: list[list[int]]):
         # Określa akcję rośliny - możliwość rozmnażania się z pewnym prawdopodobieństwem (daliśmy 3%)
         prawdopodobienstwo = randint(0, 100)
         if prawdopodobienstwo > 97:
             available_positions = []
             possible_positions = self.get_available_positions()
-            all_positions = self.swiat.get_all_positions()
             for position in possible_positions:
                 if position not in all_positions:
                     available_positions.append(position)
@@ -24,7 +23,7 @@ class Roslina(Organizm, ABC):
                 self.swiat.dodajOrganizm(self.__class__, available_positions[choose_position])
                 print(f"{self.__class__.__name__} na polu {self.position} rozprzestrzenił się, tworząc {self.__class__.__name__} na polu {available_positions[choose_position]}")
 
-    def kolizja(self, organizm, previous_position):
+    def kolizja(self, organizm, previous_position, all_positions: list[list[int]]):
         pass
         # Rozstrzyga kolizję z innym organizmem
 
