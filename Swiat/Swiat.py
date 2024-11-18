@@ -203,11 +203,21 @@ class Swiat:
         [x, y] = position
         self.organizmy[y][x] = value
 
-    # Pobieranie rozmiaru pola
+    # Zwracanie rozmiaru pola
     def get_N(self) -> int:
         """Metoda zwracająca rozmiar pola"""
         return self.N
 
+
+    # Pobieranie numeru tury
+    def get_numer_tury(self) -> int:
+        """Metoda zwracająca aktualny numer tury"""
+        return self.numer_tury
+
+    # Wpisywanie numeru tury
+    def set_numer_tury(self, new_numer_tury: int) -> None:
+        """Metoda ustawiająca aktualny numer tury"""
+        self.numer_tury = new_numer_tury
 
 # Organizmy mają możliwość wpływania na stan świata. Dlatego istnieje konieczność przekazania metodom akcja() oraz kolizja() parametru określającego obiekt klasy Świat. Postaraj się, aby klasa Świat definiowała jako publiczne składowe tylko takie pola i metody, które są potrzebne pozostałym obiektom aplikacji do działania. Pozostałą funkcjonalność świata staraj się zawrzeć w składowych prywatnych.
 # Można dodać customowy error, gdy ten plik launchuje się jako __main__

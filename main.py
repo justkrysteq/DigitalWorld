@@ -49,7 +49,12 @@ try:
             self.save_button = gui.elements.UIButton(relative_rect=pg.Rect(185, 530, 150, 60), text="Zapisz Świat", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
             self.load_button = gui.elements.UIButton(relative_rect=pg.Rect(355, 530, 150, 60), text="Wczytaj Świat", manager=self.manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
 
-            # Tworzenie panelu
+            # Tworzenie panelu zawierającego planszę
+            panel_plansza_relrect = pg.Rect(0, 0, self.N*27, self.N*27)
+            panel_plansza_relrect.center = (self.screen.get_width()/2, self.screen.get_height()/2)
+            self.panel_plansza = gui.elements.UIPanel(panel_plansza_relrect, 1, self.manager)
+
+            # Tworzenie panelu do dodawania organizmów
             self.panel = gui.elements.UIPanel(relative_rect=pg.Rect(20, 20, 480, 250),starting_height=3, manager=self.manager,visible=False)
             self.panel_title = gui.elements.UILabel(relative_rect=pg.Rect(10, 10, 100, 100), text="Dodaj organizm", manager=self.manager, container=self.panel)
             self.button_lis = gui.elements.UIButton(relative_rect=pg.Rect(50, 50, 50, 50), text=" ", manager=self.manager,container=self.panel,object_id=gui.core.ObjectID(class_id="@lis"))
@@ -66,7 +71,7 @@ try:
             self.panel_elements = [self.panel_title, self.button_lis, self.button_mysz, self.button_wilk, self.button_owca, self.button_skunks, self.button_trawa, self.button_mlecz, self.button_wilczejagody, self.button_empty] #, self.button_dodaj, self.button_anuluj
 
         def update_display(self):
-            """Metoda odpowiedzialna za aktulizację świata z każdą turą """
+            """Metoda odpowiedzialna za aktulizację świata z każdą turą"""
             # Dictionary do przypisania odpowiednich nazw klasy stylów do klas organizmów
             class_to_name = {
                 Wilk: "wilk",
@@ -110,7 +115,7 @@ try:
         def save_world(self):
             """Metoda wykonująca zapis świata"""
             f = open("save.txt", "w")
-            f.write(f"{str(self.swiat.N)}\n")
+            f.write(f"{str(self.swiat.get_N())};{str(self.swiat.get_numer_tury())}\n")
             for y in range(len(self.swiat.organizmy)):
                 for x in range(len(self.swiat.organizmy[y])):
                     if self.swiat.organizmy[y][x] is not None:
@@ -132,28 +137,29 @@ try:
             }
             with open("save.txt", "r") as f:
                 lines = f.readlines()
-                N = int(lines[0])
+                lines[0] = lines[0].split(";")
+                N = int(lines[0][0])
+                numer_tury = int(lines[0][1])
                 new_organizmy = [[None for _ in range(N)] for _ in range(N)]
                 for line in lines[1:]:  # Pomijamy pierwszą linię (N)
                     line = line.rstrip()
                     line = line.split(";")
-                    print(line)
-                    print()
                     class_name = str_to_classname.get(line[0])
                     [x, y] = eval(line[1])
-                    print(y)
-                    print()
                     new_organizmy[y][x] = class_name([x, y], self.swiat, int(line[2]), bool(line[3]), bool(line[4]))
-                print(new_organizmy)
             
                 self.swiat.set_organizmy(new_organizmy)
+                self.swiat.set_numer_tury(numer_tury)
             f.close()
             self.update_display()
 
         # Wyświetlenie organizmu na planszy
         def add_button(self, x: int, y: int, classname: str, text: str = " "):
             """Metoda wykonująca wyświetlenie organizmu na polu [x, y]"""
-            self.table[y][x] = gui.elements.UIButton(relative_rect=pg.Rect(x * 26, y * 26, 25, 25), text=text, manager=self.manager, object_id=gui.core.ObjectID(class_id=f"@{classname}"))
+            # button_relrect = pg.Rect(x * 26, y * 26, 25, 25)
+            button_relrect = pg.Rect(0, 0, 25, 25)
+            button_relrect.topleft = (10+x*26, 10+y*26)
+            self.table[y][x] = gui.elements.UIButton(relative_rect=button_relrect, text=text, manager=self.manager, object_id=gui.core.ObjectID(class_id=f"@{classname}"), container=self.panel_plansza, tool_tip_text=f"Pole: [{x}, {y}]\nKliknij, aby dodać organizm.")
 
         # Usuwanie z planszy
         def remove_button(self, x: int, y: int):
@@ -346,20 +352,14 @@ try:
 
             # Stwórz wszystkie organizmy
             self.spawn_all()
-            # Miejsce na testy
-            # self.swiat.dodajOrganizm(Owca, 0, 0)
-            # self.swiat.dodajOrganizm(Owca, 6, 0)
-            # self.swiat.dodajOrganizm(Owca, 0, 7)
-            # self.swiat.dodajOrganizm(Owca, 8, 9)
-            # self.swiat.dodajOrganizm(Owca, 0, 4)
-            # self.swiat.dodajOrganizm(Owca, 14, 2)
-            # self.swiat.dodajOrganizm(Owca, 0, 17)
-            # self.swiat.dodajOrganizm(Owca, 6, 6)
-            # self.swiat.dodajOrganizm(Trawa, 2, 0)
-            # self.swiat.dodajOrganizm(Wilk, 4, 5)
 
             # Wyświetlenie początkowego tury świata
             self.update_display()
+
+            # Tworzenie panelu zawierającego planszę
+            panel_plansza_relrect = pg.Rect(0, 0, self.N*27, self.N*27)
+            panel_plansza_relrect.center = (self.screen.get_width()/2, self.screen.get_height()/2)
+            self.panel_plansza = gui.elements.UIPanel(panel_plansza_relrect, 1, self.manager)
 
             # Pętla gry
             while running:
