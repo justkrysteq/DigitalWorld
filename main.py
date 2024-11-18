@@ -70,11 +70,13 @@ try:
                     # print("X:", organizmX, "Y:", organizmY)
                     # Przypisanie do zmiennej class_name nazwy klasy stylu z class_to_name jeśli organizm jest instancją zawartej tam klasy
                     class_name = class_to_name.get(type(organizmy[y][x]))
-                    
-                    if class_name:
+                    if class_name is not None:
+                        # print(class_name)
+                        self.remove_button(x, y)
                         self.add_button(x, y, class_name)
                     else:
                         self.remove_button(x, y) # FIXME
+                        self.add_button(x, y, "puste_pole")
 
         # Nowa runda
         def next_round(self):
@@ -110,7 +112,9 @@ try:
             """
             Metoda wykonująca usunięcie organizmu z pola [x, y]
             """
-            self.table[y][x] = gui.elements.UIButton(relative_rect=pg.Rect(x * 26, y * 26, 25, 25), text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@puste_pole"))
+            if self.table[y][x] is not None:
+                self.table[y][x].kill()
+            # self.table[y][x] = gui.elements.UIButton(relative_rect=pg.Rect(x * 26, y * 26, 25, 25), text=" ", manager=self.manager, object_id=gui.core.ObjectID(class_id="@puste_pole"))
 
         # Stworzenie wszystkich organizmów
         def spawn_all(self) -> None:
@@ -124,20 +128,20 @@ try:
             for _ in range(each_spawned_times):
                 for organizm in all_organisms:
                     # Wybierz losowe wolne pole, obok już aktualnie zajętego
-                    # position = [randint(0, self.N-1), randint(0, self.N-1)]
-                    # while position in used_positions:
-                    #     position = [randint(0, self.N-1), randint(0, self.N-1)]
-                    # used_positions.append(position)
-                    # self.swiat.dodajOrganizm(organizm, position)
-                    if organizm == Mysz or organizm == Lis:
-                        for _ in range(10):
-                            position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    while position in used_positions:
+                        position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    used_positions.append(position)
+                    self.swiat.dodajOrganizm(organizm, position)
+                    # if organizm == Mysz or organizm == Lis:
+                    #     for _ in range(10):
+                    #         position = [randint(0, self.N-1), randint(0, self.N-1)]
                             
-                            while position in used_positions:
-                                position = [randint(0, self.N-1), randint(0, self.N-1)]
+                    #         while position in used_positions:
+                    #             position = [randint(0, self.N-1), randint(0, self.N-1)]
                             
-                            used_positions.append(position)
-                            self.swiat.dodajOrganizm(organizm, position)
+                    #         used_positions.append(position)
+                    #         self.swiat.dodajOrganizm(organizm, position)
 
 
         # Menu gry loop

@@ -54,7 +54,7 @@ class Swiat:
                     if organizmy_by_inicjatywa[j].get_wiek() < organizmy_by_inicjatywa[j+1].get_wiek():
                         organizmy_by_inicjatywa[j], organizmy_by_inicjatywa[j+1] = organizmy_by_inicjatywa[j+1], organizmy_by_inicjatywa[j]
 
-        # Zclearowanie planszy
+        # Clearowanie planszy
         self.organizmy = [[None for _ in range(self.N)] for _ in range(self.N)]
 
         # Wykonanie akcji i przypisanie organizmom nowych pól na planszy
