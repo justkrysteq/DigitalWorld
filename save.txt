@@ -1,16 +1,17 @@
-20;9
-Mysz;[2, 1];9;True;True
-Wilk;[18, 4];9;True;True
-Trawa;[9, 6];9;True;True
-Mlecz;[12, 7];9;True;True
-Trawa;[2, 8];4;True;True
-Trawa;[3, 9];9;True;True
-Lis;[3, 11];9;True;True
-WilczeJagody;[5, 11];9;True;True
-Skunks;[1, 14];9;True;True
-Owca;[13, 15];9;True;True
-Lis;[4, 17];9;True;True
-Mlecz;[3, 18];6;True;True
-Mysz;[12, 18];9;True;True
-Wilk;[19, 18];9;True;True
-Mlecz;[3, 19];9;True;True
+7;0;0
+Lis;[0, 0];0;True;True
+Wilk;[4, 0];0;True;True
+WilczeJagody;[5, 0];0;True;True
+WilczeJagody;[1, 2];0;True;True
+Owca;[3, 2];0;True;True
+Mysz;[4, 2];0;True;True
+Mlecz;[5, 2];0;True;True
+Lis;[2, 3];0;True;True
+Mlecz;[3, 3];0;True;True
+Wilk;[1, 4];0;True;True
+Mysz;[4, 4];0;True;True
+Trawa;[6, 4];0;True;True
+Trawa;[2, 5];0;True;True
+Skunks;[5, 5];0;True;True
+Skunks;[6, 5];0;True;True
+Owca;[4, 6];0;True;True

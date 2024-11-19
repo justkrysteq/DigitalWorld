@@ -20,10 +20,10 @@ class Zwierze(Organizm, ABC):
     """Klasa odpowiedzialna za przechowywanie wszystkich Zwierząt"""
     # Wykonanie akcji zwierzęcia
     def akcja(self, *args):
-        if not self.omit_akcja:
+        if not self._omit_akcja:
             new_position = self.get_new_position()
-            self.swiat.game.narratorLog(f"{self.__class__.__name__} z pola {self.position} przeszedł na pole {new_position}")
-            self.position = new_position
+            self._swiat._game.narratorLog(f"{self.__class__.__name__} z pola {self._position} przeszedł na pole {new_position}")
+            self._position = new_position
 
     # Kolizja zwierzęcia
     def kolizja(self, organizm: object, previous_position: list[int], all_positions: list[list[int]]) -> None:
@@ -39,8 +39,8 @@ class Zwierze(Organizm, ABC):
 
         # Rozmnażanie zwierzęcia
         if self.__class__ == organizm.__class__:
-            organizm.omit_akcja = True
-            self.position = previous_position
+            organizm._omit_akcja = True
+            self._position = previous_position
             all_available_positions = []
             all_available_positions.append(self.get_available_positions())
             all_available_positions.append(organizm.get_available_positions())
@@ -54,16 +54,16 @@ class Zwierze(Organizm, ABC):
             # Dostępne dla dziecka
             available_for_child = []
             for position in possible_for_child:
-                if position not in all_positions and position != previous_position and position != organizm.position:
+                if position not in all_positions and position != previous_position and position != organizm._position:
                     available_for_child.append(position)
 
             # Małe zwierze pojawia się tylko, gdy jest na nie miejsce na świecie
             if len(available_for_child) > 0:
                 choose_position = randint(0, len(available_for_child)-1)
-                # self.swiat.dodajOrganizm(self.__class__, available_for_child[choose_position])
-                child = self.__class__(available_for_child[choose_position], self.swiat, omit_akcja=True)
+                # self._swiat.dodajOrganizm(self.__class__, available_for_child[choose_position])
+                child = self.__class__(available_for_child[choose_position], self._swiat, omit_akcja=True)
 
-                self.swiat.game.narratorLog(f"{self.__class__.__name__} na polu {previous_position} i {organizm.__class__.__name__} na polu {organizm.position} rozmnożyli się, tworząc {child.__class__.__name__} na polu {available_for_child[choose_position]}")
+                self._swiat._game.narratorLog(f"{self.__class__.__name__} na polu {previous_position} i {organizm.__class__.__name__} na polu {organizm._position} rozmnożyli się, tworząc {child.__class__.__name__} na polu {available_for_child[choose_position]}")
                 return child
         
         # Logika kolizji z innym organizmem
@@ -84,25 +84,25 @@ class Zwierze(Organizm, ABC):
                 # Ucieczka zwierzęcia od napastnika, jeśli jest dostępne miejsce
                 if len(available_positions) > 0:
                     choose_position = randint(0, len(available_positions)-1)
-                    self.swiat.game.narratorLog(f"{organizm.__class__.__name__} na polu {organizm.position} uciekła na pole {available_positions[choose_position]} od napastnika {self.__class__.__name__} nadchodzącego z pola {previous_position}")
-                    organizm.position = available_positions[choose_position]
+                    self._swiat._game.narratorLog(f"{organizm.__class__.__name__} na polu {organizm._position} uciekła na pole {available_positions[choose_position]} od napastnika {self.__class__.__name__} nadchodzącego z pola {previous_position}")
+                    organizm._position = available_positions[choose_position]
                 else:
                     # Brak możliwej ucieczki od napastnika
-                    self.swiat.game.narratorLog(f"{organizm.__class__.__name__} na polu {organizm.position} nie miała gdzie uciec od {self.__class__.__name__} na polu {previous_position}")
+                    self._swiat._game.narratorLog(f"{organizm.__class__.__name__} na polu {organizm._position} nie miała gdzie uciec od {self.__class__.__name__} na polu {previous_position}")
             else:
                 # Zaatakowanie słabszego organizmu
-                if self.sila >= organizm.get_sila():
+                if self._sila >= organizm.get_sila():
                     # print(f"{organizm.__class__.__name__} nie powinien istnieć")
-                    self.swiat.game.narratorLog(f"{self.__class__.__name__} na polu {previous_position} zjadł {organizm.__class__.__name__} na polu {organizm.position} i przeszedł na jego pole")
-                    organizm.alive = False
+                    self._swiat._game.narratorLog(f"{self.__class__.__name__} na polu {previous_position} zjadł {organizm.__class__.__name__} na polu {organizm._position} i przeszedł na jego pole")
+                    organizm._alive = False
                     # Kolizja dla Wilczych Jagód
                     if organizm.__class__ == WilczeJagody:
-                        self.alive = False
-                        self.swiat.game.narratorLog(f"Trucizna z {organizm.__class__.__name__} zabiła {self.__class__.__name__} na polu {self.position}")
+                        self._alive = False
+                        self._swiat._game.narratorLog(f"Trucizna z {organizm.__class__.__name__} zabiła {self.__class__.__name__} na polu {self._position}")
                 # Pokonanie przez mocniejszego napastnika
-                elif self.sila < organizm.get_sila():
-                    self.swiat.game.narratorLog(f"{self.__class__.__name__} na polu {previous_position} wszedł na pole {organizm.position}, na którym znajdował się {organizm.__class__.__name__} i zginął")
-                    self.alive = False
+                elif self._sila < organizm.get_sila():
+                    self._swiat._game.narratorLog(f"{self.__class__.__name__} na polu {previous_position} wszedł na pole {organizm._position}, na którym znajdował się {organizm.__class__.__name__} i zginął")
+                    self._alive = False
 
 
 # rozmnażanie w ramach metody kolizja() (kolizja jest metoda w klasie Organizm) → przy kolizji z organizmem tego

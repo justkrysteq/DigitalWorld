@@ -5,6 +5,11 @@
             "border_width": "0"
         }
     },
+    "@background_panel": {
+        "colours": {
+            "normal_bg": "#000000"
+        }
+    },
     "@menu_control_button": {
         "colours": {
             "normal_text": "#ccc",

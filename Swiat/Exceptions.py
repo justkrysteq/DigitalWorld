@@ -12,3 +12,17 @@ class LanuchedModuleException(Exception):
     """
 
     pass
+
+class TooSmallBoardException(Exception):
+    """
+    Exception, który służy do informowaniu użytkownika o tym, że wczytuje zapis na za małej planszy
+
+    :Przykład użycia:
+    >>> if __name__ == "__main__":
+        try:
+            raise TooSmallBoardException("Wczytujesz plik z większą ilością pół niż jest na planszy, skorzystaj z ustawień i zmień jej rozmiar")
+        except LanuchedModuleException as e:
+            print(e)
+    """
+
+    pass

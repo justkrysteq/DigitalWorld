@@ -5,5 +5,5 @@ from Swiat.Organizmy.Zwierze import Zwierze
 class Owca(Zwierze):
     """Klasa odpowiedzialna za stworzenie Owcy"""
     # Podstawowe statystyki
-    sila = 4
-    inicjatywa = 4
+    _sila = 4
+    _inicjatywa = 4

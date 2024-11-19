@@ -8,7 +8,7 @@ from random import randint
 # Klasa Roslina - kontener wszystkich Roślin
 class Roslina(Organizm, ABC):
     """Klasa odpowiedzialna za przechowywanie wszystkich Roślin"""
-    inicjatywa: int = 0
+    _inicjatywa: int = 0
 
     # Wykonanie akcji roślin
     def akcja(self, all_positions: list[list[int]], *args):
@@ -24,9 +24,12 @@ class Roslina(Organizm, ABC):
             # Roślina rozmnaża się tylko, gdy jest na to miejsce 😎
             if len(available_positions) > 0:
                 choose_position = randint(0, len(available_positions)-1)
-                self.swiat.dodajOrganizm(self.__class__, available_positions[choose_position])
-                self.swiat.game.narratorLog(f"{self.__class__.__name__} na polu {self.position} rozprzestrzenił się, tworząc {self.__class__.__name__} na polu {available_positions[choose_position]}")
-
+                self._swiat.dodajOrganizm(self.__class__, available_positions[choose_position])
+                self._swiat._game.narratorLog(f"{self.__class__.__name__} na polu {self._position} rozprzestrzenił się, tworząc {self.__class__.__name__} na polu {available_positions[choose_position]}")
+            else:
+                self._swiat._game.narratorLog(f"{self.__class__.__name__} na polu {self._position} nie dał rady się rozprzestrzenić")
+        else:
+            self._swiat._game.narratorLog(f"{self.__class__.__name__} na polu {self._position} nie dał rady się rozprzestrzenić")
     # Kolizja dla roślin (puste, brak kolizji dla roślin)
     def kolizja(self, *args) -> None:
         pass

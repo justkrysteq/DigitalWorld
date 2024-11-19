@@ -6,5 +6,5 @@ from Swiat.Organizmy.Zwierze import Zwierze
 class Wilk(Zwierze):
     """Klasa odpowiedzialna za stworzenie Wilka"""
     # Podstawowe statystyki
-    sila = 9
-    inicjatywa = 5
+    _sila = 9
+    _inicjatywa = 5

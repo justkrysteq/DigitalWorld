@@ -12,11 +12,11 @@ class Organizm(ABC):
         # self.inicjatywa = inicjatywa
         
         # Tworzenie podstawowych pól
-        self.position: list[int] = pozycja
-        self.swiat: object = swiat
-        self.wiek: int = wiek
-        self.alive: bool = alive
-        self.omit_akcja: bool = omit_akcja
+        self._position: list[int] = pozycja
+        self._swiat: object = swiat
+        self._wiek: int = wiek
+        self._alive: bool = alive
+        self._omit_akcja: bool = omit_akcja
         # Podstawowe pola
         # sila: int = 0 # statystka siły
         # inicjatywa: int = 0 # statystyka inicjatywy
@@ -26,24 +26,24 @@ class Organizm(ABC):
     # Pobieranie wszystkich możliwych ruchów
     def get_available_positions(self) -> list[list[int]]:
         """Metoda zwracająca wszystkie ruchy, które są możliwe dla organizmu na planszy"""
-        N = self.swiat.get_N()
+        N = self._swiat.get_N()
         available_positions = []
-        if self.position[0] + 1 < N:
-            available_positions.append([self.position[0] + 1, self.position[1]])
-        if self.position[0] - 1 >= 0:
-            available_positions.append([self.position[0] - 1, self.position[1]])
-        if self.position[1] + 1 < N:
-            available_positions.append([self.position[0], self.position[1] + 1])
-        if self.position[1] - 1 >= 0:
-            available_positions.append([self.position[0], self.position[1] - 1])
-        if self.position[0] + 1 < N and self.position[1] + 1 < N:
-            available_positions.append([self.position[0] + 1, self.position[1] + 1])
-        if self.position[0] + 1 < N and self.position[1] - 1 >= 0:
-            available_positions.append([self.position[0] + 1, self.position[1] - 1])
-        if self.position[0] - 1 >= 0 and self.position[1] + 1 < N:
-            available_positions.append([self.position[0] - 1, self.position[1] + 1])
-        if self.position[0] - 1 >= 0 and self.position[1] - 1 >= 0:
-            available_positions.append([self.position[0] - 1, self.position[1] - 1])
+        if self._position[0] + 1 < N:
+            available_positions.append([self._position[0] + 1, self._position[1]])
+        if self._position[0] - 1 >= 0:
+            available_positions.append([self._position[0] - 1, self._position[1]])
+        if self._position[1] + 1 < N:
+            available_positions.append([self._position[0], self._position[1] + 1])
+        if self._position[1] - 1 >= 0:
+            available_positions.append([self._position[0], self._position[1] - 1])
+        if self._position[0] + 1 < N and self._position[1] + 1 < N:
+            available_positions.append([self._position[0] + 1, self._position[1] + 1])
+        if self._position[0] + 1 < N and self._position[1] - 1 >= 0:
+            available_positions.append([self._position[0] + 1, self._position[1] - 1])
+        if self._position[0] - 1 >= 0 and self._position[1] + 1 < N:
+            available_positions.append([self._position[0] - 1, self._position[1] + 1])
+        if self._position[0] - 1 >= 0 and self._position[1] - 1 >= 0:
+            available_positions.append([self._position[0] - 1, self._position[1] - 1])
 
         # 1. x+1 👍
         # 2. x-1 👍
@@ -88,7 +88,7 @@ class Organizm(ABC):
         >>> wilk.get_sila()
         9
         """
-        return self.sila
+        return self._sila
 
     # def set_sila(self, new_sila):
     #     """
@@ -107,7 +107,7 @@ class Organizm(ABC):
         >>> wilk.get_inicjatywa()
         5
         """
-        return self.inicjatywa
+        return self._inicjatywa
 
     def set_inicjatywa(self, new_inicjatywa):
         """
@@ -116,7 +116,7 @@ class Organizm(ABC):
         :Przykład użycia:
         >>> wilk.set_inicjatywa(5)
         """
-        self.inicjatywa = new_inicjatywa
+        self._inicjatywa = new_inicjatywa
 
     def get_wiek(self):
         """
@@ -126,7 +126,7 @@ class Organizm(ABC):
         >>> wilk.get_wiek()
         3
         """
-        return self.wiek
+        return self._wiek
 
     # def set_wiek(self, new_wiek):
     #     """
@@ -145,7 +145,7 @@ class Organizm(ABC):
         >>> wilk.get_position()
         [1, 2]
         """
-        return self.position
+        return self._position
     
     def get_alive(self) -> bool:
         """
@@ -155,7 +155,7 @@ class Organizm(ABC):
         >>> wilk.get_alive()
         True
         """
-        return self.alive
+        return self._alive
     
     def get_omit_akcja(self) -> bool:
         """
@@ -165,7 +165,7 @@ class Organizm(ABC):
         >>> wilk.get_omit_akcja()
         True
         """
-        return self.alive
+        return self._alive
 
     def set_position(self, new_pozycja: list[int]):
         """
@@ -174,7 +174,7 @@ class Organizm(ABC):
         :Przykład użycia:
         >>> wilk.set_position(1, 2)
         """
-        self.pozycja = new_pozycja
+        self._position = new_pozycja
 
 
 # Wyjątek w sytuacji, gdzie został uruchomiony moduł, zamiast głównego pliku

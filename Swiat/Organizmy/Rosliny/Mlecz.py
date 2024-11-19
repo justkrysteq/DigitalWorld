@@ -4,7 +4,7 @@ from Swiat.Organizmy.Roslina import Roslina
 # Klasa dla Mlecza
 class Mlecz(Roslina):
     """Klasa odpowiedzialna za stworzenie Mlecza"""
-    sila = 0
+    _sila = 0
 
     # Podejmuje trzy próby rozprzestrzeniania w jednej turze
     def akcja(self, all_positions: list[list[int]], *args):
