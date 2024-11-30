@@ -1,12 +1,19 @@
 # DigitalWorld
 
-A simple game created as a school project.
+A pygame game created as a school project.
 
 ## 🎯 About
 
-**DigitalWorld** is a simple simulator of a virtual world that consists of a two-dimensional grid of size NxN (default 20x20). In this world, simple life forms with different behaviors exist. The simulator is turn-based. In each turn, all organisms present in the world perform an action appropriate to their type. Some of them will move (animal organisms), while others will remain stationary (plant organisms). In case of a collision (when one organism occupies the same cell as another), one of the organisms wins by either killing (e.g., a wolf) the opponent or by running away (e.g., a mouse). The order of movement for organisms in a turn depends on their initiative. Animals with the highest initiative move first. In the case of animals with the same initiative, the order is determined by the rule of seniority (the older animal moves first). In the case of equal strength, the winner is the organism that initiated the attack. Upon starting the program, the grid displays each organism twice. The program window contains a field displaying information about the results of fights, plant consumption, and other events occurring in the world.
+**DigitalWorld** is a simulator of a virtual world, represented as a two-dimensional grid of size NxN (default 20x20). Within this environment, various life forms with distinct behaviors interact and reproduce. The simulation operates on a turn-based system, where, in each cycle, every organism performs an action based on its type. Animal organisms typically move, while plant organisms remain stationary. 
+
+Collisions occur when two organisms occupy the same cell. In such cases, one organism prevails, either by eliminating the opponent (e.g., a wolf attacking a prey) or by fleeing (e.g., a mouse escaping a predator). The movement order is determined by the initiative of the organisms, with those having the highest initiative acting first. In the event that multiple animals share the same initiative, the sequence is further resolved based on seniority, where the older organism moves first. In instances where two organisms are equally strong, the winner is decided by the initiator of the conflict.
+
+Upon program initialization, the simulator spawns two organisms of each type. These organisms are positioned on the grid at random locations. Additionally, the program window features a dedicated field that provides real-time updates on events such as combat outcomes, plant consumption, and other significant occurrences within the world.
+
+Furthermore, DigitalWorld allows users to save the current state of the world to a file, preserving the positions and statuses of all organisms. This saved state can later be loaded, enabling users to resume simulations from a previous point in time or analyze the progression of the ecosystem over multiple sessions.
 
 ## 🚀 Getting Started
+
 ### Dependencies
 
 * **Python** 3.12.0
