@@ -4,6 +4,7 @@ try:
     import pygame as pg # Sterowanie logiką gry
     import pygame_gui as gui # Sterowanie GUI gry
     from random import randint
+    
     # Importowanie Świata i Organizmów
     from Swiat.Swiat import Swiat
     from Swiat.Organizmy.Zwierzeta.Wilk import Wilk
@@ -19,12 +20,15 @@ try:
     # Klasa Game
     class Game:
         """Główny kontener gry"""
+
         def __init__(self):
             # Inicjalizacja okna Pygame
             pg.init()
             pg.display.set_caption("Wirtualny Świat - NA, KS, SW")
+
             # Tablica narratora
             self.__messages = []
+
             # Ustawienia okna
             self._screen = pg.display.set_mode((1300, 680), pg.RESIZABLE)
             self.__manager = gui.UIManager((1920, 1080))
@@ -43,9 +47,9 @@ try:
             # Przypisanie klasy Swiat
             self._swiat = Swiat(self.__N, self)
 
+            # Tworzenie guzików
             bt_rectrel = pg.Rect(0, 0, 150, 60)
             bt_rectrel.topleft = (30, 30)
-            # Tworzenie guzików
             self.__save_button = gui.elements.UIButton(relative_rect=bt_rectrel, text="Zapisz Świat", manager=self.__manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
             bt_rectrel.topleft = (210, 30)
             self.__load_button = gui.elements.UIButton(relative_rect=bt_rectrel, text="Wczytaj Świat", manager=self.__manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
@@ -54,9 +58,9 @@ try:
             bt_rectrel.topleft = (210, 500)
             self.__next_organizm_button = gui.elements.UIButton(relative_rect=bt_rectrel, text="Następny Organizm", manager=self.__manager, object_id=gui.core.ObjectID(class_id="@menu_control_button"))
 
-        def create_panel(self):
-            # Tworzenie panelu zawierającego planszę
-            # self._screen = pg.display.set_mode((self.__N*28+500, self.__N*28+20), pg.RESIZABLE)
+        def create_panel(self) -> None:
+            """Metoda tworząca panel zawierający planszę"""
+
             hgt = 580
             if self.__N*28+20 > 580:
                 hgt = self.__N*28+20
@@ -66,12 +70,11 @@ try:
             self.__panel_plansza = gui.elements.UIPanel(panel_plansza_relrect, 1, self.__manager, object_id=gui.core.ObjectID(class_id="@background_panel"))
             narrator_relrect = pg.Rect(0, 0, 400, 500)
             narrator_relrect.topright = (self._screen.get_width()-30, 30)
-            # narrator_relrect.topright = (30, 30)
             self.__narrator_box = gui.elements.UITextBox(relative_rect=narrator_relrect, html_text="", manager=self.__manager, object_id=gui.core.ObjectID(class_id="@narrator_box"))
 
+            # Tworzenie panelu do dodawania organizmów
             panel_relrect = pg.Rect(0, 0, 480, 250)
             panel_relrect.center = (self._screen.get_width()/2, self._screen.get_height()/2-100)
-            # Tworzenie panelu do dodawania organizmów
             self.__panel = gui.elements.UIPanel(relative_rect=panel_relrect,starting_height=3, manager=self.__manager,visible=False)
             self.__panel_title = gui.elements.UILabel(relative_rect=pg.Rect(180, 0, 120, 100), text="Dodaj organizm", manager=self.__manager, container=self.__panel)
             self.__button_lis = gui.elements.UIButton(relative_rect=pg.Rect(100, 80, 50, 50), text=" ", manager=self.__manager,container=self.__panel,object_id=gui.core.ObjectID(class_id="@lis"))
@@ -83,12 +86,11 @@ try:
             self.__button_mlecz = gui.elements.UIButton(relative_rect=pg.Rect(150, 130, 50, 50), text=" ", manager=self.__manager,container=self.__panel, object_id=gui.core.ObjectID(class_id="@mlecz"))
             self.__button_wilczejagody = gui.elements.UIButton(relative_rect=pg.Rect(200, 130, 50, 50), text=" ", manager=self.__manager,container=self.__panel, object_id=gui.core.ObjectID(class_id="@wilcze_jagody"))
             self.__button_empty = gui.elements.UIButton(relative_rect=pg.Rect(300, 130, 50, 50), text=" ", manager=self.__manager,container=self.__panel, object_id=gui.core.ObjectID(class_id="@puste_pole"))
-            # self.button_dodaj = gui.elements.UIButton(relative_rect=pg.Rect(300, 100, 50, 50), text="Dodaj", __manager=self.__manager,container=self.__panel)
-            # self.button_anuluj = gui.elements.UIButton(relative_rect=pg.Rect(350, 100, 50, 50), text="Anuluj", __manager=self.__manager,container=self.__panel)
-            self.__panel_elements = [self.__panel_title, self.__button_lis, self.__button_mysz, self.__button_wilk, self.__button_owca, self.__button_skunks, self.__button_trawa, self.__button_mlecz, self.__button_wilczejagody, self.__button_empty] #, self.button_dodaj, self.button_anuluj
+            self.__panel_elements = [self.__panel_title, self.__button_lis, self.__button_mysz, self.__button_wilk, self.__button_owca, self.__button_skunks, self.__button_trawa, self.__button_mlecz, self.__button_wilczejagody, self.__button_empty]
 
-        def update_display(self):
-            """Metoda odpowiedzialna za aktulizację świata z każdą turą"""
+        def update_display(self) -> None:
+            """Metoda odpowiedzialna za aktulizację świata na podstawie tabeli organizmy w klasie Swiat"""
+
             # Dictionary do przypisania odpowiednich nazw klasy stylów do klas organizmów
             class_to_name = {
                 Wilk: "wilk",
@@ -121,20 +123,23 @@ try:
                             self.add_button(x, y, "puste_pole")
         
         # Wyświetlenie tekstu narratora
-        def narratorLog(self, message: str):
+        def narratorLog(self, message: str) -> None:
             """Wypisywanie akcji organizmów w grze"""
+
             self.__messages.append(message)
             self.__narrator_box.set_text("\n".join(self.__messages))
 
         # Nowa runda
-        def next_round(self):
+        def next_round(self) -> None:
             """Metoda wykonanie nowej rundy"""
+
             self._swiat.wykonajTure()
             self.update_display()
 
         # Zapisanie świata
-        def save_world(self):
+        def save_world(self) -> None:
             """Metoda wykonująca zapis świata"""
+
             f = open("save.txt", "w")
             f.write(f"{str(self._swiat.get_N())};{str(self._swiat.get_numer_tury())};{self._swiat._current_organism_index}\n")
             for y in range(len(self._swiat.get_organizmy())):
@@ -144,8 +149,9 @@ try:
             f.close()
 
         # Wczytanie świata
-        def load_world(self):
+        def load_world(self) -> None:
             """Metoda wykonująca wczytanie świata"""
+
             str_to_classname = {
                 'Wilk': Wilk,
                 'Owca': Owca,
@@ -156,6 +162,7 @@ try:
                 'Mlecz': Mlecz,
                 'WilczeJagody': WilczeJagody,
             }
+
             with open("save.txt", "r") as f:
                 lines = f.readlines()
                 lines[0] = lines[0].split(";")
@@ -177,23 +184,23 @@ try:
             self.update_display()
 
         # Wyświetlenie organizmu na planszy
-        def add_button(self, x: int, y: int, classname: str, text: str = " "):
+        def add_button(self, x: int, y: int, classname: str, text: str = " ") -> None:
             """Metoda wykonująca wyświetlenie organizmu na polu [x, y]"""
-            # button_relrect = pg.Rect(x * 26, y * 26, 25, 25)
+
             button_relrect = pg.Rect(0, 0, 25, 25)
             button_relrect.topleft = (self.__N/2+x*26, self.__N/2+y*26)
             self.__table[y][x] = gui.elements.UIButton(relative_rect=button_relrect, text=text, manager=self.__manager, object_id=gui.core.ObjectID(class_id=f"@{classname}"), container=self.__panel_plansza, tool_tip_text=f"Pole: [{x}, {y}]\nKliknij, aby dodać organizm.")
 
         # Usuwanie z planszy
-        def remove_button(self, x: int, y: int):
+        def remove_button(self, x: int, y: int) -> None:
             """Metoda wykonująca usunięcie organizmu z pola [x, y]"""
             if self.__table[y][x] is not None:
                 self.__table[y][x].kill()
-            # self.__table[y][x] = gui.elements.UIButton(relative_rect=pg.Rect(x * 26, y * 26, 25, 25), text=" ", __manager=self.__manager, object_id=gui.core.ObjectID(class_id="@puste_pole"))
 
         # Stworzenie wszystkich organizmów
         def spawn_all(self) -> None:
             """Metoda wykonująca stworzenie wszystkich organizmów"""
+            
             each_spawned_times = 2
             all_organisms = [Owca, Wilk, Lis, Mysz, Skunks, Trawa, Mlecz, WilczeJagody]
             used_positions = []
@@ -206,6 +213,7 @@ try:
                         position = [randint(0, self.__N-1), randint(0, self.__N-1)]
                     used_positions.append(position)
                     self._swiat.dodajOrganizm(organizm, position)
+                    # Przykładowa zmiana ilości tworzonych organizmów
                     # if organizm == Skunks:
                     #     for _ in range(10):
                     #         position = [randint(0, self.N-1), randint(0, self.N-1)]
@@ -217,14 +225,16 @@ try:
                     #         self._swiat.dodajOrganizm(organizm, position)
 
         # Nowa runda dla danego organizmu (TODO)
-        def next_organizm(self):
+        def next_organizm(self) -> None:
             """Metoda wykonująca nową rundę dla danego organizmu"""
+
             self._swiat.następnyOrganizm()
             self.update_display()
 
         # Menu gry loop
-        def menu(self) -> None:
+        def menu(self) -> str:
             """Metoda uruchamiająca menu gry"""
+
             running = True
             game_state = "menu"
             clock = pg.time.Clock()
@@ -315,21 +325,12 @@ try:
                 # Okno menu
                 if game_state == "menu":
                     # Konfiguracja interfejsu menu
-                    font = pg.font.Font(None,54)
-                    font_version = pg.font.Font(None,36)
-                    font_credits = pg.font.Font(None, 16)
+                    font = pg.font.Font(None, 54)
+                    font_version = pg.font.Font(None, 36)
                     title_text = font.render("Wirtualny Świat", True, (255, 255, 255))
                     version_text = font_version.render("Version: 1.0", True, (255, 255, 255))
-                    credits_title = font_credits.render("Wykonali:", True, (255, 255, 255))
-                    credits_1 = font_credits.render("Norbert Andrzejczuk nr 2", True, (255, 255, 255))
-                    credits_2 = font_credits.render("Krystian Słupski nr 23", True, (255, 255, 255))
-                    credits_3 = font_credits.render("Szymon Wirkus nr 27", True, (255, 255, 255))
                     self._screen.blit(title_text, (self._screen.get_width()/2-150, 50))
                     self._screen.blit(version_text, (self._screen.get_width()/2-80, 100))
-                    self._screen.blit(credits_title, (80, 540))
-                    self._screen.blit(credits_1, (80, 560))
-                    self._screen.blit(credits_2, (80, 580))
-                    self._screen.blit(credits_3, (80, 600))
 
                 # Okno ustawień
                 elif game_state == "settings":
@@ -354,6 +355,7 @@ try:
         # Wyświetlanie menu do wyboru organizmów
         def displayDodajMenu(self, x, y) -> None:
             """Metoda odpowiedzialna za wyświetlenie menu do wyboru organizmów"""
+
             self.__clicked_button_position = [x, y]
             if self.__panel.visible:
                 self.__panel.visible = False
@@ -366,18 +368,15 @@ try:
         
         def displayHideMenu(self) -> None:
             """Metoda odpowiedzialna za chowanie menu do wyboru organizmów"""
-            # if self.__panel.visible:
+
             self.__panel.visible = False
             for element in self.__panel_elements:
                 element.visible = False
-            # else:
-            #     self.__panel.visible = True
-            #     for element in self.__panel_elements:
-            #         element.visible = True
 
         # Main loop gry
         def run(self) -> None:
             """Metoda odpowiedzialna za uruchamienie gry"""
+
             clock = pg.time.Clock()
             running = True
 
@@ -403,14 +402,11 @@ try:
                             self.__messages = []
                             self.narratorLog(f"Tura {self._swiat.get_numer_tury()}")
                             self.next_round()
-                            # print("next tura")
                         elif event.ui_element == self.__save_button:
                             self.save_world()
-                            # print("zapisaned")
                             self.narratorLog("Zapisano świat")
                         elif event.ui_element == self.__load_button:
                             self.load_world()
-                            # print("wczytaned")
                             self.__messages = []
                             self.narratorLog("Wczytano świat")
                         elif event.ui_element == self.__next_organizm_button:
@@ -422,7 +418,8 @@ try:
                             if self._swiat.get_numer_tury() > tura_przed:
                                 self.__messages = []
                                 self.narratorLog(f"Tura {self._swiat.get_numer_tury()}")
-                            # print("Następny organizm")
+
+                        # Dodawanie organizmów na plaszą poprzez panel
                         elif event.ui_element in self.__panel_elements:
                             if event.ui_element == self.__button_lis:
                                 self._swiat.set_organizmy_xy(self.__clicked_button_position, Lis(self.__clicked_button_position, self._swiat))

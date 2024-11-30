@@ -4,12 +4,15 @@ from Swiat.Organizmy.Zwierze import Zwierze
 # Klasa dla Skunka
 class Skunks(Zwierze):
     """Klasa odpowiedzialna za stworzenie Skunksa"""
+    
     # Podstawowe statystyki
     _sila = 5
     _inicjatywa = 5
 
     # Ubniża inicjatywę wszyskim w około, których inicjatywa jest większa od 0 o 1 (na stałe), chyba że tyczy się to innego Skunksa
-    def akcja(self, all_positions: list[list[int]], all_organizmy: list[object]):
+    def akcja(self, all_positions: list[list[int]], all_organizmy: list[object]) -> None:
+        """Metoda wykonująca unikalną akcję dla Skunksa"""
+
         super().akcja(all_positions)
         available_positions = self.get_available_positions()
         for position in available_positions:

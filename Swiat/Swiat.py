@@ -1,21 +1,6 @@
-# try:
-#     from Exceptions import LanuchedModuleException
-#     from Swiat.Organizmy.Zwierzeta.Zwierzeta import Wilk, Owca, Lis, Mysz, Skunks
-#     from Swiat.Organizmy.Rosliny.Mlecz import Mlecz
-#     from Swiat.Organizmy.Rosliny.Trawa import Trawa
-#     from Swiat.Organizmy.Rosliny.WilczeJagody import WilczeJagody
-# except ModuleNotFoundError as module:
-#     if __name__ == "__main__":
-#         try:
-#             raise LanuchedModuleException(f"Uruchomiono moduł, skorzystaj z pliku main.py, aby uruchomić grę")
-#         except LanuchedModuleException as e:
-#             print(e)
-
 # Klasa Swiat - kontener wszystkich organizmów
 class Swiat:
     """Główny kontener wszystkich organizmów"""
-    # Stwórz klasę Świat zawierającą dwuwymiarową tablicę wskaźników lub referencji (w zależności od stosowanego
-    # języka programowania) na obiekty klasy Organizm.
 
     def __init__(self, N: int, game: object):
         self.__N: int = N # Rozmiar planszy
@@ -29,12 +14,11 @@ class Swiat:
         """Metoda odpowiedzialna za stworzenie organizmu na polu [x, y]"""
         [x, y] = position
         self._organizmy[y][x] = organizm([x, y], self)
-        # print(organizm, self._organizmy[y][x].position)
 
     def wykonajTure(self) -> None:
         """Metoda wykonująca turę"""
         # Dodanie wszytskich organizmów do listy organizmy_by_inicjatywa i zapisanie ich pozycji
-        from Swiat.Organizmy.Zwierzeta.Mysz import Mysz # Tu można dać ten customowy error
+        from Swiat.Organizmy.Zwierzeta.Mysz import Mysz
         organizmy_by_inicjatywa = self.get_organizmy_by_inicjatywa(self._organizmy)
 
         # Clearowanie planszy
@@ -49,7 +33,6 @@ class Swiat:
                     if organizm3 is not None:
                         all_positions.append(organizm3.get_position())
                         all_organizmy.append(organizm3)
-                # print(all_positions)
                 
                 previous_position = organizm.get_position()
                 organizm._wiek += 1
@@ -86,15 +69,15 @@ class Swiat:
 
     def następnyOrganizm(self) -> None:
         """Metoda wykonująca ruch pojedynczego organizmu"""
-        # Pobierz listę organizmów posortowaną wg inicjatywy
         from Swiat.Organizmy.Zwierzeta.Mysz import Mysz
+        # Pobieranie listy organizmów posortowaną wg inicjatywy
         organizmy_by_inicjatywa = self.get_organizmy_by_inicjatywa(self._organizmy)
 
         # Clearowanie planszy
         self._organizmy = [[None for _ in range(self.__N)] for _ in range(self.__N)]
 
         if not organizmy_by_inicjatywa:
-            print("Brak organizmów do wykonania ruchu.")
+            self._game.narratorLog("Brak organizmów do wykonania ruchu.")
             return
 
         # Akcja
@@ -148,6 +131,7 @@ class Swiat:
     # Sortowanie organizmów przez inicjatywę
     def get_organizmy_by_inicjatywa(self, organizmy) -> list[object]:
         """Metoda zwracająca listę posortowanych organizmów po inicjatywie, a jeśli jest równa to po sile"""
+
         organizmy_by_inicjatywa = []
         for y in range(len(organizmy)):
             for x in range(len(organizmy[y])):
@@ -167,7 +151,7 @@ class Swiat:
         return organizmy_by_inicjatywa
 
     # Koniec tury
-    def zakonczTure(self):
+    def zakonczTure(self) -> None:
         """Metoda wykonująca zakończenie tury"""
         
             # if organizmy_by_inicjatywa[-1].current:
@@ -180,6 +164,7 @@ class Swiat:
     # Pobieranie organizmów
     def get_organizmy(self) -> list[list]:
         """Metoda zwracająca logiczną reprezentację planszy"""
+
         return self._organizmy
     
     def set_organizmy(self, new_organizmy: list[list]) -> None:
@@ -189,36 +174,38 @@ class Swiat:
         :param new_organizmy: Nowa tabela organizmy
         :type new_organizmy: list[list]
         """
+
         self._organizmy = new_organizmy
 
     # Pobieranie organizmów
-    def set_organizmy_xy(self, position: list[int], value: any) -> None:
+    def set_organizmy_xy(self, position: list[int], value: object | None) -> None:
         """
         Metoda zmieniająca logiczną reprezentację planszy na konkretnej pozycji na podaną wartość
 
         :param position: Pozycja na planszy
         :type position: list[int]
         :param value: Wartość na, którą zamieniamy wartość planszy
-        :type value: any
+        :type value: object | None
         """
+
         [x, y] = position
         self._organizmy[y][x] = value
 
     # Zwracanie rozmiaru pola
     def get_N(self) -> int:
         """Metoda zwracająca rozmiar pola"""
+
         return self.__N
 
 
     # Pobieranie numeru tury
     def get_numer_tury(self) -> int:
         """Metoda zwracająca aktualny numer tury"""
+
         return self.__numer_tury
 
     # Wpisywanie numeru tury
     def set_numer_tury(self, new_numer_tury: int) -> None:
         """Metoda ustawiająca aktualny numer tury"""
-        self.__numer_tury = new_numer_tury
 
-# Organizmy mają możliwość wpływania na stan świata. Dlatego istnieje konieczność przekazania metodom akcja() oraz kolizja() parametru określającego obiekt klasy Świat. Postaraj się, aby klasa Świat definiowała jako publiczne składowe tylko takie pola i metody, które są potrzebne pozostałym obiektom aplikacji do działania. Pozostałą funkcjonalność świata staraj się zawrzeć w składowych prywatnych.
-# Można dodać customowy error, gdy ten plik launchuje się jako __main__
+        self.__numer_tury = new_numer_tury

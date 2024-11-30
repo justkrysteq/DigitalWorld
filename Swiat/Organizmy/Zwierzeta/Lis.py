@@ -5,19 +5,15 @@ from random import randint
 # Klasa dla Lisa
 class Lis(Zwierze):
     """Klasa odpowiedzialna za stworzenie Lisa"""
+
     # Podstawowe statystyki
     _sila = 3
     _inicjatywa = 7
 
-    # Zależy jak jest zgodnie z najlepszymi praktykami programowania obiektowego
-
-    # def __init__(self, pozycja, swiat, wiek = 0, alive = True, rozmnozyc = False):
-    #     super().__init__(pozycja, swiat, wiek, alive, rozmnozyc)
-    #     self.sila = 3
-    #     self.inicjatywa = 7
-
     # Dobry węch: lis nigdy nie ruszy się na pole zajmowane przez organizm silniejszy niż on
-    def akcja(self, all_positions: list[list[int]], *args):
+    def akcja(self, all_positions: list[list[int]], *args) -> None:
+        """Metoda wykonująca unikalną akcję dla Lisa"""
+
         if not self._omit_akcja:
             available_positions = [] # tu będą pozycje na których nie ma organizmu z większą siłą od lisa (czyli puste lub z mniejszą siłą)
             possible_positions = self.get_available_positions() # tu są wszystkie ruchy jakie mógłby wykonać
@@ -25,6 +21,7 @@ class Lis(Zwierze):
                 if position in all_positions and position is not None:
                     [x, y] = position
                     organizm = self._swiat._organizmy[y][x]
+
                     # Sprawdzanie czy organizm na tej pozycji na większą siłę niż lis, jeśli tak to się tam nie ruszy
                     if organizm is not None and self._sila >= organizm._sila:
                         available_positions.append(position)
@@ -35,5 +32,3 @@ class Lis(Zwierze):
                 choose_position = randint(0, len(available_positions)-1)
                 self._swiat._game.narratorLog(f"{self.__class__.__name__} na polu {self._position} przeszedł na pole {available_positions[choose_position]}, unikając ewentualnego zagrożenia")
                 self._position = available_positions[choose_position]
-        
-        # jesli pole na ktore chce sie ruszyc zawiera organizm z wieksza sila to tam nie wejdzie
